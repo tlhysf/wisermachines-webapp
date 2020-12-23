@@ -10,7 +10,7 @@ export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
 
   const config = {
     method: "get",
-    url: keys.postman + "/zones",
+    url: keys.server + "/zones",
     headers: {},
   };
 
@@ -35,10 +35,6 @@ export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
     })
     .catch((error) => {
       console.log(error);
-    })
-
-    .catch((error) => {
-      console.log(error);
     });
 };
 
@@ -50,7 +46,7 @@ export const addZoneAction = (dispatch, body) => {
   const data = JSON.stringify(body);
   const config = {
     method: "post",
-    url: keys.postman + "/Zone",
+    url: keys.server + "/Zone",
     headers: {
       "Content-Type": "application/json",
     },
@@ -59,12 +55,10 @@ export const addZoneAction = (dispatch, body) => {
 
   axios(config)
     .then((res) => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         dispatch({
           type: zones.addZone,
           payload: {
-            data: res.data,
-            // response: res.data,
             response: Math.random() + 1,
           },
         });
@@ -84,7 +78,7 @@ export const editZoneAction = (dispatch, body) => {
 
   const config = {
     method: "patch",
-    url: keys.postman + "/Zone",
+    url: keys.server + "/Zone",
     headers: {
       "Content-Type": "application/json",
     },
@@ -97,7 +91,6 @@ export const editZoneAction = (dispatch, body) => {
         dispatch({
           type: zones.editOrDeleteZone,
           payload: {
-            // response: res.data,
             response: Math.random() + 1,
           },
         });
@@ -117,7 +110,7 @@ export const deleteZoneAction = (dispatch, body) => {
 
   const config = {
     method: "delete",
-    url: keys.postman + "/Zone",
+    url: keys.server + "/Zone",
     headers: {
       "Content-Type": "application/json",
     },
@@ -130,7 +123,6 @@ export const deleteZoneAction = (dispatch, body) => {
         dispatch({
           type: zones.editOrDeleteZone,
           payload: {
-            // response: res.data,
             response: Math.random() + 1,
           },
         });

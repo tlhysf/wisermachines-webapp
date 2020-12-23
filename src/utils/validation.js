@@ -41,7 +41,7 @@ export const requestBodyFormat = {
   deleteZone: {
     id: "",
   },
-  getMachinesAndNodesInaZone: {
+  getNodesInaZone: {
     id: "",
   },
   addMachine: {

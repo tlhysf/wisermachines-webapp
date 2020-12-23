@@ -7,7 +7,7 @@ export const getMachineDataByIDAction = (dispatch, ID) => {
     type: singleMachine.machineLoading,
   });
 
-  fetch(keys.postman + "/data/" + ID)
+  fetch(keys.server + "/data/" + ID)
     .then((res) =>
       res
         .json()

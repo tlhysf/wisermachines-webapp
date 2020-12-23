@@ -25,7 +25,6 @@ export const workshopsReducer = (state = initialState, action) => {
     case workshops.addWorkshop:
       return {
         ...state,
-        allWorkshops: [...state.allWorkshops, action.payload.data],
         addWorkshopResponse: action.payload.response,
         workshopsLoading: false,
       };

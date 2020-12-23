@@ -10,7 +10,7 @@ export const getAllWorkshopsAction = (dispatch) => {
 
   const config = {
     method: "get",
-    url: keys.postman + "/workshops",
+    url: keys.server + "/workshops",
     headers: {},
   };
 
@@ -28,10 +28,6 @@ export const getAllWorkshopsAction = (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
-    })
-
-    .catch((error) => {
-      console.log(error);
     });
 };
 
@@ -43,7 +39,7 @@ export const addWorkshopAction = (dispatch, body) => {
   const data = JSON.stringify(body);
   const config = {
     method: "post",
-    url: keys.postman + "/Workshop",
+    url: keys.server + "/Workshop",
     headers: {
       "Content-Type": "application/json",
     },
@@ -52,12 +48,10 @@ export const addWorkshopAction = (dispatch, body) => {
 
   axios(config)
     .then((res) => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         dispatch({
           type: workshops.addWorkshop,
           payload: {
-            data: res.data,
-            // response: res.data,
             response: Math.random() + 1,
           },
         });
@@ -77,7 +71,7 @@ export const editWorkshopAction = (dispatch, body) => {
 
   const config = {
     method: "patch",
-    url: keys.postman + "/Workshop",
+    url: keys.server + "/Workshop",
     headers: {
       "Content-Type": "application/json",
     },
@@ -90,7 +84,6 @@ export const editWorkshopAction = (dispatch, body) => {
         dispatch({
           type: workshops.editOrDeleteWorkshop,
           payload: {
-            // response: res.data,
             response: Math.random() + 1,
           },
         });
@@ -110,7 +103,7 @@ export const deleteWorkshopAction = (dispatch, body) => {
 
   const config = {
     method: "delete",
-    url: keys.postman + "/Workshop",
+    url: keys.server + "/Workshop",
     headers: {
       "Content-Type": "application/json",
     },
@@ -123,7 +116,6 @@ export const deleteWorkshopAction = (dispatch, body) => {
         dispatch({
           type: workshops.editOrDeleteWorkshop,
           payload: {
-            // response: res.data,
             response: Math.random() + 1,
           },
         });

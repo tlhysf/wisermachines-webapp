@@ -22,7 +22,10 @@ import EditMachine from "./inputs/EditMachine";
 import AddNode from "./inputs/AddNode";
 
 import { useSelector, useDispatch } from "react-redux";
-import { getAllMachinesAndNodesInAZoneAction } from "../../../../redux/actions/machinesAndNodesActions";
+import {
+  getAllNodesInAZoneAction,
+  getAllMachinesInAZoneAction,
+} from "../../../../redux/actions/machinesAndNodesActions";
 import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonAction";
 import { common as commonActionTypes } from "../../../../redux/actions/actionTypes";
 
@@ -54,7 +57,8 @@ const MachinesAndNodes = (props) => {
   }, [machinesOrNodesFilterSelected]);
 
   useEffect(() => {
-    getAllMachinesAndNodesInAZoneAction(dispatch, props.match.params.zoneID);
+    getAllMachinesInAZoneAction(dispatch, props.match.params.zoneID);
+    getAllNodesInAZoneAction(dispatch, props.match.params.zoneID);
   }, [dispatch, props]);
 
   const navbar = (

@@ -24,17 +24,22 @@ const EditMachine = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const openForm = useSelector((state) => state.common.toggleEditFormDrawer);
-  const response = useSelector((state) => state.machines.editMachineResponse);
-
   const nameRef = React.useRef();
   const maxLoadRef = React.useRef();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    maxLoad: 0,
-    idleThreshold: 0,
-  });
+  const openForm = useSelector((state) => state.common.toggleEditFormDrawer);
+  const response = useSelector((state) => state.machines.editMachineResponse);
+  const allMachinesInAZone = useSelector(
+    (state) => state.machines.allMachinesInAZone
+  );
+
+  const index = allMachinesInAZone.findIndex(
+    (item) => item._id === openForm.ID
+  );
+
+  const thisMachine = index < 0 ? {} : allMachinesInAZone[index];
+
+  const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
   const [focus, setFocus] = useState({
@@ -65,33 +70,35 @@ const EditMachine = (props) => {
       setErrors({
         [e.target.id]: null,
       });
+    }
+  };
 
-      if (e.key === "Enter") {
-        switch (e.target.id) {
-          case "name":
-            try {
-              maxLoadRef.current.focus();
-            } catch (error) {
-              console.log(error);
-            }
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      switch (e.target.id) {
+        case "name":
+          try {
+            maxLoadRef.current.focus();
+          } catch (error) {
+            console.log(error);
+          }
 
-            setFocus({
-              ...focus,
-              [e.target.id]: false,
-              maxLoad: true,
-            });
-            break;
+          setFocus({
+            ...focus,
+            [e.target.id]: false,
+            maxLoad: true,
+          });
+          break;
 
-          case "maxLoad":
-            setFocus({
-              ...focus,
-              [e.target.id]: false,
-            });
-            break;
+        case "maxLoad":
+          setFocus({
+            ...focus,
+            [e.target.id]: false,
+          });
+          break;
 
-          default:
-            break;
-        }
+        default:
+          break;
       }
     }
   };
@@ -111,23 +118,48 @@ const EditMachine = (props) => {
 
     const requestBody = requestBodyFormat.editMachine;
 
-    requestBody.name = formData.name !== "" ? formData.name : null;
-    requestBody.idle_threshold =
-      formData.idleThreshold > 0 ? formData.idleThreshold : null;
-    requestBody.max_load =
-      parseInt(formData.maxLoad) > 0 ? formData.maxLoad : null;
+    requestBody.id = openForm.ID;
 
-    setErrors({
-      name: formData.name === "" ? "Cannot be empty." : null,
-      maxLoad: parseInt(formData.maxLoad) === 0 ? "Cannot be zero." : null,
-      idleThreshold: formData.idleThreshold === 0 ? "Cannot be zero." : null,
-    });
+    if (formData.name === "") {
+      setErrors({
+        ...errors,
+        name: "Cannot be empty",
+      });
+    } else {
+      if (formData.name === thisMachine.name) {
+        // Same value as before
+      } else {
+        requestBody.name = formData.name;
+      }
+    }
 
-    if (
-      requestBody.idle_threshold &&
-      requestBody.max_load &&
-      requestBody.name
-    ) {
+    if (parseInt(formData.maxLoad) === 0) {
+      setErrors({
+        ...errors,
+        maxLoad: "Cannot be zero",
+      });
+    } else {
+      if (formData.maxLoad === thisMachine.max_load) {
+        // Same value as before
+      } else {
+        requestBody.max_load = formData.maxLoad;
+      }
+    }
+
+    if (formData.idleThreshold === 0) {
+      setErrors({
+        ...errors,
+        idleThreshold: "Cannot be zero",
+      });
+    } else {
+      if (formData.idleThreshold === thisMachine.idle_threshold) {
+        // Same value as before
+      } else {
+        requestBody.idle_threshold = formData.idleThreshold;
+      }
+    }
+
+    if (requestBody.id && Object.keys(requestBody).length > 1) {
       editMachineAction(dispatch, requestBody);
     }
   };
@@ -149,6 +181,14 @@ const EditMachine = (props) => {
       toggleEditFormDrawerAction(dispatch);
     }
   };
+
+  useEffect(() => {
+    setFormData({
+      name: thisMachine.name,
+      maxLoad: thisMachine.max_load,
+      idleThreshold: thisMachine.idle_threshold,
+    });
+  }, [thisMachine]);
 
   useEffect(() => {
     if (response > 0) {
@@ -186,10 +226,10 @@ const EditMachine = (props) => {
               id="name"
               label="Name"
               name="name"
-              placeholder={errors.name}
+              placeholder={errors.name ? errors.name : formData.name}
               color={errors.name ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleFormData(e)}
+              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
               focused={errors.name ? true : focus.name}
               inputRef={nameRef}
@@ -204,11 +244,11 @@ const EditMachine = (props) => {
               name="maxLoad"
               color={errors.maxLoad ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleFormData(e)}
+              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
               focused={errors.maxLoad ? true : focus.maxLoad}
               inputRef={maxLoadRef}
-              defaultValue={0}
+              defaultValue={formData.maxLoad}
               type="number"
               inputProps={{ min: 0 }}
             />
@@ -239,7 +279,7 @@ const EditMachine = (props) => {
               </Typography>
               <Slider
                 disabled={formData.maxLoad > 0 ? false : true}
-                defaultValue={0}
+                defaultValue={formData.idleThreshold}
                 min={0}
                 max={parseInt(formData.maxLoad)}
                 step={0.05}

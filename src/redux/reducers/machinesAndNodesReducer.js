@@ -10,7 +10,7 @@ const initialMachinesState = {
 
 export const machinesReducer = (state = initialMachinesState, action) => {
   switch (action.type) {
-    case machinesAndNodes.getAllMachinesAndNodesInAZone:
+    case machinesAndNodes.getAllMachinesInAZone:
       return {
         ...state,
         allMachinesInAZone: action.payload.allMachinesInAZone,
@@ -27,7 +27,6 @@ export const machinesReducer = (state = initialMachinesState, action) => {
     case machinesAndNodes.addMachine:
       return {
         ...state,
-        allMachinesInAZone: [...state.allMachinesInAZone, action.payload.data],
         addMachineResponse: action.payload.response,
         machinesLoading: false,
       };
@@ -54,7 +53,7 @@ const initialNodesState = {
 
 export const nodesReducer = (state = initialNodesState, action) => {
   switch (action.type) {
-    case machinesAndNodes.getAllMachinesAndNodesInAZone:
+    case machinesAndNodes.getAllNodesInAZone:
       return {
         ...state,
         allNodesInAZone: action.payload.allNodesInAZone,

@@ -3,59 +3,31 @@ import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
 
-export const getAllMachinesAndNodesInAZoneAction = (dispatch, zoneID) => {
+export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
   dispatch({
     type: machinesAndNodes.machinesLoading,
   });
 
-  dispatch({
-    type: machinesAndNodes.nodesLoading,
-  });
-
-  var data = JSON.stringify({ id: zoneID });
-
   const config = {
     method: "get",
-    url: keys.postman + "/Zone/Node_Machine_Data/",
+    url: keys.server + "/machines",
     headers: {
       "Content-Type": "application/json",
     },
-    data: data,
   };
 
   axios(config)
     .then((res) => {
       const { data } = res;
-      if (isNotEmpty(data)) {
-        let allMachinesInAZone = [];
-        const allNodesInAZone = data;
-        Object.values(allNodesInAZone).map((node, node_index) => {
-          if (node[0]) {
-            node.map((machine, machine_index) => {
-              allMachinesInAZone = [...allMachinesInAZone, machine];
-              return machine_index;
-            });
-          } else {
-            console.log("error: unexpected response", data);
-          }
-          return node_index;
-        });
-
+      if (isNotEmpty(data) && data[0]) {
+        const allMachinesInAZone = data;
         if (isNotEmpty(allMachinesInAZone) && allMachinesInAZone[0]) {
           dispatch({
-            type: machinesAndNodes.getAllMachinesAndNodesInAZone,
-            payload: {
-              allMachinesInAZone,
-              allNodesInAZone,
-              zoneID,
-            },
+            type: machinesAndNodes.getAllMachinesInAZone,
+            payload: { allMachinesInAZone, zoneID },
           });
         } else {
-          console.log(
-            "error: unexpected response",
-            allNodesInAZone,
-            allMachinesInAZone
-          );
+          console.log("error: unexpected response", allMachinesInAZone);
         }
       } else {
         console.log("error: unexpected response", data);
@@ -63,8 +35,71 @@ export const getAllMachinesAndNodesInAZoneAction = (dispatch, zoneID) => {
     })
     .catch((error) => {
       console.log(error);
-    })
+    });
+};
 
+export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
+  dispatch({
+    type: machinesAndNodes.nodesLoading,
+  });
+
+  const config = {
+    method: "get",
+    url: keys.server + "/Zone/Node_Machine_Data/" + zoneID,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  axios(config)
+    .then((res) => {
+      const { data } = res;
+      if (isNotEmpty(data)) {
+        let allMappedMachinesInAZone = [];
+        const allNodesInAZone = data;
+        // Object.values(allNodesInAZone).map((node, node_index) => {
+        //   if (node[0]) {
+        //     node.map((machine, machine_index) => {
+        //       allMappedMachinesInAZone = [...allMappedMachinesInAZone, machine];
+        //       return machine_index;
+        //     });
+        //   } else {
+        //     console.log("error: unexpected response", data);
+        //   }
+        //   return node_index;
+        // });
+
+        // if (
+        //   isNotEmpty(allMappedMachinesInAZone) &&
+        //   allMappedMachinesInAZone[0]
+        // ) {
+        //   dispatch({
+        //     type: machinesAndNodes.getAllNodesInAZone,
+        //     payload: {
+        //       allMachinesInAZone: allMappedMachinesInAZone,
+        //       allNodesInAZone,
+        //       zoneID,
+        //     },
+        //   });
+        // } else {
+        //   console.log(
+        //     "error: unexpected response",
+        //     allNodesInAZone,
+        //     allMappedMachinesInAZone
+        //   );
+        // }
+        dispatch({
+          type: machinesAndNodes.getAllNodesInAZone,
+          payload: {
+            allMappedMachinesInAZone,
+            allNodesInAZone,
+            zoneID,
+          },
+        });
+      } else {
+        console.log("error: unexpected response", data);
+      }
+    })
     .catch((error) => {
       console.log(error);
     });
@@ -78,7 +113,7 @@ export const addMachineAction = (dispatch, body) => {
   const data = JSON.stringify(body);
   const config = {
     method: "post",
-    url: keys.postman + "/Machine",
+    url: keys.server + "/Machine",
     headers: {
       "Content-Type": "application/json",
     },
@@ -87,12 +122,10 @@ export const addMachineAction = (dispatch, body) => {
 
   axios(config)
     .then((res) => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         dispatch({
           type: machinesAndNodes.addMachine,
           payload: {
-            data: res.data,
-            // response: res.data,
             response: Math.random() + 1,
           },
         });
@@ -111,7 +144,7 @@ export const editMachineAction = (dispatch, body) => {
   const data = JSON.stringify(body);
   const config = {
     method: "patch",
-    url: keys.postman + "/machine",
+    url: keys.server + "/machine",
     headers: {
       "Content-Type": "application/json",
     },
@@ -124,7 +157,6 @@ export const editMachineAction = (dispatch, body) => {
         dispatch({
           type: machinesAndNodes.editOrDeleteMachine,
           payload: {
-            // response: res.data,
             response: Math.random() + 1,
           },
         });
@@ -143,7 +175,7 @@ export const deleteMachineAction = (dispatch, body) => {
   const data = JSON.stringify(body);
   const config = {
     method: "delete",
-    url: keys.postman + "/machine",
+    url: keys.server + "/machine",
     headers: {
       "Content-Type": "application/json",
     },
@@ -156,7 +188,6 @@ export const deleteMachineAction = (dispatch, body) => {
         dispatch({
           type: machinesAndNodes.editOrDeleteMachine,
           payload: {
-            // response: res.data,
             response: Math.random() + 1,
           },
         });
@@ -175,7 +206,7 @@ export const addNodeAction = (dispatch, body) => {
   const data = JSON.stringify(body);
   const config = {
     method: "post",
-    url: keys.postman + "/node",
+    url: keys.server + "/node",
     headers: {
       "Content-Type": "application/json",
     },
@@ -207,7 +238,7 @@ export const editNodeAction = (dispatch, body) => {
   const data = JSON.stringify(body);
   const config = {
     method: "patch",
-    url: keys.postman + "/node",
+    url: keys.server + "/node",
     headers: {
       "Content-Type": "application/json",
     },
@@ -239,7 +270,7 @@ export const deleteNodeAction = (dispatch, body) => {
   const data = JSON.stringify(body);
   const config = {
     method: "delete",
-    url: keys.postman + "/node",
+    url: keys.server + "/node",
     headers: {
       "Content-Type": "application/json",
     },

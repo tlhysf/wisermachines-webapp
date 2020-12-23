@@ -95,7 +95,7 @@ const AddZone = (props) => {
       setTimeout(() => {
         cleanUp();
         toggleAddFormDrawerAction(dispatch);
-        // window.location.href = props.url;
+        window.location.href = props.url;
       }, 1000);
     }
   }, [success, dispatch, props]);

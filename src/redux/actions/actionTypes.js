@@ -13,7 +13,8 @@ export const zones = {
 };
 
 export const machinesAndNodes = {
-  getAllMachinesAndNodesInAZone: "GET_ALL_MACHINES_AND_NODES_IN_A_ZONE",
+  getAllNodesInAZone: "GET_ALL_MACHINES_AND_NODES_IN_A_ZONE",
+  getAllMachinesInAZone: "GET_ALL_MACHINES_IN_A_ZONE",
 
   machinesLoading: "LOADING_MACHINES",
   addMachine: "ADD_MACHINE",

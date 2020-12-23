@@ -27,10 +27,6 @@ export const zonesReducer = (state = initialState, action) => {
     case zones.addZone:
       return {
         ...state,
-        allZonesInAWorkshop: [
-          ...state.allZonesInAWorkshop,
-          action.payload.data,
-        ],
         addZoneResponse: action.payload.response,
         zonesLoading: false,
       };
