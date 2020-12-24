@@ -1,145 +1,171 @@
-export const parseDataFromSSN = (packets, timeFilterIndex) => {
-  let upCount = 0;
-  let downCount = 0;
-  // let operationCount = 0; // no of times state went from ON to OFF/IDLE
-
-  const interval = 5;
+export const parseDataFromSSN = (data, timeFilterIndex) => {
   const numOfHours =
-    timeFilterIndex === 1
+    timeFilterIndex === 0
       ? 1
+      : timeFilterIndex === 1
+      ? 12
       : timeFilterIndex === 2
       ? 24
-      : timeFilterIndex === 3
-      ? 24 * 7
       : 1;
-  const lastHour = 60 * (60 / interval); // 60 min x 60 sec / 5 sec
-  const timeFilter = numOfHours * lastHour;
 
-  // const temperature = packets.map((packet) => {
-  //   return packet.temperature;
-  // });
+  const packets = data instanceof Array && data.length > 0 ? data : null;
 
-  // const humidity = packets.map((packet) => {
-  //   return packet.humidity;
-  // });
+  // Time
+  let timeStamps = [];
+  let timeStampEnd = 0;
+  let timeStampStart = 0;
 
-  const timeStamps = packets.map((packet) => {
-    return Date.parse(packet.timestamp.slice(0, -1));
-  });
+  // Enviroment
+  let temperature = [];
+  let temperatureNow = 0;
+  let temperatureMax = 0;
+  let temperatureMin = 0;
+  let humidity = [];
+  let humidityNow = 0;
+  let humidityMax = 0;
+  let humidityMin = 0;
 
-  // const timeStampStart = timeStamps[0];
-  // const timeStampEnd = timeStamps.slice(-1)[0];
+  // Current
+  let loadCurrent = [];
+  let currentNow = 0;
 
-  const loadCurrent = packets.map((packet) => {
-    return packet.load_current;
-  });
+  // Power
+  let instantPower = [];
+  let unitsConsumed = 0;
 
-  const currentInGivenInterval = loadCurrent.slice(-timeFilter);
+  //State
+  let machineStateStr = [];
+  let machineState = [];
+  let stateNowDuration = "";
+  let stateNow = "";
 
-  const instantPower = currentInGivenInterval.map((current) => {
-    return 1.732 * 0.95 * 400 * current;
-  });
+  // Utilization
+  let utilization = 0;
+  let uptime = "";
+  let downtime = "";
 
-  const numOfHoursActual = (currentInGivenInterval.length * interval) / 3600;
+  if (packets) {
+    try {
+      const latest = packets.slice(-1)[0];
 
-  let unitsConsumed = Math.round(
-    (arrayAverage(instantPower) / 1000) * numOfHoursActual
-  );
+      // Time
+      timeStamps = packets.map((packet) =>
+        Date.parse(packet.timestamp.slice(0, -1))
+      );
+      timeStampStart = timeStamps[0];
+      timeStampEnd = timeStamps.slice(-1)[0];
 
-  unitsConsumed = unitsConsumed ? unitsConsumed : 0;
+      const timefilterTimestampStart = subtractHours(numOfHours, timeStampEnd);
+      const NumberOfPacketsFilteredByTime = timeStamps.map((timestamp) => {
+        if (timestamp > timefilterTimestampStart) {
+          return timestamp;
+        } else {
+          return null;
+        }
+      });
+      const timeFilter = NumberOfPacketsFilteredByTime.filter((x) => x).length;
 
-  const machineStateStr = packets.map((packet) => {
-    return packet.status;
-  });
+      // Environment
+      temperature = packets.map((packet) => {
+        return packet.temperature;
+      });
+      const temperatureInGivenInterval = temperature.slice(-timeFilter);
+      temperatureNow = latest.temperature;
+      temperatureMax = Math.max(...temperatureInGivenInterval);
+      temperatureMin = Math.min(...temperatureInGivenInterval);
 
-  const machineState = machineStateStr.map((state) => {
-    if (state === "OFF") {
-      return 0;
-    } else if (state === "IDLE") {
-      return 1;
-    } else if (state === "ON") {
-      return 2;
-    } else return 0;
-  });
+      humidity = packets.map((packet) => {
+        return packet.humidity;
+      });
+      const humidityInGivenInterval = humidity.slice(-timeFilter);
+      humidityNow = latest.humidity;
+      humidityMax = Math.max(...humidityInGivenInterval);
+      humidityMin = Math.min(...humidityInGivenInterval);
 
-  const statesInGivenInterval = machineState.slice(-timeFilter);
-  for (let i = 0; i < statesInGivenInterval.length; i++) {
-    if (statesInGivenInterval[i] === 2) {
-      upCount++;
-    } else downCount++;
+      // Load Current
+      loadCurrent = packets.map((packet) => {
+        return packet.load_current;
+      });
+      currentNow = latest.load_current;
 
-    // if (statesInGivenInterval[i] === 2) {
-    //   if (
-    //     statesInGivenInterval[i + 1] === 1 ||
-    //     statesInGivenInterval[i + 1] === 0
-    //   )
-    //     operationCount++;
-    // }
-  }
+      //Power
+      instantPower = loadCurrent.map((current) => {
+        return 1.732 * 0.95 * 400 * current;
+      });
+      const powerInGivenInterval = instantPower.slice(-timeFilter);
+      unitsConsumed = Math.round(
+        (arrayAverage(instantPower) / 1000) * numOfHours
+      );
 
-  const utilization = Math.round(
-    (upCount / statesInGivenInterval.length) * 100
-  );
-  const uptime = minutesToHours(Math.round(upCount / (60 / interval)));
-  const downtime = minutesToHours(Math.round(downCount / (60 / interval)));
+      // State
+      machineStateStr = packets.map((packet) => {
+        return packet.status;
+      });
+      machineState = machineStateStr.map((state) => {
+        if (state === "OFF") {
+          return 0;
+        } else if (state === "IDLE") {
+          return 1;
+        } else if (state === "ON") {
+          return 2;
+        } else return 0;
+      });
+      stateNow = latest.status;
+      stateNowDuration = timeDifference(latest.machine_state_duration, 0);
+      const statesInGivenInterval = machineState.slice(-timeFilter);
 
-  // const dateTime = new Date();
-  // const date = dateTime.toLocaleDateString(undefined, {
-  //   weekday: "short",
-  //   year: "numeric",
-  //   month: "short",
-  //   day: "numeric",
-  // });
-  // const time = dateTime.toLocaleTimeString("en-US");
-
-  const currentNow = String(
-    loadCurrent[0] ? loadCurrent.slice(-1)[0].toFixed(2) : 0
-  );
-
-  const stateNow = String(
-    machineStateStr[0] ? machineStateStr.slice(-1)[0] : 0
-  );
-
-  let stateNowTimeStamp = 0;
-  for (let i = machineStateStr.length - 1; i >= 0; i--) {
-    if (machineStateStr[i] !== stateNow) {
-      stateNowTimeStamp = timeStamps[i];
-      break;
+      // Utilization
+      const interval = 5;
+      let upCount = 0;
+      let downCount = 0;
+      statesInGivenInterval.map((state) => {
+        if (state === 2) {
+          upCount++;
+        } else downCount++;
+      });
+      utilization = Math.round((upCount / statesInGivenInterval.length) * 100);
+      const forCovertingToMinutes = 60 / interval;
+      uptime = minutesToHours(Math.round(upCount / forCovertingToMinutes));
+      downtime = minutesToHours(Math.round(downCount / forCovertingToMinutes));
+    } catch (error) {
+      console.log(error);
     }
-    stateNowTimeStamp = timeStamps[0];
   }
-
-  const stateNowTime = timeDifference(new Date().getTime(), stateNowTimeStamp);
-
-  // const temperatureNow = Math.round(temperature.slice(-1)[0]);
-  // const humidityNow = Math.round(humidity.slice(-1)[0]);
-
-  const temperatureNow = 23;
-  const humidityNow = 45;
 
   return {
-    loadCurrent,
-    machineState,
+    // Time
     timeStamps,
-    unitsConsumed,
+    timeStampEnd,
+    timeStampStart,
+
+    // Enviroment
+    temperature,
+    temperatureNow,
+    temperatureMax,
+    temperatureMin,
+    humidity,
+    humidityNow,
+    humidityMax,
+    humidityMin,
+
+    // Current
+    loadCurrent,
     currentNow,
+
+    // Power
+    instantPower,
+    unitsConsumed,
+
+    //State
+    machineState,
+    stateNowDuration,
     stateNow,
-    stateNowTime,
+
+    // Utilization
     utilization,
     uptime,
     downtime,
-    temperatureNow,
-    temperatureMax: temperatureNow,
-    temperatureMin: temperatureNow,
-    humidityNow,
-    humidityMax: humidityNow,
-    humidityMin: humidityNow,
   };
-};
-
-export const arrayAverage = (arr) => {
-  const average = arr.reduce((sume, el) => sume + el, 0) / arr.length;
-  return average;
 };
 
 const minutesToHours = (minutes) => {
@@ -158,7 +184,17 @@ const pad = (n, width, z) => {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 };
 
-const timeDifference = (date1, date2) => {
+export const arrayAverage = (arr) => {
+  try {
+    const average = arr.reduce((sume, el) => sume + el, 0) / arr.length;
+    return average;
+  } catch (error) {
+    console.log(error);
+    return 0;
+  }
+};
+
+export const timeDifference = (date1, date2) => {
   let difference = date1 - date2;
 
   let daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
@@ -174,11 +210,15 @@ const timeDifference = (date1, date2) => {
 
   return (
     (daysDifference ? daysDifference + "D " : null) +
-    hoursDifference +
-    "H " +
+    (hoursDifference ? hoursDifference + "H " : null) +
     minutesDifference +
     "M " +
     secondsDifference +
-    "S "
+    "S"
   );
+};
+
+const subtractHours = (h, reference) => {
+  const referenceDateObj = new Date(reference);
+  return referenceDateObj.getTime() - h * 60 * 60 * 1000;
 };

@@ -123,7 +123,7 @@ const LineChart = (props) => {
         {
           // offset: -20,
           min: 0,
-          max: Math.max(...series),
+          max: props.yMax ? props.yMax : Math.max(...series),
         },
       ],
       series: [

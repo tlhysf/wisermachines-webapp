@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getMachineDataByIDAction } from "../../../../redux/actions/singleMachineActions";
+import { getMachineDataByIDAction } from "../../../../redux/actions/machineDetailsActions";
 import { parseDataFromSSN } from "../../../../utils/parse";
 import { common } from "../../../../redux/actions/actionTypes";
 import { common as styles } from "../../../../utils/styles";
+import { isNotEmpty } from "../../../../utils/validation";
 
 import Grid from "@material-ui/core/Grid";
 import HistoryIcon from "@material-ui/icons/History";
@@ -17,22 +18,24 @@ import MachineDetailsRow3 from "./MachineDetailsRow3";
 
 import { breadCrumbsList } from "../../../../Routes";
 
-const timeFiltersList = [null, "Last Hour", "Last Day", "Last Week"];
+const timeFiltersList = ["Last Hour", "Last 12 Hours", "Last Day"];
 
 const useStyles = makeStyles((theme) => styles(theme));
 
 export default function MachineDetails(props) {
+
+  // Checkpoint
+  // timeSinceLastUpdatedWasRecieved = timeDifference(
+  //   new Date().getTime(),
+  //   timeStampEnd
+  // );
+
+
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
-  const machineData = useSelector((state) => state.singleMachine.data);
-
-  // const allMachinesInAZone = useSelector(
-  //   (state) => state.machines.allMachinesInAZone
-  // );
-
-  const [timeFilter, settimeFilter] = useState(timeFiltersList[1]);
+  const [timeFilter, settimeFilter] = useState(timeFiltersList[0]);
   const timeFilterSelected = useSelector((state) => state.common.timeFilter);
 
   useEffect(() => {
@@ -40,14 +43,21 @@ export default function MachineDetails(props) {
   }, [timeFilterSelected]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      getMachineDataByIDAction(dispatch, props.match.params.machineID);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [dispatch, props]);
+    getMachineDataByIDAction(dispatch, props.match.params.machineID);
+  }, [dispatch, props.match.params.machineID]);
+
+  const storedData = useSelector((state) => state.machineDetails.data);
+
+  const [liveData, setLiveData] = useState(null);
+
+  const allData = !isNotEmpty(storedData)
+    ? []
+    : !isNotEmpty(liveData)
+    ? storedData
+    : [...storedData, liveData];
 
   const parsedMachineData = parseDataFromSSN(
-    machineData,
+    allData,
     timeFiltersList.indexOf(timeFilter)
   );
 
@@ -55,7 +65,7 @@ export default function MachineDetails(props) {
   const {
     currentNow,
     stateNow,
-    stateNowTime,
+    stateNowDuration,
     unitsConsumed,
   } = parsedMachineData;
 
@@ -91,6 +101,8 @@ export default function MachineDetails(props) {
       color: 2,
     },
   };
+
+  console.log(parsedMachineData);
 
   const navbar = (
     <Grid container justify="center" alignItems="center" spacing={0}>
@@ -136,7 +148,7 @@ export default function MachineDetails(props) {
           data={{
             currentNow,
             stateNow,
-            stateNowTime,
+            stateNowDuration,
             unitsConsumed,
             timeFilter,
           }}

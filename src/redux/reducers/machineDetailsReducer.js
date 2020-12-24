@@ -1,4 +1,4 @@
-import { singleMachine } from "../actions/actionTypes";
+import { machineDetails } from "../actions/actionTypes";
 
 const initialState = {
   machineID: "",
@@ -7,15 +7,15 @@ const initialState = {
   machineLoading: false,
 };
 
-export const singleMachineReducer = (state = initialState, action) => {
+export const machineDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case singleMachine.machineLoading:
+    case machineDetails.machineLoading:
       return {
         ...state,
         machineLoading: true,
       };
 
-    case singleMachine.getMachineDataByID:
+    case machineDetails.getMachineDataByID:
       return {
         ...state,
         machineID: action.payload.ID,

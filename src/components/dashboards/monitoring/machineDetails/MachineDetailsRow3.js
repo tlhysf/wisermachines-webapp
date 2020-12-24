@@ -12,7 +12,7 @@ export default function MachineDetailsRow3(props) {
         <LineChart chartData={currentChartData} />
       </Grid>
       <Grid item md={6} xs={12}>
-        <LineChart chartData={stateChartData} />
+        <LineChart chartData={stateChartData} yMax={3}/>
       </Grid>
     </Grid>
   );

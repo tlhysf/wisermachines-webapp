@@ -1,17 +1,14 @@
 export const isNotEmpty = (value) => {
-  switch (value) {
-    case value === undefined:
-      return false;
-    case value === null:
-      return false;
-    case typeof value === "object" && Object.keys(value).length === 0:
-      return false;
-    case typeof value === "string" && value.trim().length === 0:
-      return false;
-    case typeof value instanceof Array && value.length === 0:
-      return false;
-    default:
-      return true;
+  if (
+    value === undefined ||
+    value === null ||
+    (typeof value === "object" && Object.keys(value).length === 0) ||
+    (typeof value === "string" && value.trim().length === 0) ||
+    (typeof value instanceof Array && value.length === 0)
+  ) {
+    return false;
+  } else {
+    return true;
   }
 };
 

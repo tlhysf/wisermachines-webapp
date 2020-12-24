@@ -25,7 +25,7 @@ export const machinesAndNodes = {
   editOrDeleteNode: "EDIT_OR_DELETE_NODE",
 };
 
-export const singleMachine = {
+export const machineDetails = {
   getMachineDataByID: "GET_MACHINE_DATA_BY_ID",
   machineLoading: "LOADING_MACHINE",
 };

@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { workshopsReducer } from "./workshopsReducer";
 import { zonesReducer } from "./zonesReducer";
 import { machinesReducer, nodesReducer } from "./machinesAndNodesReducer";
-import { singleMachineReducer } from "./singleMachineReducer";
+import { machineDetailsReducer } from "./machineDetailsReducer";
 import { commonReducer } from "./commonReducer";
 
 const rootReducer = combineReducers({
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   zones: zonesReducer,
   machines: machinesReducer,
   nodes: nodesReducer,
-  singleMachine: singleMachineReducer,
+  machineDetails: machineDetailsReducer,
   common: commonReducer,
 });
 

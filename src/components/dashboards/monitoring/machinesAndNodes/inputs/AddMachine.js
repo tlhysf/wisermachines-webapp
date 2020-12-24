@@ -228,7 +228,7 @@ const AddMachine = (props) => {
                 defaultValue={0}
                 min={0}
                 max={parseInt(formData.maxLoad)}
-                step={0.05}
+                step={1}
                 valueLabelDisplay="auto"
                 onChange={(e, value) => handleSlider(e, value)}
                 color={errors.idleThreshold ? "secondary" : "primary"}

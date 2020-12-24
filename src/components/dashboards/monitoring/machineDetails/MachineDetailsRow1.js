@@ -13,7 +13,7 @@ export default function MachineDetailsRow1(props) {
   const {
     currentNow,
     stateNow,
-    stateNowTime,
+    stateNowDuration,
     unitsConsumed,
     timeFilter,
   } = props.data;
@@ -29,7 +29,7 @@ export default function MachineDetailsRow1(props) {
       ),
     values: {
       primary: stateNow,
-      secondary: stateNowTime,
+      secondary: stateNowDuration,
     },
   };
 
