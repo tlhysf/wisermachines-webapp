@@ -35,4 +35,5 @@ export const common = {
   toggleAddFormDrawer: "TOGGLE_ADD_FORM_DRAWER",
   filterByNodesOrMachines: "FILTER_BY_NODES_OR_MACHINES",
   toggleEditFormDrawer: "TOGGLE_EDIT_FORM_DRAWER",
+  togglePersistantSideBar: "TOGGLE_PERSISTANT_SIDEBAR",
 };

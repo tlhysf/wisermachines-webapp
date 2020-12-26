@@ -5,7 +5,6 @@ import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import { transparentPaper } from "../../../../utils/styles";
 import { common } from "../../../../utils/styles";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -72,10 +71,8 @@ const Zones = (props) => {
         <Grid item xs={12}>
           {navbar}
         </Grid>
-        <Grid item xs={12}>
-          <Paper style={transparentPaper}>
-            <ZoneCards allZonesInAWorkshop={allZonesInAWorkshop} />
-          </Paper>
+        <Grid item xs={12} component={Paper} elevation={0}>
+          <ZoneCards allZonesInAWorkshop={allZonesInAWorkshop} />
         </Grid>
       </Grid>
       <AddZone url={props.match.url} params={props.match.params} />

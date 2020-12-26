@@ -1,18 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import LineChart from "../../../common/LineChart";
+import { Button } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 export default function MachineDetailsRow3(props) {
-  const currentChartData = props.lineCharts.machineCurrent;
-  const stateChartData = props.lineCharts.machineState;
+  const {
+    machineCurrent,
+    machineState,
+    machinePower,
+    temperature,
+    humidity,
+  } = props.lineCharts;
+
+  const [buttonIndex, setButtonIndex] = useState(0);
+
+  const chartsList = [
+    machineCurrent,
+    machineState,
+    machinePower,
+    temperature,
+    humidity,
+  ];
+
+  const chartNamesList = [
+    "Current (A)",
+    "State",
+    "Power (W)",
+    "Temperature (C)",
+    "Humidity (%RH)",
+  ];
+
+  const chartButtons = chartsList.map((chart, chartIndex) => {
+    const color = chartIndex === buttonIndex ? "white" : "grey";
+    const backgroundColor = chartIndex === buttonIndex ? "grey" : "white";
+    return (
+      <Grid item key={chartIndex}>
+        <Button
+          variant="contained"
+          style={{ color: color, backgroundColor: backgroundColor }}
+          onClick={(e) => setButtonIndex(chartIndex)}
+        >
+          <Typography variant="caption" color={color}>
+            {chartNamesList[chartIndex]}
+          </Typography>
+        </Button>
+      </Grid>
+    );
+  });
+
+  const chartRenders = chartsList.map((chart, chartIndex) => (
+    <LineChart chartData={chart} />
+  ));
 
   return (
-    <Grid container justify="center" alignItems="center" spacing={2}>
-      <Grid item md={6} xs={12}>
-        <LineChart chartData={currentChartData} />
+    <Grid
+      container
+      justify="center"
+      alignItems="center"
+      component={Paper}
+      elevation={2}
+    >
+      <Grid item xs={12} style={{ padding: 15 }}>
+        <Grid container spacing={1} justify="center" alignItems="center">
+          {chartButtons}
+        </Grid>
       </Grid>
-      <Grid item md={6} xs={12}>
-        <LineChart chartData={stateChartData} yMax={3}/>
+      <Grid item xs={12}>
+        {chartRenders[buttonIndex]}
       </Grid>
     </Grid>
   );

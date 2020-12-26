@@ -86,10 +86,9 @@ export default function FilterAndSortMenu(props) {
         aria-haspopup="true"
         onClick={handleToggle}
         className={classes.button}
+        variant="contained"
       >
-        <Typography variant="caption" color="textPrimary">
-          {selection}
-        </Typography>
+        <Typography variant="caption">{selection}</Typography>
         {icon ? icon : null}
       </Button>
       <Popper
@@ -123,9 +122,7 @@ export default function FilterAndSortMenu(props) {
                         key={index}
                         onClick={(event) => handleClose(event, item)}
                       >
-                        <Typography variant="overline" color="textPrimary">
-                          {item}
-                        </Typography>
+                        <Typography variant="overline">{item}</Typography>
                       </MenuItem>
                     );
                   })}

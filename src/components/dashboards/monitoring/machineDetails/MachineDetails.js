@@ -5,6 +5,7 @@ import { parseDataFromSSN } from "../../../../utils/parse";
 import { common } from "../../../../redux/actions/actionTypes";
 import { common as styles } from "../../../../utils/styles";
 import { isNotEmpty } from "../../../../utils/validation";
+import { timeDifference } from "../../../../utils/parse";
 
 import Grid from "@material-ui/core/Grid";
 import HistoryIcon from "@material-ui/icons/History";
@@ -15,40 +16,35 @@ import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import MachineDetailsRow1 from "./MachineDetailsRow1";
 import MachineDetailsRow2 from "./MachineDetailsRow2";
 import MachineDetailsRow3 from "./MachineDetailsRow3";
+import MachineDetailsLoader from "./MachineDetailsLoader";
 
 import { breadCrumbsList } from "../../../../Routes";
+
+import keys from "../../../../utils/keys";
+
+import io from "socket.io-client";
+const client = io(keys.server, {
+  transports: ["websocket"],
+});
 
 const timeFiltersList = ["Last Hour", "Last 12 Hours", "Last Day"];
 
 const useStyles = makeStyles((theme) => styles(theme));
 
 export default function MachineDetails(props) {
-
-  // Checkpoint
-  // timeSinceLastUpdatedWasRecieved = timeDifference(
-  //   new Date().getTime(),
-  //   timeStampEnd
-  // );
-
-
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
   const [timeFilter, settimeFilter] = useState(timeFiltersList[0]);
-  const timeFilterSelected = useSelector((state) => state.common.timeFilter);
-
-  useEffect(() => {
-    settimeFilter(timeFilterSelected);
-  }, [timeFilterSelected]);
-
-  useEffect(() => {
-    getMachineDataByIDAction(dispatch, props.match.params.machineID);
-  }, [dispatch, props.match.params.machineID]);
-
-  const storedData = useSelector((state) => state.machineDetails.data);
-
+  const [timeSinceLastUpdate, setTimeSinceLastUpdate] = useState("Updating...");
   const [liveData, setLiveData] = useState(null);
+
+  const machineLoading = useSelector(
+    (state) => state.machineDetails.machineLoading
+  );
+  const timeFilterSelected = useSelector((state) => state.common.timeFilter);
+  const storedData = useSelector((state) => state.machineDetails.data);
 
   const allData = !isNotEmpty(storedData)
     ? []
@@ -61,48 +57,117 @@ export default function MachineDetails(props) {
     timeFiltersList.indexOf(timeFilter)
   );
 
-  // Row 1
-  const {
-    currentNow,
-    stateNow,
-    stateNowDuration,
-    unitsConsumed,
-  } = parsedMachineData;
+  const { machineID } = props.match.params;
 
-  // Row 2
+  useEffect(() => {
+    settimeFilter(timeFilterSelected);
+  }, [timeFilterSelected]);
+
+  useEffect(() => {
+    getMachineDataByIDAction(dispatch, machineID);
+  }, [dispatch, machineID]);
+
+  useEffect(() => {
+    client.emit("send-data-demo-machine", { _id: machineID });
+    // client.on(`data-demo-machine-${machineID}`, (msg) => {
+    //   try {
+    //     if (msg) {
+    //       setLiveData(msg);
+    //     } else {
+    //       setLiveData(null);
+    //     }
+    //   } catch (error) {
+    //     setLiveData(null);
+    //     console.log(error);
+    //   }
+    // });
+  }, [machineID]);
+
   const {
-    utilization,
-    uptime,
-    downtime,
+    // Time
+    timestamps,
+    timestampEnd,
+    // timestampStart,
+    // timestampStartFilter,
+
+    // Enviroment
+    temperature,
     temperatureNow,
     temperatureMax,
     temperatureMin,
+    humidity,
     humidityNow,
     humidityMax,
     humidityMin,
+
+    // Current
+    loadCurrent,
+    currentNow,
+
+    // Power
+    instantPower,
+    unitsConsumed,
+
+    //State
+    machineState,
+    stateNowDuration,
+    stateNow,
+
+    // Utilization
+    utilization,
+    uptime,
+    downtime,
   } = parsedMachineData;
 
-  // Row 3
+  const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
+    "en-US"
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeSinceLastUpdate(
+        timeDifference(new Date().getTime(), timestampEnd)
+      );
+    }, 1000 * 30);
+    return () => clearInterval(interval);
+  }, []);
+
   const lineCharts = {
     machineState: {
-      series: parsedMachineData.machineState,
-      timeStamps: parsedMachineData.timeStamps,
+      series: machineState,
+      timestamps: timestamps,
       name: "State",
       step: "center",
-      decimal: 0,
-      color: 0,
+      color: 4,
+    },
+    machinePower: {
+      series: instantPower,
+      timestamps: timestamps,
+      name: "Power",
+      step: "",
+      color: 7,
     },
     machineCurrent: {
-      series: parsedMachineData.loadCurrent,
-      timeStamps: parsedMachineData.timeStamps,
+      series: loadCurrent,
+      timestamps: timestamps,
       name: "Current",
       step: "",
-      decimal: 0,
       color: 2,
     },
+    temperature: {
+      series: temperature,
+      timestamps: timestamps,
+      name: "Temperature",
+      color: 3,
+    },
+    humidity: {
+      series: humidity,
+      timestamps: timestamps,
+      name: "Humidity",
+      step: "",
+      color: 6,
+    },
   };
-
-  console.log(parsedMachineData);
 
   const navbar = (
     <Grid container justify="center" alignItems="center" spacing={0}>
@@ -143,35 +208,45 @@ export default function MachineDetails(props) {
       <Grid item xs={12}>
         {navbar}
       </Grid>
-      <Grid item xs={12}>
-        <MachineDetailsRow1
-          data={{
-            currentNow,
-            stateNow,
-            stateNowDuration,
-            unitsConsumed,
-            timeFilter,
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <MachineDetailsRow2
-          data={{
-            utilization,
-            uptime,
-            downtime,
-            temperatureNow,
-            temperatureMax,
-            temperatureMin,
-            humidityNow,
-            humidityMax,
-            humidityMin,
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <MachineDetailsRow3 lineCharts={lineCharts} />
-      </Grid>
+      {machineLoading ? MachineDetailsLoader : null}
+      {machineLoading ? null : (
+        <Grid item xs={12}>
+          <MachineDetailsRow1
+            data={{
+              currentNow,
+              lastUpdateTimestamp,
+              stateNow,
+              stateNowDuration,
+              unitsConsumed,
+              timeFilter,
+              liveData,
+              timeSinceLastUpdate,
+            }}
+          />
+        </Grid>
+      )}
+      {machineLoading ? null : (
+        <Grid item xs={12}>
+          <MachineDetailsRow2
+            data={{
+              utilization,
+              uptime,
+              downtime,
+              temperatureNow,
+              temperatureMax,
+              temperatureMin,
+              humidityNow,
+              humidityMax,
+              humidityMin,
+            }}
+          />
+        </Grid>
+      )}
+      {machineLoading ? null : (
+        <Grid item xs={12}>
+          <MachineDetailsRow3 lineCharts={lineCharts} />
+        </Grid>
+      )}
     </Grid>
   );
 }

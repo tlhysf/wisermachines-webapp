@@ -1,18 +1,4 @@
-export const colors = {
-  // https://mycolor.space/?hex=%2314A420&sub=1
-
-  bg: "#E7EBEE",
-  primary: "#009789",
-  status: {
-    veryHigh: "#FF0060",
-    high: "#F85700",
-    normal: "#009F59",
-    low: "#00A9F5",
-    veryLow: "#0074BC",
-  },
-  gray: "#3F4A3C",
-  lightGray: "#A2AF9F",
-};
+import colors from "./colors";
 
 // const pageHeight = 630;
 // const pageWidth = 1960;
@@ -40,8 +26,8 @@ export const layoutStyle = (theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    backgroundColor: colors.bg,
-    color: "gray",
+    backgroundColor: colors.BLUEGREY[100],
+    color: colors.BLUEGREY[500],
     boxShadow: "0px 0px 0px 0px",
   },
 
@@ -56,8 +42,8 @@ export const layoutStyle = (theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    backgroundColor: colors.bg,
-    color: "gray",
+    backgroundColor: colors.BLUEGREY[100],
+    color: colors.BLUEGREY[500],
     boxShadow: "0px 0px 0px 0px",
   },
 
@@ -158,18 +144,14 @@ export const layoutStyle = (theme) => ({
   },
 });
 
-export const transparentPaper = {
-  backgroundColor: "transparent",
-  boxShadow: "0px 0px 0px 0px",
-};
-
 export const common = (theme) => ({
   popper: {
     position: "relative",
     zIndex: 999,
   },
   button: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "white",
+    color: colors.BLUEGREY[500],
   },
   iconInsideButton: {
     height: 20,
@@ -183,25 +165,12 @@ export const common = (theme) => ({
   },
 });
 
-export const pillStyle = (backgroundColor) => {
-  return {
-    backgroundColor,
-    padding: 10,
-    color: "white",
-    boxShadow: "0px 0px 0px 0px",
-  };
-};
-
 export const formStyle = (theme) => ({
   paper: {
     margin: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%",
@@ -212,7 +181,7 @@ export const formStyle = (theme) => ({
   },
   divider: {
     marginTop: theme.spacing(5),
-    backgroundColor: "gray",
+    backgroundColor: colors.BLUEGREY[500],
     height: 1,
     border: "none",
   },
@@ -229,5 +198,24 @@ export const formSlider = {
     margin: 15,
     paddingTop: 15,
     paddingBottom: 15,
+  },
+};
+
+export const smallCard = {
+  iconPaper: {
+    padding: "5px 5px 5px 5px",
+    display: "flex",
+    justifyContent: "center",
+    align: "center",
+    backgroundColor: "transparent",
+  },
+
+  textPaper: {
+    padding: "5px 5px 5px 5px",
+    display: "flex",
+    justifyContent: "center",
+    align: "center",
+    backgroundColor: "transparent",
+    minHeight: "45px",
   },
 };

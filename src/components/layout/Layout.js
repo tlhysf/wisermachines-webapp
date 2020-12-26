@@ -1,12 +1,13 @@
 import React from "react";
 import clsx from "clsx";
 import Routes from "../../Routes";
+import { useDispatch } from "react-redux";
+import { togglePersistantSideBarAction } from "../../redux/actions/commonAction";
 
 // Components
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
@@ -16,7 +17,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Drawer from "@material-ui/core/Drawer";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
 // Icons
@@ -28,7 +28,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { layoutStyle, transparentPaper } from "../../utils/styles";
+import { layoutStyle } from "../../utils/styles";
 
 const useStyles = makeStyles((theme) => layoutStyle(theme));
 
@@ -36,6 +36,8 @@ const Layout = (props) => {
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
+
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -45,8 +47,11 @@ const Layout = (props) => {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleDrawerToggle = () => {
-    setOpen(!open);
+    // setOpen(!open);
+    // togglePersistantSideBarAction(dispatch);
+    setMobileOpen(!mobileOpen);
   };
+
   const handleMobileDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -167,9 +172,7 @@ const Layout = (props) => {
     >
       <MenuItem>
         <IconButton color="inherit">
-          <Badge badgeContent={0} color="secondary">
-            <NotificationsIcon />
-          </Badge>
+          <NotificationsIcon />
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
@@ -218,9 +221,7 @@ const Layout = (props) => {
 
           <div className={classes.sectionDesktop}>
             <IconButton color="inherit">
-              <Badge badgeContent={0} color="secondary">
-                <NotificationsIcon />
-              </Badge>
+              <NotificationsIcon />
             </IconButton>
             <IconButton
               edge="end"
@@ -265,9 +266,7 @@ const Layout = (props) => {
             alignItems="flex-start"
           >
             <Grid item xs={12}>
-              <Paper style={transparentPaper}>
-                <Routes {...props} />
-              </Paper>
+              <Routes {...props} />
             </Grid>
           </Grid>
         </div>

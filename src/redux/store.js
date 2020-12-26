@@ -4,12 +4,17 @@ import rootReducer from "./reducers/rootReducer";
 
 const middleware = [thunk];
 
-const store = createStore(
-  rootReducer,
-  compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
+const reduxDevTools =
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+
+const composeFunction = () => {
+  if (reduxDevTools === undefined) {
+    return compose(applyMiddleware(...middleware));
+  } else {
+    return compose(applyMiddleware(...middleware), reduxDevTools);
+  }
+};
+
+const store = createStore(rootReducer, composeFunction());
 
 export default store;

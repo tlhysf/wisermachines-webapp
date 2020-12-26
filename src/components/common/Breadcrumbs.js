@@ -8,6 +8,7 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import ComputerIcon from "@material-ui/icons/Computer";
 import ToolTip from "@material-ui/core/ToolTip";
+import colors from "../../utils/colors";
 
 const style = {
   link: {
@@ -58,7 +59,11 @@ const BreadcrumbsNav = (props) => {
 
   const renderBreadcrumbs = allPaths.map((path, index) =>
     index === allPaths.length - 1 ? (
-      <Typography variant="overline" color="primary" key={index}>
+      <Typography
+        variant="overline"
+        style={{ color: colors.TEAL[800] }}
+        key={index}
+      >
         {breadcrumbsNames[index]}
       </Typography>
     ) : index === 0 ? (
@@ -88,7 +93,7 @@ const BreadcrumbsNav = (props) => {
   );
 
   return (
-    <Paper elevation={0} style={style.paper}>
+    <Paper elevation={2} style={style.paper}>
       <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
         {renderBreadcrumbs}
       </Breadcrumbs>

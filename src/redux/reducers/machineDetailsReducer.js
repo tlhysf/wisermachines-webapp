@@ -20,6 +20,7 @@ export const machineDetailsReducer = (state = initialState, action) => {
         ...state,
         machineID: action.payload.ID,
         data: action.payload.data,
+        machineLoading: false,
       };
 
     default:

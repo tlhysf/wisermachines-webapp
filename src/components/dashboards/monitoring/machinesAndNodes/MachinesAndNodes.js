@@ -7,9 +7,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import { transparentPaper } from "../../../../utils/styles";
 import { breadCrumbsList } from "../../../../Routes";
 import { common } from "../../../../utils/styles";
+import colors from "../../../../utils/colors";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import MachineCards from "./MachineCardsContainer";
@@ -81,7 +82,7 @@ const MachinesAndNodes = (props) => {
               type={commonActionTypes.filterByNodesOrMachines}
               icon={
                 <ExpandMoreIcon
-                  color="action"
+                  style={{ color: colors.TEAL[700] }}
                   className={classes.iconInsideButton}
                 />
               }
@@ -110,7 +111,10 @@ const MachinesAndNodes = (props) => {
                 className={classes.button}
                 onClick={(e) => toggleAddFormDrawerAction(dispatch)}
               >
-                <AddIcon className={classes.iconInsideButton} color="action" />
+                <AddIcon
+                  className={classes.iconInsideButton}
+                  style={{ color: colors.TEAL[700] }}
+                />
               </Button>
             </Tooltip>
           </Grid>
@@ -125,14 +129,12 @@ const MachinesAndNodes = (props) => {
         <Grid item xs={12}>
           {navbar}
         </Grid>
-        <Grid item xs={12}>
-          <Paper style={transparentPaper}>
-            {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? (
-              <NodeCards allNodesInAZone={allNodesInAZone} />
-            ) : (
-              <MachineCards allMachinesInAZone={allMachinesInAZone} />
-            )}
-          </Paper>
+        <Grid item xs={12} component={Paper} elevation={0}>
+          {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? (
+            <NodeCards allNodesInAZone={allNodesInAZone} />
+          ) : (
+            <MachineCards allMachinesInAZone={allMachinesInAZone} />
+          )}
         </Grid>
       </Grid>
       {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? (

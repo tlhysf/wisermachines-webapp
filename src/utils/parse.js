@@ -11,9 +11,10 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
   const packets = data instanceof Array && data.length > 0 ? data : null;
 
   // Time
-  let timeStamps = [];
-  let timeStampEnd = 0;
-  let timeStampStart = 0;
+  let timestamps = [];
+  let timestampEnd = 0;
+  let timestampStart = 0;
+  let timestampStartFilter = 0;
 
   // Enviroment
   let temperature = [];
@@ -36,28 +37,28 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
   //State
   let machineStateStr = [];
   let machineState = [];
-  let stateNowDuration = "";
-  let stateNow = "";
+  let stateNowDuration = "Unknown";
+  let stateNow = "Unknown";
 
   // Utilization
   let utilization = 0;
-  let uptime = "";
-  let downtime = "";
+  let uptime = "Unknown";
+  let downtime = "Unknown";
 
   if (packets) {
     try {
       const latest = packets.slice(-1)[0];
 
       // Time
-      timeStamps = packets.map((packet) =>
+      timestamps = packets.map((packet) =>
         Date.parse(packet.timestamp.slice(0, -1))
       );
-      timeStampStart = timeStamps[0];
-      timeStampEnd = timeStamps.slice(-1)[0];
+      timestampStart = timestamps[0];
+      timestampEnd = timestamps.slice(-1)[0];
+      timestampStartFilter = subtractHours(numOfHours, timestampEnd);
 
-      const timefilterTimestampStart = subtractHours(numOfHours, timeStampEnd);
-      const NumberOfPacketsFilteredByTime = timeStamps.map((timestamp) => {
-        if (timestamp > timefilterTimestampStart) {
+      const NumberOfPacketsFilteredByTime = timestamps.map((timestamp) => {
+        if (timestamp > timestampStartFilter) {
           return timestamp;
         } else {
           return null;
@@ -94,7 +95,7 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
       });
       const powerInGivenInterval = instantPower.slice(-timeFilter);
       unitsConsumed = Math.round(
-        (arrayAverage(instantPower) / 1000) * numOfHours
+        (arrayAverage(powerInGivenInterval) / 1000) * numOfHours
       );
 
       // State
@@ -111,17 +112,21 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
         } else return 0;
       });
       stateNow = latest.status;
-      stateNowDuration = timeDifference(latest.machine_state_duration, 0);
+      stateNowDuration = timeDifference(
+        latest.machine_state_duration * 1000,
+        0
+      );
       const statesInGivenInterval = machineState.slice(-timeFilter);
 
       // Utilization
       const interval = 5;
       let upCount = 0;
       let downCount = 0;
-      statesInGivenInterval.map((state) => {
+      statesInGivenInterval.map((state, index) => {
         if (state === 2) {
           upCount++;
         } else downCount++;
+        return index;
       });
       utilization = Math.round((upCount / statesInGivenInterval.length) * 100);
       const forCovertingToMinutes = 60 / interval;
@@ -134,9 +139,10 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
 
   return {
     // Time
-    timeStamps,
-    timeStampEnd,
-    timeStampStart,
+    timestamps,
+    timestampEnd,
+    timestampStart,
+    timestampStartFilter,
 
     // Enviroment
     temperature,
@@ -208,14 +214,12 @@ export const timeDifference = (date1, date2) => {
 
   let secondsDifference = Math.floor(difference / 1000);
 
-  return (
-    (daysDifference ? daysDifference + "D " : null) +
-    (hoursDifference ? hoursDifference + "H " : null) +
-    minutesDifference +
-    "M " +
-    secondsDifference +
-    "S"
-  );
+  let days = daysDifference > 0 ? daysDifference + "D " : "";
+  let hours = hoursDifference > 0 ? hoursDifference + "H " : "";
+  let minutes = minutesDifference > 0 ? minutesDifference + "M " : "";
+  let seconds = secondsDifference > 0 ? secondsDifference + "S" : "";
+
+  return days + hours + minutes + seconds;
 };
 
 const subtractHours = (h, reference) => {

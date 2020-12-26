@@ -1,10 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
+import colors from "../../utils/colors";
 
-const defaultColor = "#181818";
-const defaultUnit = "Percent";
-const defaultValue = "0";
+const defaultColor = "";
+const defaultUnit = "";
+const defaultValue = "";
 
 const options = {
   chart: {
@@ -36,12 +37,12 @@ const options = {
         name: {
           show: true,
           offsetY: 15,
-          color: "#111",
+          color: colors.BLUEGREY[700],
           fontSize: "12px",
         },
         value: {
           offsetY: -20,
-          color: "#111",
+          color: colors.BLUEGREY[700],
           fontSize: "16px",
           show: true,
           formatter: function (val) {

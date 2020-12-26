@@ -1,8 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts/highstock";
 import { useEffect, useState } from "react";
-import Paper from "@material-ui/core/Paper";
 
 const dateTimeLabelFormats = {
   second: "%l:%M:%S %P",
@@ -16,11 +17,17 @@ const dateTimeLabelFormats = {
 
 const commonOptions = {
   chart: {
-    height: "50%",
-    margin: [20, 20, 20, 20],
+    height: 300,
+    margin: [25, 25, 25, 25],
     renderTo: "container",
     zoomType: "x",
     borderRadius: 10,
+  },
+  tooltip: {
+    valueDecimals: 2,
+    split: false,
+    distance: 30,
+    padding: 10,
   },
   time: {
     useUTC: false,
@@ -38,21 +45,26 @@ const commonOptions = {
   },
 
   scrollbar: {
-    barBackgroundColor: "rgb(0,0,0,0.3)",
-    barBorderColor: "rgb(0,0,0,0)",
-    buttonArrowColor: "rgb(0,0,0,0)",
-    buttonBackgroundColor: "rgb(0,0,0,0)",
-    buttonBorderColor: "rgb(0,0,0,0)",
-    rifleColor: "rgb(0,0,0,0)",
-    trackBackgroundColor: "rgb(0,0,0,0)",
-    trackBorderColor: "rgb(0,0,0,0)",
+    barBackgroundColor: "white",
+    barBorderRadius: 1,
+    barBorderWidth: 1,
+    buttonBackgroundColor: "white",
+    buttonBorderWidth: 1,
+    buttonArrowColor: "rgba(0,0,0,0.4)",
+    buttonBorderRadius: 1,
+    rifleColor: "rgba(0,0,0,0.4)",
+    trackBackgroundColor: "white",
+    trackBorderWidth: 1,
+    trackBorderColor: "rgba(0,0,0,0.2)",
+    trackBorderRadius: 1,
   },
   navigator: {
+    height: 30,
     handles: {
       backgroundColor: "rgb(0,0,0,0)",
       borderColor: "rgb(0,0,0,0)",
     },
-    outlineColor: "rgba(0,0,0,0.1)",
+    outlineColor: "rgba(0,0,0,0)",
     maskFill: "rgba(0,0,0,0.2)",
 
     xAxis: {
@@ -103,18 +115,22 @@ const commonOptions = {
 };
 
 const LineChart = (props) => {
+  const togglePersistantSideBar = useSelector(
+    (state) => state.common.togglePersistantSideBarAction
+  );
+
   const [chartOptions, setChartOptions] = useState(commonOptions);
 
   useEffect(() => {
     const defaultChartData = {
       series: [],
-      timeStamps: [],
+      timestamps: [],
       name: "",
       step: "",
       decimal: 0,
       color: 0,
     };
-    const { series, timeStamps, name, step, decimal, color } = props.chartData
+    const { series, timestamps, name, step, color } = props.chartData
       ? props.chartData
       : defaultChartData;
 
@@ -129,7 +145,7 @@ const LineChart = (props) => {
       series: [
         {
           data: (function () {
-            let time = timeStamps;
+            let time = timestamps;
             let yaxis = series;
             let i;
             let data = [];
@@ -142,9 +158,7 @@ const LineChart = (props) => {
           name: name,
           type: "areaspline",
           step: step,
-          tooltip: {
-            valueDecimals: decimal,
-          },
+
           color: Highcharts.getOptions().colors[color],
           fillColor: {
             linearGradient: {
@@ -170,13 +184,11 @@ const LineChart = (props) => {
   }, [props]);
 
   return (
-    <Paper elevation={0}>
-      <HighchartsReact
-        highcharts={Highcharts}
-        constructorType={"stockChart"}
-        options={chartOptions}
-      />
-    </Paper>
+    <HighchartsReact
+      highcharts={Highcharts}
+      constructorType={"stockChart"}
+      options={chartOptions}
+    />
   );
 };
 

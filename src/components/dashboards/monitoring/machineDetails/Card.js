@@ -2,23 +2,8 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-
-const iconPaper = {
-  padding: "5px 5px 5px 5px",
-  // borderRadius: "5px 0px 0px 5px",
-  display: "flex",
-  justifyContent: "center",
-  align: "center",
-  backgroundColor: "transparent",
-};
-
-const textPaper = {
-  padding: "5px 5px 5px 5px",
-  display: "flex",
-  justifyContent: "center",
-  align: "center",
-  backgroundColor: "transparent",
-};
+import { smallCard } from "../../../../utils/styles";
+import colors from "../../../../utils/colors";
 
 export default function Card(props) {
   const { icon, values } = props.data;
@@ -30,15 +15,15 @@ export default function Card(props) {
       direction="row"
       justify="center"
       alignItems="center"
-      elevation={0}
+      elevation={2}
     >
       <Grid item xs={2}>
-        <Paper style={iconPaper} elevation={0}>
+        <Paper style={smallCard.iconPaper} elevation={0}>
           {icon}
         </Paper>
       </Grid>
       <Grid item xs={10}>
-        <Paper style={textPaper} elevation={0}>
+        <Paper style={smallCard.textPaper} elevation={0}>
           <Grid
             container
             direction="row"
@@ -54,7 +39,7 @@ export default function Card(props) {
               <Typography
                 align="center"
                 variant="body2"
-                style={{ color: "gray" }}
+                style={{ color: colors.BLUEGREY[500] }}
               >
                 {values.secondary}
               </Typography>

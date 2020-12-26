@@ -32,3 +32,9 @@ export const toggleEditFormDrawerAction = (dispatch, ID, title) => {
     },
   });
 };
+
+export const togglePersistantSideBarAction = (dispatch) => {
+  dispatch({
+    type: common.togglePersistantSideBar,
+  });
+};
