@@ -55,47 +55,43 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
     .then((res) => {
       const { data } = res;
       if (isNotEmpty(data)) {
-        let allMappedMachinesInAZone = [];
         const allNodesInAZone = data;
-        // Object.values(allNodesInAZone).map((node, node_index) => {
-        //   if (node[0]) {
-        //     node.map((machine, machine_index) => {
-        //       allMappedMachinesInAZone = [...allMappedMachinesInAZone, machine];
-        //       return machine_index;
-        //     });
-        //   } else {
-        //     console.log("error: unexpected response", data);
-        //   }
-        //   return node_index;
-        // });
-
-        // if (
-        //   isNotEmpty(allMappedMachinesInAZone) &&
-        //   allMappedMachinesInAZone[0]
-        // ) {
-        //   dispatch({
-        //     type: machinesAndNodes.getAllNodesInAZone,
-        //     payload: {
-        //       allMachinesInAZone: allMappedMachinesInAZone,
-        //       allNodesInAZone,
-        //       zoneID,
-        //     },
-        //   });
-        // } else {
-        //   console.log(
-        //     "error: unexpected response",
-        //     allNodesInAZone,
-        //     allMappedMachinesInAZone
-        //   );
-        // }
-        dispatch({
-          type: machinesAndNodes.getAllNodesInAZone,
-          payload: {
-            allMappedMachinesInAZone,
-            allNodesInAZone,
-            zoneID,
+        const allNodesConfig = {
+          method: "get",
+          url: keys.server + "/nodes",
+          headers: {
+            "Content-Type": "application/json",
           },
-        });
+        };
+
+        axios(allNodesConfig)
+          .then((res) => {
+            const { data } = res;
+            if (isNotEmpty(data)) {
+              const allNodes = data;
+              const allNodesInAZoneProfiles = Object.keys(allNodesInAZone).map(
+                (node) => {
+                  for (let i = 0; i < allNodes.length; i++) {
+                    if (node === allNodes[i].mac) return allNodes[i];
+                  }
+                }
+              );
+
+              dispatch({
+                type: machinesAndNodes.getAllNodesInAZone,
+                payload: {
+                  allNodesInAZoneProfiles,
+                  allNodesInAZone,
+                  zoneID,
+                },
+              });
+            } else {
+              console.log("error: unexpected response", data);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
         console.log("error: unexpected response", data);
       }
@@ -198,31 +194,54 @@ export const deleteMachineAction = (dispatch, body) => {
     });
 };
 
-export const addNodeAction = (dispatch, body) => {
+export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
   dispatch({
     type: machinesAndNodes.nodesLoading,
   });
 
-  const data = JSON.stringify(body);
-  const config = {
+  const createNodeConfig = {
     method: "post",
     url: keys.server + "/node",
     headers: {
       "Content-Type": "application/json",
     },
-    data: data,
+    data: JSON.stringify(createNodeBody),
   };
 
-  axios(config)
+  axios(createNodeConfig)
     .then((res) => {
-      if (res.status === 200) {
-        dispatch({
-          type: machinesAndNodes.addNode,
-          payload: {
-            // response: res.data,
-            response: Math.random() + 1,
+      if (res.status === 201) {
+        const nodeID = res.data._id;
+        const MAC = res.data.mac;
+
+        const mapNodeToTheZoneBody = {
+          zone_id: zoneID,
+          node_id: nodeID,
+        };
+
+        const mapNodeToTheZoneConfig = {
+          method: "post",
+          url: keys.server + "/ZoneMapping",
+          headers: {
+            "Content-Type": "application/json",
           },
-        });
+          data: JSON.stringify(mapNodeToTheZoneBody),
+        };
+
+        axios(mapNodeToTheZoneConfig)
+          .then((res) => {
+            if (res.status === 201) {
+              dispatch({
+                type: machinesAndNodes.addNode,
+                payload: {
+                  response: MAC,
+                },
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     })
     .catch((error) => {
@@ -248,11 +267,11 @@ export const editNodeAction = (dispatch, body) => {
   axios(config)
     .then((res) => {
       if (res.status === 200) {
+        const MAC = res.data.mac;
         dispatch({
           type: machinesAndNodes.editOrDeleteNode,
           payload: {
-            // response: res.data,
-            response: Math.random() + 1,
+            response: MAC,
           },
         });
       }

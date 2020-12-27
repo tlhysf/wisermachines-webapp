@@ -34,7 +34,7 @@ const CardWithRadialChart = (props) => {
   }, [props.data]);
 
   return (
-    <Paper elevation={0} style={{ padding: 10 }}>
+    <Paper elevation={2} style={{ padding: 10 }}>
       <Grid container justify="center" alignItems="center">
         <Grid item xs={10}>
           {ID ? (

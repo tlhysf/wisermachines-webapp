@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleAddFormDrawerAction } from "../../../../../redux/actions/commonAction";
+import { toggleEditFormDrawerAction } from "../../../../../redux/actions/commonAction";
 import {
-  addNodeAction,
+  editNodeAction,
+  deleteNodeAction,
   getAllNodesInAZoneAction,
 } from "../../../../../redux/actions/machinesAndNodesActions";
 
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => formStyle(theme));
 const isHex = (string) => {
   let results = [];
   string = string.toLowerCase();
-  string = string.split("");
+  string = string.split(":").join("").split("");
   string.forEach((element, stringIndex) => {
     const hex = [
       "0",
@@ -57,19 +58,6 @@ const isHex = (string) => {
   return !results.includes(false);
 };
 
-const formatToMAC = (string) => {
-  const array = Array.from(string);
-
-  // 2, 4 + 1, 6 + 2, 8 + 3, 10 + 4;
-  for (let i = 0, j = 2; i < 5, j < 12; i++, j += 2) {
-    array.splice(j + i, 0, ":");
-  }
-
-  const result = array.join().split(",").join("");
-
-  return result;
-};
-
 const sensorRatings = [
   {
     value: 10,
@@ -93,22 +81,30 @@ const sensorRatings = [
   },
 ];
 
-const AddNode = (props) => {
+const EditNode = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const MACRef = React.useRef();
 
-  const openForm = useSelector((state) => state.common.toggleAddFormDrawer);
-  const response = useSelector((state) => state.nodes.addNodeResponse);
+  const openForm = useSelector((state) => state.common.toggleEditFormDrawer);
+  const response = useSelector((state) => state.nodes.editNodeResponse);
   const zoneID = useSelector((state) => state.nodes.zoneID);
 
-  const MACRef = React.useRef();
+  const allNodesInAZoneProfiles = useSelector(
+    (state) => state.nodes.allNodesInAZoneProfiles
+  );
+
+  const index = allNodesInAZoneProfiles.findIndex(
+    (item) => item.mac === openForm.name
+  );
+
+  const thisNode = index < 0 ? {} : allNodesInAZoneProfiles[index];
 
   const [formData, setFormData] = useState({
     MAC: "",
-    sensor1Rating: sensorRatings[0].value,
-    sensor2Rating: sensorRatings[0].value,
   });
   const [errors, setErrors] = useState({});
+  const [expectedResponse, setExpectedResponse] = useState("mac");
   const [success, setSuccess] = useState(false);
   const [focus, setFocus] = useState({
     MAC: true,
@@ -119,8 +115,8 @@ const AddNode = (props) => {
   const cleanUp = () => {
     setFormData({
       MAC: "",
-      sensor1Rating: sensorRatings[0].value,
-      sensor2Rating: sensorRatings[0].value,
+      sensor1Rating: 0,
+      sensor2Rating: 0,
     });
     setErrors({});
     setFocus({
@@ -183,44 +179,69 @@ const AddNode = (props) => {
   const handleSave = (e) => {
     e.preventDefault();
 
-    const requestBody = requestBodyFormat.addNode;
+    const requestBody = requestBodyFormat.editNode;
 
-    requestBody.mac =
-      formData.MAC.length === 12 && isHex(formData.MAC)
-        ? formatToMAC(formData.MAC)
-        : null;
-    requestBody.sensor_1_rating =
-      formData.sensor1Rating > 0 ? formData.sensor1Rating : null;
-    requestBody.sensor_2_rating =
-      formData.sensor2Rating > 0 ? formData.sensor2Rating : null;
+    requestBody.id = thisNode._id;
 
-    setErrors({
-      MAC:
-        formData.MAC === "" || formData.MAC.length < 12 || !isHex(formData.MAC)
-          ? "Invalid MAC Address"
-          : null,
-      sensor1Rating: formData.sensor1Rating === 0 ? "Cannot be zero." : null,
-      sensor2Rating: formData.sensor2Rating === 0 ? "Cannot be zero." : null,
-    });
+    if (formData.MAC.length !== 17 || !isHex(formData.MAC)) {
+      setErrors({
+        ...errors,
+        MAC: "Invalid MAC",
+      });
+    } else {
+      if (formData.MAC === thisNode.mac) {
+        // Same value as before
+      } else {
+        requestBody.mac = formData.MAC;
+      }
+    }
 
-    if (
-      requestBody.mac &&
-      requestBody.sensor_1_rating &&
-      requestBody.sensor_2_rating
-    ) {
-      addNodeAction(dispatch, requestBody, zoneID);
+    if (formData.sensor1Rating === thisNode.sensor_1_rating) {
+      // Same value as before
+    } else {
+      requestBody.sensor_1_rating = formData.sensor1Rating;
+    }
+
+    if (formData.sensor2Rating === thisNode.sensor_2_rating) {
+      // Same value as before
+    } else {
+      requestBody.sensor_2_rating = formData.sensor2Rating;
+    }
+
+    if (requestBody.id && Object.keys(requestBody).length > 1) {
+      setExpectedResponse(thisNode.mac);
+      editNodeAction(dispatch, requestBody);
+    }
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      const requestBody = requestBodyFormat.deleteNode;
+      requestBody.id = openForm.ID;
+
+      deleteNodeAction(dispatch, requestBody);
     }
   };
 
   const handleCancel = () => {
     if (window.confirm("There are unsaved changes, do you wish to proceed?")) {
       cleanUp();
-      toggleAddFormDrawerAction(dispatch);
+      toggleEditFormDrawerAction(dispatch);
     }
   };
 
   useEffect(() => {
-    if (response === formatToMAC(formData.MAC)) {
+    setFormData({
+      MAC: thisNode.mac,
+      sensor1Rating: thisNode.sensor_1_rating,
+      sensor2Rating: thisNode.sensor_2_rating,
+    });
+  }, [thisNode]);
+
+  useEffect(() => {
+    if (response === expectedResponse) {
       setSuccess(true);
     } else setSuccess(false);
   }, [response]);
@@ -229,18 +250,18 @@ const AddNode = (props) => {
     if (success) {
       setTimeout(() => {
         cleanUp();
-        toggleAddFormDrawerAction(dispatch);
+        toggleEditFormDrawerAction(dispatch);
         getAllNodesInAZoneAction(dispatch, zoneID);
       }, 1000);
     }
   }, [success, dispatch, props]);
 
   return (
-    <Drawer open={openForm} anchor="right" onClose={(e) => handleCancel()}>
+    <Drawer open={openForm.open} anchor="right" onClose={(e) => handleCancel()}>
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Add Node
+            Edit Node
           </Typography>
           <form
             noValidate
@@ -255,8 +276,7 @@ const AddNode = (props) => {
               id="MAC"
               label="MAC"
               name="MAC"
-              placeholder={errors.MAC}
-              value={errors.MAC ? "" : formData.MAC ? formData.MAC : ""}
+              value={formData.MAC}
               color={errors.MAC ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
               onKeyPress={(e) => handleKeyPress(e)}
@@ -264,10 +284,20 @@ const AddNode = (props) => {
               focused={errors.MAC ? true : focus.MAC}
               inputRef={MACRef}
               inputProps={{
-                maxLength: 12,
+                maxLength: 17,
               }}
-              helperText={`${formData.MAC.length}/${12}`}
+              helperText={"E.g. 00:0a:95:9d:68:16"}
             />
+            {errors.MAC ? (
+              <Typography
+                align={"center"}
+                gutterBottom
+                style={formSlider.error}
+                color="secondary"
+              >
+                {errors.MAC}
+              </Typography>
+            ) : null}
             <div style={formSlider.container}>
               <Typography
                 align={"center"}
@@ -376,7 +406,16 @@ const AddNode = (props) => {
             >
               Cancel
             </Button>
-
+            <hr className={classes.divider} />
+            <Button
+              fullWidth
+              variant="outlined"
+              className={classes.submit}
+              color="secondary"
+              onClick={(e) => handleDelete(e)}
+            >
+              Delete
+            </Button>
             <Snackbar
               anchorOrigin={{
                 vertical: "top",
@@ -392,4 +431,4 @@ const AddNode = (props) => {
     </Drawer>
   );
 };
-export default AddNode;
+export default EditNode;

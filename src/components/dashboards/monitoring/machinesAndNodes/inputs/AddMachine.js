@@ -62,33 +62,35 @@ const AddMachine = (props) => {
       setErrors({
         [e.target.id]: null,
       });
+    }
+  };
 
-      if (e.key === "Enter") {
-        switch (e.target.id) {
-          case "name":
-            try {
-              maxLoadRef.current.focus();
-            } catch (error) {
-              console.log(error);
-            }
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      switch (e.target.id) {
+        case "name":
+          try {
+            maxLoadRef.current.focus();
+          } catch (error) {
+            console.log(error);
+          }
 
-            setFocus({
-              ...focus,
-              [e.target.id]: false,
-              maxLoad: true,
-            });
-            break;
+          setFocus({
+            ...focus,
+            [e.target.id]: false,
+            maxLoad: true,
+          });
+          break;
 
-          case "maxLoad":
-            setFocus({
-              ...focus,
-              [e.target.id]: false,
-            });
-            break;
+        case "maxLoad":
+          setFocus({
+            ...focus,
+            [e.target.id]: false,
+          });
+          break;
 
-          default:
-            break;
-        }
+        default:
+          break;
       }
     }
   };
@@ -175,7 +177,7 @@ const AddMachine = (props) => {
               placeholder={errors.name}
               color={errors.name ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleFormData(e)}
+              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
               focused={errors.name ? true : focus.name}
               inputRef={nameRef}
@@ -190,7 +192,7 @@ const AddMachine = (props) => {
               name="maxLoad"
               color={errors.maxLoad ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleFormData(e)}
+              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
               focused={errors.maxLoad ? true : focus.maxLoad}
               inputRef={maxLoadRef}

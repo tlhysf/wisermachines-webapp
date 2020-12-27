@@ -6,6 +6,7 @@ import { common } from "../../../../redux/actions/actionTypes";
 import { common as styles } from "../../../../utils/styles";
 import { isNotEmpty } from "../../../../utils/validation";
 import { timeDifference } from "../../../../utils/parse";
+import colors from "../../../../utils/colors";
 
 import Grid from "@material-ui/core/Grid";
 import HistoryIcon from "@material-ui/icons/History";
@@ -128,7 +129,7 @@ export default function MachineDetails(props) {
       setTimeSinceLastUpdate(
         timeDifference(new Date().getTime(), timestampEnd)
       );
-    }, 1000 * 30);
+    }, 1000 * 5);
     return () => clearInterval(interval);
   }, []);
 
@@ -193,7 +194,7 @@ export default function MachineDetails(props) {
               icon={
                 <HistoryIcon
                   className={classes.iconInsideButton}
-                  color="action"
+                  style={{ color: colors.TEAL[700] }}
                 />
               }
             />

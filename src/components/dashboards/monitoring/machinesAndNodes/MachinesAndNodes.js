@@ -21,6 +21,7 @@ import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import AddMachine from "./inputs/AddMachine";
 import EditMachine from "./inputs/EditMachine";
 import AddNode from "./inputs/AddNode";
+import EditNode from "./inputs/EditNode";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -110,6 +111,7 @@ const MachinesAndNodes = (props) => {
               <Button
                 className={classes.button}
                 onClick={(e) => toggleAddFormDrawerAction(dispatch)}
+                variant="contained"
               >
                 <AddIcon
                   className={classes.iconInsideButton}
@@ -129,7 +131,7 @@ const MachinesAndNodes = (props) => {
         <Grid item xs={12}>
           {navbar}
         </Grid>
-        <Grid item xs={12} component={Paper} elevation={0}>
+        <Grid item xs={12}>
           {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? (
             <NodeCards allNodesInAZone={allNodesInAZone} />
           ) : (
@@ -143,7 +145,7 @@ const MachinesAndNodes = (props) => {
         <AddMachine url={props.match.url} params={props.match.params} />
       )}
       {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? (
-        <AddNode url={props.match.url} params={props.match.params} />
+        <EditNode url={props.match.url} params={props.match.params} />
       ) : (
         <EditMachine url={props.match.url} params={props.match.params} />
       )}

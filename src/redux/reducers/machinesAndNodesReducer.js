@@ -46,6 +46,7 @@ export const machinesReducer = (state = initialMachinesState, action) => {
 const initialNodesState = {
   zoneID: "",
   allNodesInAZone: [],
+  allNodesInAZoneProfiles: [],
   nodesLoading: false,
   addNodeResponse: 0,
   editNodeResponse: 0,
@@ -57,6 +58,7 @@ export const nodesReducer = (state = initialNodesState, action) => {
       return {
         ...state,
         allNodesInAZone: action.payload.allNodesInAZone,
+        allNodesInAZoneProfiles: action.payload.allNodesInAZoneProfiles,
         zoneID: action.payload.zoneID,
         nodesLoading: false,
       };

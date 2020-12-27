@@ -1,0 +1,1 @@
+- all delete request need to send the delete object in response

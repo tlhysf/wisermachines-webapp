@@ -94,7 +94,14 @@ const BreadcrumbsNav = (props) => {
 
   return (
     <Paper elevation={2} style={style.paper}>
-      <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
+      <Breadcrumbs
+        separator={
+          <NavigateNextIcon
+            fontSize="small"
+            style={{ color: colors.TEAL[700] }}
+          />
+        }
+      >
         {renderBreadcrumbs}
       </Breadcrumbs>
     </Paper>

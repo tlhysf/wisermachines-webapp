@@ -80,7 +80,6 @@ export default function FilterAndSortMenu(props) {
   return (
     <span>
       <Button
-        fullWidth
         ref={anchorRef}
         aria-controls={open ? "menu-list-grow" : undefined}
         aria-haspopup="true"
@@ -88,8 +87,8 @@ export default function FilterAndSortMenu(props) {
         className={classes.button}
         variant="contained"
       >
-        <Typography variant="caption">{selection}</Typography>
         {icon ? icon : null}
+        <Typography variant="caption">{selection}</Typography>
       </Button>
       <Popper
         open={open}

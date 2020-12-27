@@ -6,6 +6,8 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import { common } from "../../../../utils/styles";
+import colors from "../../../../utils/colors";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import WorkshopCards from "./WorkshopCardsContainer";
@@ -52,9 +54,13 @@ const Workshops = (props) => {
             <Tooltip placement="top" title="Add Workshop">
               <Button
                 className={classes.button}
+                variant="contained"
                 onClick={(e) => toggleAddFormDrawerAction(dispatch)}
               >
-                <AddIcon className={classes.iconInsideButton} />
+                <AddIcon
+                  className={classes.iconInsideButton}
+                  style={{ color: colors.TEAL[700] }}
+                />
               </Button>
             </Tooltip>
           </Grid>
@@ -69,7 +75,7 @@ const Workshops = (props) => {
         <Grid item xs={12}>
           {navbar}
         </Grid>
-        <Grid item xs={12} component={Paper} elevation={0}>
+        <Grid item xs={12}>
           <WorkshopCards allWorkshops={allWorkshops} />
         </Grid>
       </Grid>
