@@ -47,6 +47,11 @@ export const requestBodyFormat = {
     max_load: "",
     sensor_voltage_scalar: 0,
   },
+  mapMachine: {
+    machine_id: "",
+    node_id: "",
+    sensor_number: 0,
+  },
   editMachine: {
     id: "",
   },

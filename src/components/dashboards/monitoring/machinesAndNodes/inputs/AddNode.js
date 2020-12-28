@@ -99,7 +99,7 @@ const AddNode = (props) => {
 
   const openForm = useSelector((state) => state.common.toggleAddFormDrawer);
   const response = useSelector((state) => state.nodes.addNodeResponse);
-  const zoneID = useSelector((state) => state.nodes.zoneID);
+  const zoneID = useSelector((state) => state.machines.zoneID);
 
   const MACRef = React.useRef();
 
@@ -109,6 +109,7 @@ const AddNode = (props) => {
     sensor2Rating: sensorRatings[0].value,
   });
   const [errors, setErrors] = useState({});
+  const [expectedResponse, setExpectedResponse] = useState("");
   const [success, setSuccess] = useState(false);
   const [focus, setFocus] = useState({
     MAC: true,
@@ -208,6 +209,7 @@ const AddNode = (props) => {
       requestBody.sensor_1_rating &&
       requestBody.sensor_2_rating
     ) {
+      setExpectedResponse(requestBody.mac);
       addNodeAction(dispatch, requestBody, zoneID);
     }
   };
@@ -220,7 +222,7 @@ const AddNode = (props) => {
   };
 
   useEffect(() => {
-    if (response === formatToMAC(formData.MAC)) {
+    if (response.mac === expectedResponse) {
       setSuccess(true);
     } else setSuccess(false);
   }, [response]);

@@ -16,12 +16,14 @@ export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
 
   axios(config)
     .then((res) => {
-      const { data } = res;
-      if (isNotEmpty(data) && data[0]) {
-        const allZonesInAWorkshop = data.map((zone) =>
+      if (isNotEmpty(res.data)) {
+        const data = res.data.filter((x) => x);
+        let allZonesInAWorkshop = data.map((zone) =>
           zone.workshop_id === workshopID ? zone : null
         );
-        if (isNotEmpty(allZonesInAWorkshop) && allZonesInAWorkshop[0]) {
+        if (isNotEmpty(allZonesInAWorkshop)) {
+          allZonesInAWorkshop = allZonesInAWorkshop.filter((x) => x);
+
           dispatch({
             type: zones.getAllZonesInAWorkshop,
             payload: { allZonesInAWorkshop, workshopID },
@@ -30,7 +32,7 @@ export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
           console.log("error: unexpected response", allZonesInAWorkshop);
         }
       } else {
-        console.log("error: unexpected response", data);
+        console.log("error: unexpected response", res.data);
       }
     })
     .catch((error) => {
@@ -59,6 +61,7 @@ export const addZoneAction = (dispatch, body) => {
         dispatch({
           type: zones.addZone,
           payload: {
+            // should be response body
             response: Math.random() + 1,
           },
         });
@@ -91,6 +94,7 @@ export const editZoneAction = (dispatch, body) => {
         dispatch({
           type: zones.editOrDeleteZone,
           payload: {
+            // should be response body
             response: Math.random() + 1,
           },
         });
@@ -123,6 +127,7 @@ export const deleteZoneAction = (dispatch, body) => {
         dispatch({
           type: zones.editOrDeleteZone,
           payload: {
+            // should be response body
             response: Math.random() + 1,
           },
         });

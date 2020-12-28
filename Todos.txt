@@ -1,1 +1,6 @@
-- all delete request need to send the delete object in response
+Errors:
+
+- not found
+- bad request 
+- request failed 
+- unexpected response

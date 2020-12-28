@@ -23,33 +23,36 @@ const AddMachine = (props) => {
 
   const openForm = useSelector((state) => state.common.toggleAddFormDrawer);
   const response = useSelector((state) => state.machines.addMachineResponse);
+  const allNodesInAZone = useSelector((state) => state.nodes.allNodesInAZone);
+  const allNodesInAZoneProfiles = useSelector(
+    (state) => state.nodes.allNodesInAZoneProfiles
+  );
 
-  const nameRef = React.useRef();
-  const maxLoadRef = React.useRef();
+  const MACAddresses = Object.keys(allNodesInAZone).filter((key) =>
+    allNodesInAZone[key].length < 2 ? allNodesInAZone[key] : false
+  );
 
   const [formData, setFormData] = useState({
     name: "",
     maxLoad: 0,
     idleThreshold: 0,
+    MAC: "",
+    sensor: null,
   });
   const [errors, setErrors] = useState({});
+  const [expectedResponse, setExpectedResponse] = useState("");
   const [success, setSuccess] = useState(false);
-  const [focus, setFocus] = useState({
-    name: true,
-    maxLoad: false,
-  });
 
   const cleanUp = () => {
     setFormData({
+      ...formData,
       name: "",
       maxLoad: 0,
       idleThreshold: 0,
+      MAC: "",
+      sensor: null,
     });
     setErrors({});
-    setFocus({
-      name: true,
-      maxLoad: false,
-    });
     setSuccess(false);
   };
 
@@ -60,38 +63,9 @@ const AddMachine = (props) => {
         [e.target.id]: e.target.value,
       });
       setErrors({
+        ...errors,
         [e.target.id]: null,
       });
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      switch (e.target.id) {
-        case "name":
-          try {
-            maxLoadRef.current.focus();
-          } catch (error) {
-            console.log(error);
-          }
-
-          setFocus({
-            ...focus,
-            [e.target.id]: false,
-            maxLoad: true,
-          });
-          break;
-
-        case "maxLoad":
-          setFocus({
-            ...focus,
-            [e.target.id]: false,
-          });
-          break;
-
-        default:
-          break;
-      }
     }
   };
 
@@ -101,6 +75,7 @@ const AddMachine = (props) => {
       idleThreshold: value,
     });
     setErrors({
+      ...errors,
       idleThreshold: null,
     });
   };
@@ -108,26 +83,51 @@ const AddMachine = (props) => {
   const handleSave = (e) => {
     e.preventDefault();
 
-    const requestBody = requestBodyFormat.addMachine;
+    const addRequestBody = requestBodyFormat.addMachine;
 
-    requestBody.name = formData.name !== "" ? formData.name : null;
-    requestBody.idle_threshold =
+    addRequestBody.name = formData.name !== "" ? formData.name : null;
+    addRequestBody.idle_threshold =
       formData.idleThreshold > 0 ? formData.idleThreshold : null;
-    requestBody.max_load =
+    addRequestBody.max_load =
       parseInt(formData.maxLoad) > 0 ? formData.maxLoad : null;
 
+    const mapRequestBody = requestBodyFormat.mapMachine;
+
+    if (formData.MAC !== "") {
+      const nodeID = allNodesInAZoneProfiles.map((x) =>
+        x.mac === formData.MAC ? x._id : null
+      );
+      mapRequestBody.node_id = nodeID.filter((x) => x).pop();
+    } else mapRequestBody.node_id = null;
+
+    mapRequestBody.sensor_number =
+      parseInt(formData.sensor) === 1 || parseInt(formData.sensor) === 2
+        ? parseInt(formData.sensor)
+        : null;
+
     setErrors({
+      ...errors,
       name: formData.name === "" ? "Cannot be empty." : null,
       maxLoad: parseInt(formData.maxLoad) === 0 ? "Cannot be zero." : null,
       idleThreshold: formData.idleThreshold === 0 ? "Cannot be zero." : null,
+      MAC: formData.MAC === "" ? "Cannot be empty." : null,
+      sensor:
+        parseInt(formData.sensor) !== 1 && parseInt(formData.sensor) !== 2
+          ? "Cannot be empty."
+          : null,
     });
 
+    // console.log(mapRequestBody, addRequestBody, formData, errors);
+
     if (
-      requestBody.idle_threshold &&
-      requestBody.max_load &&
-      requestBody.name
+      addRequestBody.idle_threshold &&
+      addRequestBody.max_load &&
+      addRequestBody.name &&
+      mapRequestBody.node_id &&
+      mapRequestBody.sensor_number
     ) {
-      addMachineAction(dispatch, requestBody);
+      setExpectedResponse(addRequestBody.name);
+      addMachineAction(dispatch, addRequestBody, mapRequestBody);
     }
   };
 
@@ -139,7 +139,7 @@ const AddMachine = (props) => {
   };
 
   useEffect(() => {
-    if (response > 0) {
+    if (response.name === expectedResponse) {
       setSuccess(true);
     }
   }, [response]);
@@ -177,10 +177,8 @@ const AddMachine = (props) => {
               placeholder={errors.name}
               color={errors.name ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
-              focused={errors.name ? true : focus.name}
-              inputRef={nameRef}
+              focused={true}
             />
             <TextField
               variant="outlined"
@@ -192,10 +190,8 @@ const AddMachine = (props) => {
               name="maxLoad"
               color={errors.maxLoad ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
-              focused={errors.maxLoad ? true : focus.maxLoad}
-              inputRef={maxLoadRef}
+              focused={true}
               defaultValue={0}
               type="number"
               inputProps={{ min: 0 }}
@@ -246,6 +242,88 @@ const AddMachine = (props) => {
                 </Typography>
               ) : null}
             </div>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="MAC"
+              name="MAC"
+              label="SSN MAC Address"
+              select
+              value={formData.MAC}
+              onChange={(e) => handleFormData(e)}
+              SelectProps={{
+                native: true,
+              }}
+              color={errors.MAC ? "secondary" : "primary"}
+              focused={true}
+            >
+              <option value={""}></option>
+              {MACAddresses.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </TextField>
+            {errors.MAC ? (
+              <Typography
+                align={"center"}
+                gutterBottom
+                style={formSlider.error}
+                color="secondary"
+              >
+                {errors.MAC}
+              </Typography>
+            ) : null}
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="sensor"
+              name="sensor"
+              label="Sensor"
+              select
+              value={formData.sensor}
+              onChange={(e) => handleFormData(e)}
+              focused={formData.MAC.length > 0 || errors.sensor ? true : false}
+              SelectProps={{
+                native: true,
+              }}
+              color={errors.sensor ? "secondary" : "primary"}
+            >
+              <option value={null}></option>
+              {allNodesInAZone[formData.MAC] ? (
+                allNodesInAZone[formData.MAC].length === 0 ? (
+                  <option value={1}>Sensor 1</option>
+                ) : null
+              ) : null}
+              {allNodesInAZone[formData.MAC] ? (
+                allNodesInAZone[formData.MAC].length === 0 ? (
+                  <option value={2}>Sensor 2</option>
+                ) : null
+              ) : null}
+              {allNodesInAZone[formData.MAC] ? (
+                allNodesInAZone[formData.MAC].length === 1 ? (
+                  allNodesInAZone[formData.MAC][0].Sensor_Number === 1 ? (
+                    <option value={2}>Sensor 2</option>
+                  ) : (
+                    <option value={1}>Sensor 1</option>
+                  )
+                ) : null
+              ) : null}
+            </TextField>
+            {errors.sensor ? (
+              <Typography
+                align={"center"}
+                gutterBottom
+                style={formSlider.error}
+                color="secondary"
+              >
+                {errors.sensor}
+              </Typography>
+            ) : null}
             <Button
               fullWidth
               variant="outlined"

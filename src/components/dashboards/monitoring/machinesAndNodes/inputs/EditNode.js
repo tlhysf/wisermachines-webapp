@@ -104,7 +104,7 @@ const EditNode = (props) => {
     MAC: "",
   });
   const [errors, setErrors] = useState({});
-  const [expectedResponse, setExpectedResponse] = useState("mac");
+  const [expectedResponse, setExpectedResponse] = useState("");
   const [success, setSuccess] = useState(false);
   const [focus, setFocus] = useState({
     MAC: true,
@@ -209,7 +209,7 @@ const EditNode = (props) => {
     }
 
     if (requestBody.id && Object.keys(requestBody).length > 1) {
-      setExpectedResponse(thisNode.mac);
+      setExpectedResponse(requestBody.id);
       editNodeAction(dispatch, requestBody);
     }
   };
@@ -219,8 +219,9 @@ const EditNode = (props) => {
 
     if (window.confirm("Are you sure you want to delete this item?")) {
       const requestBody = requestBodyFormat.deleteNode;
-      requestBody.id = openForm.ID;
+      requestBody.id = thisNode._id;
 
+      setExpectedResponse(requestBody.id);
       deleteNodeAction(dispatch, requestBody);
     }
   };
@@ -241,7 +242,7 @@ const EditNode = (props) => {
   }, [thisNode]);
 
   useEffect(() => {
-    if (response === expectedResponse) {
+    if (response.id === expectedResponse) {
       setSuccess(true);
     } else setSuccess(false);
   }, [response]);

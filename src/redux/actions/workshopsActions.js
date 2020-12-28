@@ -17,10 +17,11 @@ export const getAllWorkshopsAction = (dispatch) => {
   axios(config)
     .then((res) => {
       const { data } = res;
-      if (isNotEmpty(data) && data[0]) {
+      if (isNotEmpty(data)) {
+        const allWorkshops = data.filter((x) => x);
         dispatch({
           type: workshops.getAllWorkshops,
-          payload: data,
+          payload: allWorkshops,
         });
       } else {
         console.log("error: unexpected response", data);
@@ -52,6 +53,7 @@ export const addWorkshopAction = (dispatch, body) => {
         dispatch({
           type: workshops.addWorkshop,
           payload: {
+            // should be response body
             response: Math.random() + 1,
           },
         });
@@ -84,6 +86,7 @@ export const editWorkshopAction = (dispatch, body) => {
         dispatch({
           type: workshops.editOrDeleteWorkshop,
           payload: {
+            // should be response body
             response: Math.random() + 1,
           },
         });
@@ -116,6 +119,7 @@ export const deleteWorkshopAction = (dispatch, body) => {
         dispatch({
           type: workshops.editOrDeleteWorkshop,
           payload: {
+            // should be response body
             response: Math.random() + 1,
           },
         });

@@ -40,6 +40,7 @@ const EditMachine = (props) => {
   const thisMachine = index < 0 ? {} : allMachinesInAZone[index];
 
   const [formData, setFormData] = useState({});
+  const [expectedResponse, setExpectedResponse] = useState("");
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
   const [focus, setFocus] = useState({
@@ -160,6 +161,7 @@ const EditMachine = (props) => {
     }
 
     if (requestBody.id && Object.keys(requestBody).length > 1) {
+      setExpectedResponse(requestBody.id);
       editMachineAction(dispatch, requestBody);
     }
   };
@@ -171,6 +173,7 @@ const EditMachine = (props) => {
       const requestBody = requestBodyFormat.deleteMachine;
       requestBody.id = openForm.ID;
 
+      setExpectedResponse(requestBody.id);
       deleteMachineAction(dispatch, requestBody);
     }
   };
@@ -191,7 +194,7 @@ const EditMachine = (props) => {
   }, [thisMachine]);
 
   useEffect(() => {
-    if (response > 0) {
+    if (response.id === expectedResponse) {
       setSuccess(true);
     }
   }, [response]);
