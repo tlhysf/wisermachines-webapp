@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -22,11 +21,13 @@ import AddMachine from "./inputs/AddMachine";
 import EditMachine from "./inputs/EditMachine";
 import AddNode from "./inputs/AddNode";
 import EditNode from "./inputs/EditNode";
+import EditMachineMapping from "./inputs/EditMachineMapping";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAllNodesInAZoneAction,
   getAllMachinesInAZoneAction,
+  getAllMachineMappingsAction,
 } from "../../../../redux/actions/machinesAndNodesActions";
 import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonAction";
 import { common as commonActionTypes } from "../../../../redux/actions/actionTypes";
@@ -59,6 +60,7 @@ const MachinesAndNodes = (props) => {
   }, [machinesOrNodesFilterSelected]);
 
   useEffect(() => {
+    getAllMachineMappingsAction(dispatch);
     getAllMachinesInAZoneAction(dispatch, props.match.params.zoneID);
     getAllNodesInAZoneAction(dispatch, props.match.params.zoneID);
   }, [dispatch, props]);
@@ -149,6 +151,7 @@ const MachinesAndNodes = (props) => {
       ) : (
         <EditMachine url={props.match.url} params={props.match.params} />
       )}
+      <EditMachineMapping url={props.match.url} params={props.match.params} />
     </React.Fragment>
   );
 };

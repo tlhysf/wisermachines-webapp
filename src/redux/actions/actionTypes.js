@@ -13,13 +13,13 @@ export const zones = {
 };
 
 export const machinesAndNodes = {
-  getAllNodesInAZone: "GET_ALL_MACHINES_AND_NODES_IN_A_ZONE",
   getAllMachinesInAZone: "GET_ALL_MACHINES_IN_A_ZONE",
-
   machinesLoading: "LOADING_MACHINES",
   addMachine: "ADD_MACHINE",
   editOrDeleteMachine: "EDIT_OR_DELETE_MACHINE",
+  getAllMachineMappings: "GET_ALL_MACHINE_MAPPINGS",
 
+  getAllNodesInAZone: "GET_ALL_MACHINES_AND_NODES_IN_A_ZONE",
   nodesLoading: "LOADING_NODES",
   addNode: "ADD_NODE",
   editOrDeleteNode: "EDIT_OR_DELETE_NODE",
@@ -35,5 +35,6 @@ export const common = {
   toggleAddFormDrawer: "TOGGLE_ADD_FORM_DRAWER",
   filterByNodesOrMachines: "FILTER_BY_NODES_OR_MACHINES",
   toggleEditFormDrawer: "TOGGLE_EDIT_FORM_DRAWER",
+  toggleEditMappingFormDrawer: "TOGGLE_EDIT_MAPPING_FORM_DRAWER",
   togglePersistantSideBar: "TOGGLE_PERSISTANT_SIDEBAR",
 };

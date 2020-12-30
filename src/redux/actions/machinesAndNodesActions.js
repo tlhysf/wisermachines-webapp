@@ -346,3 +346,34 @@ export const deleteNodeAction = (dispatch, body) => {
   //     console.log(error);
   //   });
 };
+
+export const getAllMachineMappingsAction = (dispatch) => {
+  dispatch({
+    type: machinesAndNodes.machinesLoading,
+  });
+
+  const config = {
+    method: "get",
+    url: keys.server + "/MachineMappings",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  axios(config)
+    .then((res) => {
+      const { data } = res;
+      if (isNotEmpty(data)) {
+        const allMachineMappings = data.filter((x) => x);
+        dispatch({
+          type: machinesAndNodes.getAllMachineMappings,
+          payload: allMachineMappings,
+        });
+      } else {
+        console.log("error: unexpected response", data);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};

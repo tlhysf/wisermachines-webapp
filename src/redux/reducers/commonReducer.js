@@ -8,6 +8,11 @@ const initialState = {
     ID: "",
     name: "",
   },
+  toggleEditMappingFormDrawer: {
+    open: false,
+    ID: "",
+    name: "",
+  },
   machinesOrNodesFilter: "machines",
   togglePersistantSideBar: false,
 };
@@ -33,6 +38,17 @@ export const commonReducer = (state = initialState, action) => {
         ...state,
         toggleEditFormDrawer: {
           open: !state.toggleEditFormDrawer.open,
+          ID: action.payload.ID,
+          name: action.payload.name,
+        },
+      };
+    }
+
+    case common.toggleEditMappingFormDrawer: {
+      return {
+        ...state,
+        toggleEditMappingFormDrawer: {
+          open: !state.toggleEditMappingFormDrawer.open,
           ID: action.payload.ID,
           name: action.payload.name,
         },

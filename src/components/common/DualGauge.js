@@ -1,124 +1,214 @@
-// Highcharts.chart("container", {
-//   chart: {
-//     type: "solidgauge",
-//     height: "100%",
-//   },
+import React from "react";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
-//   title: {
-//     text: null,
-//   },
+import Highcharts, { color } from "highcharts";
+import solidGauge from "highcharts/modules/solid-gauge";
+import highchartsMore from "highcharts/highcharts-more.js";
+import HighchartsReact from "highcharts-react-official";
 
-//   tooltip: {
-//     enabled: false,
-//   },
-//   credits: {
-//     enabled: false,
-//   },
-//   exporting: {
-//     enabled: false,
-//   },
+highchartsMore(Highcharts);
+solidGauge(Highcharts);
 
-//   pane: {
-//     startAngle: 0,
-//     endAngle: 360,
-//     background: [
-//       {
-//         // Track for Move
-//         outerRadius: 96,
-//         innerRadius: 79,
-//         backgroundColor: Highcharts.color(Highcharts.getOptions().colors[0])
-//           .setOpacity(0.3)
-//           .get(),
-//         borderWidth: 0,
-//       },
-//       {
-//         // Track for Exercise
-//         outerRadius: 77,
-//         innerRadius: 60,
-//         backgroundColor: Highcharts.color(Highcharts.getOptions().colors[1])
-//           .setOpacity(0.3)
-//           .get(),
-//         borderWidth: 0,
-//       },
-//     ],
-//   },
+const paneOuterRadius = 70;
+const trackWidth = 12;
+const item1OuterRadius = paneOuterRadius + 40;
+const item1InnerRadius = item1OuterRadius - trackWidth;
+const item2OuterRadius = item1InnerRadius - 6;
+const item2InnerRadius = item2OuterRadius - trackWidth;
 
-//   yAxis: [
-//     {
-//       min: 0,
-//       max: 100,
-//       lineWidth: 0,
-//       tickPositions: [],
-//       title: {
-//         y: 55,
-//         text: "Exercise",
-//       },
-//     },
-//     {
-//       min: 0,
-//       //max: 100,
-//       lineWidth: 0,
-//       tickPositions: [],
-//       title: {
-//         y: 100,
-//         text: "Move",
-//       },
-//     },
-//   ],
+const item1OffsetName = 45;
+const item2OffsetName = item1OffsetName - 35;
 
-//   plotOptions: {
-//     solidgauge: {
-//       linecap: "round",
-//       rounded: true,
-//     },
-//   },
+const item1OffsetValue = item1OffsetName - 32;
+const item2OffsetValue = item1OffsetValue - 35;
 
-//   series: [
-//     {
-//       name: "Move",
-//       data: [
-//         {
-//           color: Highcharts.getOptions().colors[0],
-//           radius: 60,
-//           innerRadius: 50,
-//           y: 80,
-//         },
-//       ],
-//       dataLabels: {
-//         enabled: true,
-//         y: 20,
-//         borderWidth: 0,
-//         backgroundColor: "none",
-//         color: Highcharts.getOptions().colors[0],
-//         shadow: false,
-//         style: {
-//           //  font
-//           textOutline: "none",
-//         },
-//       },
-//     },
-//     {
-//       name: "Exercise",
-//       data: [
-//         {
-//           color: Highcharts.getOptions().colors[1],
-//           radius: 48,
-//           innerRadius: 38,
-//           y: 65,
-//         },
-//       ],
-//       dataLabels: {
-//         enabled: true,
-//         y: -25,
-//         borderWidth: 0,
-//         backgroundColor: "none",
-//         color: Highcharts.getOptions().colors[1],
-//         shadow: false,
-//         style: {
-//           //  font
-//           textOutline: "none",
-//         },
-//       },
-//     },
-//   ],
-// });
+const opacity = 0.2;
+
+const colors = {
+  item1: {
+    high: 0,
+    normal: 2,
+    low: 3,
+  },
+  item2: {
+    high: 4,
+    normal: 5,
+    low: 6,
+  },
+};
+
+const getColor = (value, thresholds, colors) => {
+  return value >= thresholds.high
+    ? colors.high
+    : value >= thresholds.low
+    ? colors.normal
+    : value < thresholds.low
+    ? colors.low
+    : color.low;
+};
+
+const bg1 = (colorNum) => ({
+  data: [
+    {
+      color: Highcharts.color(Highcharts.getOptions().colors[colorNum])
+        .setOpacity(opacity)
+        .get(),
+      radius: item1OuterRadius,
+      innerRadius: item1InnerRadius,
+      y: 100,
+    },
+  ],
+  dataLabels: {
+    enabled: false,
+  },
+  enableMouseTracking: false,
+});
+
+const bg2 = (colorNum) => ({
+  data: [
+    {
+      color: Highcharts.color(Highcharts.getOptions().colors[colorNum])
+        .setOpacity(opacity)
+        .get(),
+      radius: item2OuterRadius,
+      innerRadius: item2InnerRadius,
+      y: 100,
+    },
+  ],
+  dataLabels: {
+    enabled: false,
+  },
+  enableMouseTracking: false,
+});
+
+const commonOptions = (item1, item2) => {
+  const item1Color = getColor(item1.value, item1.thresholds, colors.item1);
+  const item2Color = getColor(item2.value, item2.thresholds, colors.item2);
+
+  return {
+    chart: {
+      type: "solidgauge",
+      height: "100%",
+      margin: [5, 5, 5, 5],
+    },
+
+    title: {
+      text: null,
+    },
+
+    tooltip: {
+      enabled: false,
+    },
+    credits: {
+      enabled: false,
+    },
+    exporting: {
+      enabled: false,
+    },
+
+    pane: {
+      startAngle: 0,
+      endAngle: 360,
+      background: {
+        outerRadius: paneOuterRadius,
+        innerRadius: 0,
+        backgroundColor: "none",
+        borderWidth: 0,
+      },
+    },
+
+    yAxis: [
+      {
+        min: 0,
+        //max: 100,
+        lineWidth: 0,
+        tickPositions: [],
+        title: {
+          y: item2OffsetName,
+          text: item2.name,
+        },
+      },
+      {
+        min: 0,
+        max: 100,
+        lineWidth: 0,
+        tickPositions: [],
+        title: {
+          y: item1OffsetName,
+          text: item1.name,
+        },
+      },
+    ],
+
+    plotOptions: {
+      solidgauge: {
+        linecap: "round",
+        rounded: true,
+      },
+    },
+
+    series: [
+      bg1(item1Color),
+      {
+        name: item1.name,
+        data: [
+          {
+            color: Highcharts.getOptions().colors[item1Color],
+            radius: item1OuterRadius,
+            innerRadius: item1InnerRadius,
+            y: item1.value,
+          },
+        ],
+        dataLabels: {
+          enabled: true,
+          y: item1OffsetValue,
+          format: "{y} " + item1.suffix,
+          borderWidth: 0,
+          backgroundColor: "none",
+          color: Highcharts.getOptions().colors[item1Color],
+          shadow: false,
+          style: {
+            //  font
+            textOutline: "none",
+          },
+        },
+        enableMouseTracking: true,
+      },
+      bg2(item2Color),
+      {
+        name: item2.name,
+        data: [
+          {
+            color: Highcharts.getOptions().colors[item2Color],
+            radius: item2OuterRadius,
+            innerRadius: item2InnerRadius,
+            y: item2.value,
+          },
+        ],
+        dataLabels: {
+          enabled: true,
+          y: item2OffsetValue,
+          format: "{y} " + item2.suffix,
+          borderWidth: 0,
+          backgroundColor: "none",
+          color: Highcharts.getOptions().colors[item2Color],
+          shadow: false,
+          style: {
+            textOutline: "none",
+          },
+        },
+        enableMouseTracking: true,
+      },
+    ],
+  };
+};
+
+const DualGauge = (props) => {
+  const { item1, item2 } = props;
+  const [chartOptions, setChartOptions] = useState(commonOptions(item1, item2));
+
+  return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;
+};
+
+export default DualGauge;

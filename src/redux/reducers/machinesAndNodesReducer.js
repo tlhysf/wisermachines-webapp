@@ -6,6 +6,8 @@ const initialMachinesState = {
   machinesLoading: false,
   addMachineResponse: 0,
   editMachineResponse: 0,
+  machineMappings: [],
+  editMachineMappingResponse: 0,
 };
 
 export const machinesReducer = (state = initialMachinesState, action) => {
@@ -35,6 +37,13 @@ export const machinesReducer = (state = initialMachinesState, action) => {
       return {
         ...state,
         editMachineResponse: action.payload.response,
+        machinesLoading: false,
+      };
+
+    case machinesAndNodes.getAllMachineMappings:
+      return {
+        ...state,
+        machineMappings: action.payload,
         machinesLoading: false,
       };
 

@@ -33,6 +33,16 @@ export const toggleEditFormDrawerAction = (dispatch, ID, title) => {
   });
 };
 
+export const toggleEditMappingFormDrawerAction = (dispatch, ID, title) => {
+  dispatch({
+    type: common.toggleEditMappingFormDrawer,
+    payload: {
+      ID: ID,
+      name: title,
+    },
+  });
+};
+
 export const togglePersistantSideBarAction = (dispatch) => {
   dispatch({
     type: common.togglePersistantSideBar,

@@ -1,6 +1,0 @@
-Errors:
-
-- not found
-- bad request 
-- request failed 
-- unexpected response

@@ -1,5 +1,11 @@
 import Skeleton from "@material-ui/lab/Skeleton";
 import Grid from "@material-ui/core/Grid";
+// import colors from "../../../../utils/colors";
+
+const skeletonStyle = {
+  borderRadius: 5,
+  backgroundColor: "white",
+};
 
 const card = (
   <Skeleton
@@ -7,7 +13,7 @@ const card = (
     variant="rect"
     height="100%"
     width="24.5%"
-    style={{ borderRadius: 5 }}
+    style={skeletonStyle}
   ></Skeleton>
 );
 
@@ -49,7 +55,7 @@ const chart = (
     variant="rect"
     height="100%"
     width="100%"
-    style={{ borderRadius: 5 }}
+    style={skeletonStyle}
   ></Skeleton>
 );
 
