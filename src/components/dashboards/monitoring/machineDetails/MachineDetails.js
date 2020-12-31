@@ -131,7 +131,7 @@ export default function MachineDetails(props) {
       );
     }, 1000 * 5);
     return () => clearInterval(interval);
-  }, []);
+  }, [timestampEnd]);
 
   const lineCharts = {
     machineState: {

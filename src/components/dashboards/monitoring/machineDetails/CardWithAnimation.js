@@ -3,7 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Loader from "react-loader-spinner";
-import OfflinePinIcon from "@material-ui/icons/OfflinePin";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { smallCard } from "../../../../utils/styles";
 import colors from "../../../../utils/colors";
 
@@ -15,14 +15,19 @@ const CardWithAnimation = (props) => {
   const updateIconRender = liveData ? (
     <Loader type="Bars" height={20} />
   ) : (
-    <OfflinePinIcon />
+    <CheckCircleIcon
+      style={{
+        width: 20,
+        color: colors.TEAL[700],
+      }}
+    />
   );
 
   const updateMessegeRender = (
     <Typography
       align="center"
       variant="body2"
-      style={{ color: colors.BLUEGREY[500] }}
+      style={{ color: colors.BLUEGREY[600] }}
     >
       {liveData ? "Receiving Real-time Updates..." : "Last Updated: "}
     </Typography>
@@ -46,6 +51,7 @@ const CardWithAnimation = (props) => {
       justify="center"
       alignItems="center"
       elevation={2}
+      style={{ padding: 3 }}
     >
       <Grid item xs={2}>
         <Paper style={smallCard.iconPaper} elevation={0}>
@@ -61,10 +67,10 @@ const CardWithAnimation = (props) => {
             alignItems="center"
             spacing={2}
           >
-            <Grid item xs={"auto"}>
+            <Grid item xs="auto">
               {updateMessegeRender}
             </Grid>
-            <Grid item xs={"auto"}>
+            <Grid item xs="auto">
               {timeSinceLastUpdateRender}
             </Grid>
           </Grid>

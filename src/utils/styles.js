@@ -2,9 +2,9 @@ import colors from "./colors";
 
 // const pageHeight = 630;
 // const pageWidth = 1960;
-const appBarHeight = 64;
+const appBarHeight = 50;
 const drawerCompactWidth = appBarHeight;
-const drawerWidth = drawerCompactWidth * 3;
+const drawerWidth = drawerCompactWidth * 4;
 const drawerBreakpoint = "md";
 
 export const layoutStyle = (theme) => ({
@@ -82,6 +82,10 @@ export const layoutStyle = (theme) => ({
     [theme.breakpoints.down(drawerBreakpoint)]: {
       display: "none",
     },
+    height: 30,
+    width: 30,
+    marginLeft: 10,
+    marginTop: 15,
   },
 
   menuButtonMobile: {
@@ -91,15 +95,19 @@ export const layoutStyle = (theme) => ({
     },
   },
 
-  list: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    flexDirection: "column",
-  },
-
   listItem: {
     marginBottom: theme.spacing(2),
+  },
+
+  listItemIcon: {
+    width: 20,
+    color: colors.TEAL[700],
+  },
+
+  listItemText: {
+    paddingLeft: 20,
+    paddingTop: 2,
+    color: colors.TEAL[700],
   },
 
   logo: {
@@ -121,10 +129,6 @@ export const layoutStyle = (theme) => ({
   },
   drawerHeader: {
     ...theme.mixins.toolbar,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingLeft: theme.spacing(1),
   },
 
   content: {

@@ -1,6 +1,5 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import CardWithRadialChart from "../../../common/CardWithRadialChart";
 import CardWithDualGauge from "../../../common/CardWithDualGauge";
 import Card from "../../../common/Card";
 

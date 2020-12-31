@@ -29,16 +29,14 @@ export default function MachineDetailsRow1(props) {
     icon:
       stateNow === "ON" ? (
         <PlayCircleFilledIcon
-          size="small"
-          style={{ color: colors.GREEN[700] }}
+          style={{ color: colors.GREEN[700], height: 20 }}
         />
       ) : stateNow === "IDLE" ? (
         <PauseCircleFilledIcon
-          size="small"
-          style={{ color: colors.TEAL[700] }}
+          style={{ color: colors.TEAL[700], height: 20 }}
         />
       ) : (
-        <CancelIcon size="small" style={{ color: colors.RED[700] }} />
+        <CancelIcon style={{ color: colors.RED[700], height: 20 }} />
       ),
     values: {
       primary: stateNow,
@@ -48,7 +46,10 @@ export default function MachineDetailsRow1(props) {
 
   const currentRightNow = {
     icon: (
-      <FlashOnOutlinedIcon size="small" style={{ color: colors.BLUE[700] }} />
+      <FlashOnOutlinedIcon
+        size="small"
+        style={{ color: colors.INDIGO[700], height: 20 }}
+      />
     ),
     values: {
       primary: currentNow + " A",
@@ -57,7 +58,12 @@ export default function MachineDetailsRow1(props) {
   };
 
   const unitsUntilNow = {
-    icon: <PowerIcon size="small" style={{ color: colors.PURPLE[700] }} />,
+    icon: (
+      <PowerIcon
+        size="small"
+        style={{ color: colors.PURPLE[700], height: 20 }}
+      />
+    ),
     values: {
       primary: unitsConsumed + " kwh",
       secondary: timeFilter,

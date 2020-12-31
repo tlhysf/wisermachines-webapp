@@ -231,7 +231,12 @@ const CardWithDualGauge = (props) => {
             </Tooltip>
           ) : (
             <Button disableRipple>
-              <Typography variant="button">{name}</Typography>
+              <Typography
+                variant="button"
+                style={{ color: colors.BLUEGREY[600] }}
+              >
+                {name}
+              </Typography>
             </Button>
           )}
         </Grid>

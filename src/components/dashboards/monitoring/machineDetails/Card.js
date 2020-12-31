@@ -16,6 +16,7 @@ export default function Card(props) {
       justify="center"
       alignItems="center"
       elevation={2}
+      style={{ padding: 3 }}
     >
       <Grid item xs={2}>
         <Paper style={smallCard.iconPaper} elevation={0}>
@@ -31,7 +32,7 @@ export default function Card(props) {
             alignItems="center"
           >
             <Grid item xs={"auto"}>
-              <Typography align="center" variant="h5">
+              <Typography align="center" variant="button">
                 {values.primary}
               </Typography>
             </Grid>
@@ -39,7 +40,7 @@ export default function Card(props) {
               <Typography
                 align="center"
                 variant="body2"
-                style={{ color: colors.BLUEGREY[500] }}
+                style={{ color: colors.BLUEGREY[600] }}
               >
                 {values.secondary}
               </Typography>

@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import CardWithGauge from "./CardWithGuage";
+import CardWithGauge from "./CardWithGauge";
 
 export default function MachineDetailsRow2(props) {
   const {
@@ -23,6 +23,10 @@ export default function MachineDetailsRow2(props) {
     minTitle: "Downtime",
     maxValue: uptime,
     minValue: downtime,
+    thresholds: {
+      high: 66,
+      low: 33,
+    },
   };
 
   const oeeCard = {
@@ -33,6 +37,10 @@ export default function MachineDetailsRow2(props) {
     minTitle: "Minimum",
     maxValue: utilization,
     minValue: utilization,
+    thresholds: {
+      high: 66,
+      low: 33,
+    },
   };
 
   const temperatureCard = {
@@ -43,6 +51,10 @@ export default function MachineDetailsRow2(props) {
     minTitle: "Minimum",
     maxValue: temperatureMax,
     minValue: temperatureMin,
+    thresholds: {
+      high: 66,
+      low: 33,
+    },
   };
 
   const humidityCard = {
@@ -53,21 +65,25 @@ export default function MachineDetailsRow2(props) {
     minTitle: "Minimum",
     maxValue: humidityMax,
     minValue: humidityMin,
+    thresholds: {
+      high: 66,
+      low: 33,
+    },
   };
 
   return (
     <Grid container justify="center" alignItems="center" spacing={2}>
       <Grid item md={3} xs={12}>
-        <CardWithGauge pills data={utilizationCard} />
+        <CardWithGauge data={utilizationCard} />
       </Grid>
       <Grid item md={3} xs={12}>
-        <CardWithGauge pills data={oeeCard} />
+        <CardWithGauge data={oeeCard} />
       </Grid>
       <Grid item md={3} xs={12}>
-        <CardWithGauge pills data={temperatureCard} />
+        <CardWithGauge data={temperatureCard} />
       </Grid>
       <Grid item md={3} xs={12}>
-        <CardWithGauge pills data={humidityCard} />
+        <CardWithGauge data={humidityCard} />
       </Grid>
     </Grid>
   );

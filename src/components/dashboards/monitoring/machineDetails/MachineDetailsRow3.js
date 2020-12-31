@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import LineChart from "../../../common/LineChart";
 import { Button } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
+import colors from "../../../../utils/colors";
 
 export default function MachineDetailsRow3(props) {
   const {
@@ -33,16 +34,17 @@ export default function MachineDetailsRow3(props) {
   ];
 
   const chartButtons = chartsList.map((chart, chartIndex) => {
-    const color = chartIndex === buttonIndex ? "white" : "grey";
-    const backgroundColor = chartIndex === buttonIndex ? "grey" : "white";
+    const selected = colors.BLUEGREY[600];
+    const unSelected = colors.BLUEGREY[400];
+    const color = chartIndex === buttonIndex ? selected : unSelected;
+
     return (
       <Grid item key={chartIndex}>
         <Button
-          variant="contained"
-          style={{ color: color, backgroundColor: backgroundColor }}
+          style={{ color: color }}
           onClick={(e) => setButtonIndex(chartIndex)}
         >
-          <Typography variant="caption" color={color}>
+          <Typography variant="body2" color={color}>
             {chartNamesList[chartIndex]}
           </Typography>
         </Button>

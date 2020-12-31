@@ -1,6 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Highcharts, { color } from "highcharts";
 import solidGauge from "highcharts/modules/solid-gauge";
@@ -32,8 +31,8 @@ const colors = {
     low: 3,
   },
   item2: {
-    high: 4,
-    normal: 5,
+    high: 5,
+    normal: 4,
     low: 6,
   },
 };

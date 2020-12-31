@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import CardWithRadialChart from "../../../common/CardWithRadialChart";
+import NodeCard from "./NodeCard";
 
 export default function NodeCards(props) {
   const { allNodesInAZone } = props;
@@ -40,10 +40,7 @@ export default function NodeCards(props) {
         >
           {ListOfNodeToMachineMapping.map((item, index) => (
             <Grid key={index} item xl={2} md={3} sm={6} xs={12}>
-              <CardWithRadialChart
-                data={{ name: item.mac }}
-                childPageLabel={"details"}
-              />
+              <NodeCard data={{ name: item.mac }} />
             </Grid>
           ))}
         </Grid>

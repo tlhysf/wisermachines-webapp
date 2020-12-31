@@ -14,18 +14,24 @@ import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
 // Icons
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import MenuIcon from "@material-ui/icons/Menu";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+
+// Sidebar icons
+import ComputerIcon from "@material-ui/icons/Computer";
+import AssessmentOutlinedIcon from "@material-ui/icons/AssessmentOutlined";
+import EventOutlinedIcon from "@material-ui/icons/EventOutlined";
+import SupervisedUserCircleOutlinedIcon from "@material-ui/icons/SupervisedUserCircleOutlined";
+import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { layoutStyle } from "../../utils/styles";
@@ -76,14 +82,39 @@ const Layout = (props) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
+  const sideBarListItems = [
+    {
+      title: "Monitoring",
+      icon: <ComputerIcon className={classes.listItemIcon} />,
+    },
+    {
+      title: "Analytics",
+      icon: <AssessmentOutlinedIcon className={classes.listItemIcon} />,
+    },
+    {
+      title: "HR",
+      icon: (
+        <SupervisedUserCircleOutlinedIcon className={classes.listItemIcon} />
+      ),
+    },
+    {
+      title: "Schedule",
+      icon: <EventOutlinedIcon className={classes.listItemIcon} />,
+    },
+    {
+      title: "Management",
+      icon: <BuildOutlinedIcon className={classes.listItemIcon} />,
+    },
+  ];
+
   const drawerList = (
     <List className={classes.list}>
-      {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-        <ListItem button key={text} className={classes.listItem}>
-          <ListItemIcon>
-            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-          </ListItemIcon>
-          <ListItemText primary={text} />{" "}
+      {sideBarListItems.map((obj, index) => (
+        <ListItem button key={index}>
+          {obj.icon}
+          <Typography variant="overline" className={classes.listItemText}>
+            {obj.title}
+          </Typography>
         </ListItem>
       ))}
     </List>
@@ -97,7 +128,7 @@ const Layout = (props) => {
       onClick={handleDrawerToggle}
       className={classes.menuButtonDesktop}
     >
-      <MenuIcon />
+      <MenuIcon className={classes.listItemIcon} />
     </IconButton>
   );
 
