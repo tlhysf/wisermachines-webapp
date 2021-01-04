@@ -15,23 +15,17 @@ export default function Card(props) {
       justify="center"
       alignItems="center"
       elevation={2}
-      style={{ padding: 12 }}
+      style={{ padding: 12, height: 64 }}
     >
-      <Grid item xs={2} style={{ color: values.color }}>
+      <Grid item style={{ color: values.color }} xs={2}>
         {icon}
       </Grid>
       <Grid item xs={10}>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          style={{ paddingLeft: 8 }}
-        >
+        <Grid container direction="row" justify="center" alignItems="center">
           <Grid item xs={12}>
             <Typography
-              align="left"
-              variant="caption"
+              align="center"
+              variant="body2"
               style={{ color: colors.BLUEGREY[500] }}
             >
               {values.primary}
@@ -39,7 +33,7 @@ export default function Card(props) {
           </Grid>
           <Grid item xs={12}>
             <Typography
-              align="left"
+              align="center"
               variant="body2"
               style={{ color: values.color }}
             >

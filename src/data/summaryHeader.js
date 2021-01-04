@@ -27,7 +27,7 @@ export const summaryHeader = () => {
   const statusTotal = {
     icon: <CheckCircleOutlineRoundedIcon style={iconStyle} />,
     values: {
-      primary: "Machines Currently Active",
+      primary: "Currently Active",
       secondary: "120 / 200",
       color: colors.CYAN[700],
     },
@@ -45,7 +45,7 @@ export const summaryHeader = () => {
   const unitsTotal = {
     icon: <PowerOutlinedIcon style={iconStyle} />,
     values: {
-      primary: "Total Unit Consumption",
+      primary: "Unit Consumption",
       secondary: "6780 kWh",
       color: colors.INDIGO[700],
     },

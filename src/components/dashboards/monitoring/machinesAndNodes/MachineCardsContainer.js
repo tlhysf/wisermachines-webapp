@@ -13,7 +13,7 @@ export default function MachineCards(props) {
         <Grid container spacing={2}>
           {summaryHeader().map((item, index) => {
             return (
-              <Grid item key={index} xs={2}>
+              <Grid item key={index} lg={2} md={4} sm={6} xs={12}>
                 <Card data={item} />
               </Grid>
             );

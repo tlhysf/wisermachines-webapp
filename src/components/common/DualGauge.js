@@ -17,7 +17,7 @@ const item2OuterRadius = item1InnerRadius - 6;
 const item2InnerRadius = item2OuterRadius - trackWidth;
 
 const item1OffsetName = 45;
-const item2OffsetName = item1OffsetName - 35;
+const item2OffsetName = item1OffsetName - 25;
 
 const item1OffsetValue = item1OffsetName - 32;
 const item2OffsetValue = item1OffsetValue - 35;
