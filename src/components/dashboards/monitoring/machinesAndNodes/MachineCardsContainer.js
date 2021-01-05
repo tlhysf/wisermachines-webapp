@@ -29,7 +29,7 @@ export default function MachineCards(props) {
           spacing={2}
         >
           {props.allMachinesInAZone.map((item, index) => (
-            <Grid key={index} item xl={2} md={3} sm={6} xs={12}>
+            <Grid key={index} item lg={3} md={4} sm={12}>
               <CardWithDualGauge
                 data={{
                   name: item.name,

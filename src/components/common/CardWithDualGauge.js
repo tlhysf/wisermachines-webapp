@@ -148,7 +148,7 @@ const CardWithDualGauge = (props) => {
 
   const renderStatus = (
     <Grid item xs={12}>
-      <Grid container spacing={0}>
+      <Grid container spacing={0} justify="center">
         <Grid item>
           <div
             style={{
@@ -162,40 +162,33 @@ const CardWithDualGauge = (props) => {
             {status.icon}
           </div>
         </Grid>
-        <Grid item>
-          {renderStatusText(status.name)}
-          {renderStatusText("-")}
-          {renderStatusText(status.value)}
-        </Grid>
+        <Grid item>{renderStatusText(status.name + ":")}</Grid>
+        <Grid item> {renderStatusText(status.value)}</Grid>
       </Grid>
     </Grid>
   );
 
   const renderInfo1 = (
     <Grid item xs={12}>
-      <Grid container spacing={0}>
+      <Grid container spacing={0} justify="center">
         <Grid item>
           <div
             style={{
               color: getColor(info1.change, info1.thresholds, colorSets.info1),
-              paddingRight: 2,
             }}
           >
             {info1.icon}
           </div>
         </Grid>
-        <Grid item>
-          {renderInfo1Text(info1.name)}
-          {renderInfo1Text("-")}
-          {renderInfo1Text(info1.value)}
-        </Grid>
+        <Grid item>{renderInfo1Text(info1.name + ":")}</Grid>
+        <Grid item>{renderInfo1Text(info1.value)}</Grid>
       </Grid>
     </Grid>
   );
 
   const renderInfo2 = (
     <Grid item xs={12}>
-      <Grid container spacing={0}>
+      <Grid container spacing={0} justify="center">
         <Grid item>
           <div
             style={{
@@ -205,11 +198,8 @@ const CardWithDualGauge = (props) => {
             {info2.icon}
           </div>
         </Grid>
-        <Grid item>
-          {renderInfo2Text(info2.name)}
-          {renderInfo2Text("-")}
-          {renderInfo2Text(info2.value)}
-        </Grid>
+        <Grid item>{renderInfo2Text(info2.name + ":")}</Grid>
+        <Grid item>{renderInfo2Text(info2.value)}</Grid>
       </Grid>
     </Grid>
   );
@@ -217,58 +207,67 @@ const CardWithDualGauge = (props) => {
   return (
     <Paper elevation={2} style={{ padding: 10 }}>
       <Grid container justify="space-between" alignItems="center">
-        <Grid item xs={10}>
-          {ID ? (
-            <Tooltip title="Open" placement="top">
-              <Button onClick={handlePageChange}>
-                <Typography
-                  variant="button"
-                  style={{ color: colors.BLUEGREY[600] }}
-                >
-                  {name}
-                </Typography>
-              </Button>
-            </Tooltip>
-          ) : (
-            <Button disableRipple>
-              <Typography
-                variant="button"
-                style={{ color: colors.BLUEGREY[600] }}
-              >
-                {name}
-              </Typography>
-            </Button>
-          )}
-        </Grid>
-        <Grid item xs="auto">
-          <Tooltip title="Settings" placement="top">
-            <IconButton onClick={(e) => handleClick(e)}>
-              <MoreHorizIcon className={classes.iconButton} />
-            </IconButton>
-          </Tooltip>
-          <Menu
-            id="settingsMenu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
+        <Grid item xs={12}>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
           >
-            <MenuItem onClick={handleEdit}>Edit</MenuItem>
-            {mapping ? (
-              <MenuItem onClick={handleMapping}>Mapping</MenuItem>
-            ) : null}
-          </Menu>
+            <Grid item>
+              {ID ? (
+                <Tooltip title="Open" placement="top">
+                  <Button onClick={handlePageChange}>
+                    <Typography
+                      variant="button"
+                      style={{ color: colors.BLUEGREY[600] }}
+                    >
+                      {name}
+                    </Typography>
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Button disableRipple>
+                  <Typography
+                    variant="button"
+                    style={{ color: colors.BLUEGREY[600] }}
+                  >
+                    {name}
+                  </Typography>
+                </Button>
+              )}
+            </Grid>
+            <Grid item>
+              <Tooltip title="Settings" placement="top">
+                <IconButton onClick={(e) => handleClick(e)}>
+                  <MoreHorizIcon className={classes.iconButton} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                id="settingsMenu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                {mapping ? (
+                  <MenuItem onClick={handleMapping}>Mapping</MenuItem>
+                ) : null}
+              </Menu>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item lg={6} md={12}>
           <DualGauge item1={gaugeItem1} item2={gaugeItem2} />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item lg={6} md={12}>
           <Grid
             container
             direction="column"
-            justify="flex-start"
-            alignItems="flex-start"
-            style={{ paddingLeft: 10, paddingRight: 10 }}
+            justify="center"
+            alignItems="center"
+            style={{ padding: 10 }}
           >
             {renderStatus}
             {renderInfo1}

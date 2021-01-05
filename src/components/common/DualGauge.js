@@ -16,24 +16,24 @@ const item1InnerRadius = item1OuterRadius - trackWidth;
 const item2OuterRadius = item1InnerRadius - 6;
 const item2InnerRadius = item2OuterRadius - trackWidth;
 
-const item1OffsetName = 45;
-const item2OffsetName = item1OffsetName - 25;
+// const item1OffsetName = 45;
+// const item2OffsetName = item1OffsetName - 25;
 
-const item1OffsetValue = item1OffsetName - 32;
-const item2OffsetValue = item1OffsetValue - 35;
+const item1OffsetValue = 0;
+const item2OffsetValue = item1OffsetValue - 25;
 
 const opacity = 0.2;
 
 const colors = {
   item1: {
-    high: 0,
+    high: 4,
     normal: 2,
-    low: 3,
+    low: 0,
   },
   item2: {
-    high: 5,
-    normal: 4,
-    low: 6,
+    high: 8,
+    normal: 7,
+    low: 3,
   },
 };
 
@@ -123,20 +123,20 @@ const commonOptions = (item1, item2) => {
         //max: 100,
         lineWidth: 0,
         tickPositions: [],
-        title: {
-          y: item2OffsetName,
-          text: item2.name,
-        },
+        // title: {
+        //   y: item2OffsetName,
+        //   text: item2.name,
+        // },
       },
       {
         min: 0,
         max: 100,
         lineWidth: 0,
         tickPositions: [],
-        title: {
-          y: item1OffsetName,
-          text: item1.name,
-        },
+        // title: {
+        //   y: item1OffsetName,
+        //   text: item1.name,
+        // },
       },
     ],
 
@@ -162,7 +162,7 @@ const commonOptions = (item1, item2) => {
         dataLabels: {
           enabled: true,
           y: item1OffsetValue,
-          format: "{y} " + item1.suffix,
+          format: item1.name + ":" + "{y}" + item1.suffix,
           borderWidth: 0,
           backgroundColor: "none",
           color: Highcharts.getOptions().colors[item1Color],
@@ -188,7 +188,7 @@ const commonOptions = (item1, item2) => {
         dataLabels: {
           enabled: true,
           y: item2OffsetValue,
-          format: "{y} " + item2.suffix,
+          format: item2.name + ":" + "{y}" + item2.suffix,
           borderWidth: 0,
           backgroundColor: "none",
           color: Highcharts.getOptions().colors[item2Color],

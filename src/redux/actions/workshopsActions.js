@@ -3,6 +3,8 @@ import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
 
+import { placeholderRes } from "../../data/workshops";
+
 export const getAllWorkshopsAction = (dispatch) => {
   dispatch({
     type: workshops.workshopsLoading,
@@ -14,22 +16,27 @@ export const getAllWorkshopsAction = (dispatch) => {
     headers: {},
   };
 
-  axios(config)
-    .then((res) => {
-      const { data } = res;
-      if (isNotEmpty(data)) {
-        const allWorkshops = data.filter((x) => x);
-        dispatch({
-          type: workshops.getAllWorkshops,
-          payload: allWorkshops,
-        });
-      } else {
-        console.log("error: unexpected response", data);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  // axios(config)
+  //   .then((res) => {
+  //     const { data } = res;
+  //     if (isNotEmpty(data)) {
+  //       const allWorkshops = data.filter((x) => x);
+  //       dispatch({
+  //         type: workshops.getAllWorkshops,
+  //         payload: allWorkshops,
+  //       });
+  //     } else {
+  //       console.log("error: unexpected response", data);
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+
+  dispatch({
+    type: workshops.getAllWorkshops,
+    payload: placeholderRes.getAllWorkshops,
+  });
 };
 
 export const addWorkshopAction = (dispatch, body) => {

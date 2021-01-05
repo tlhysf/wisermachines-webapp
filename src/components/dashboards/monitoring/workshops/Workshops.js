@@ -12,7 +12,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import WorkshopCards from "./WorkshopCardsContainer";
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
-// import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import AddWorkshop from "./inputs/AddWorkshop";
 import EditWorkshop from "./inputs/EditWorkshop.js";
 import { breadCrumbsList } from "../../../../Routes";

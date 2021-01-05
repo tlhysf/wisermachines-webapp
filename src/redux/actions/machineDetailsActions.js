@@ -3,7 +3,7 @@ import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
 
-import { machineData } from "../../data/placeholderData";
+import { machineData } from "../../data/machineData";
 
 export const getMachineDataByIDAction = (dispatch, ID) => {
   dispatch({
