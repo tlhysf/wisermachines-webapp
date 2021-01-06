@@ -2,9 +2,18 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import CardWithDualGauge from "../../../common/CardWithDualGauge";
 import Card from "../../../common/Card";
+import Grow from "@material-ui/core/Grow";
 
-import { status, info1, info2 } from "../../../../data/machineSummaryCard";
+import {
+  status,
+  info1,
+  info2,
+  gaugeItem1,
+  gaugeItem2,
+} from "../../../../data/machineSummaryCard";
 import { summaryHeader } from "../../../../data/summaryHeader";
+
+const animationDuration = 500;
 
 export default function MachineCards(props) {
   return (
@@ -13,9 +22,14 @@ export default function MachineCards(props) {
         <Grid container spacing={2}>
           {summaryHeader().map((item, index) => {
             return (
-              <Grid item key={index} lg={2} md={4} sm={6} xs={12}>
-                <Card data={item} />
-              </Grid>
+              <Grow
+                in={true}
+                {...{ timeout: animationDuration + index * animationDuration }}
+              >
+                <Grid item key={index} lg={2} md={4} sm={6} xs={12}>
+                  <Card data={item} />
+                </Grid>
+              </Grow>
             );
           })}
         </Grid>
@@ -29,18 +43,26 @@ export default function MachineCards(props) {
           spacing={2}
         >
           {props.allMachinesInAZone.map((item, index) => (
-            <Grid key={index} item lg={3} md={4} sm={12}>
-              <CardWithDualGauge
-                data={{
-                  name: item.name,
-                  ID: item._id,
-                  mapping: true,
-                  status: status(),
-                  info1: info1(),
-                  info2: info2(),
-                }}
-              />
-            </Grid>
+            <Grow
+              in={true}
+              {...{ timeout: animationDuration + index * animationDuration }}
+            >
+              <Grid key={index} item lg={3} md={4} sm={12}>
+                <CardWithDualGauge
+                  compact={props.compact}
+                  data={{
+                    name: item.name,
+                    ID: item._id,
+                    mapping: true,
+                    status: status(),
+                    info1: info1(),
+                    info2: info2(),
+                    gaugeItem1: gaugeItem1(),
+                    gaugeItem2: gaugeItem2(),
+                  }}
+                />
+              </Grid>
+            </Grow>
           ))}
         </Grid>
       </Grid>

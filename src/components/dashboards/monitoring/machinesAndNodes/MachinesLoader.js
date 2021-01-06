@@ -3,6 +3,16 @@ import Grid from "@material-ui/core/Grid";
 import { skeletonStyle } from "../../../../utils/styles";
 // import colors from "../../../../utils/colors";
 
+const headerCard = (
+  <Skeleton
+    animation="pulse"
+    variant="rect"
+    height="100%"
+    width="16.1%"
+    style={skeletonStyle}
+  ></Skeleton>
+);
+
 const card = (
   <Skeleton
     animation="pulse"
@@ -18,14 +28,16 @@ const row1 = (
     style={{
       display: "flex",
       marginBottom: 10,
-      height: 50,
+      height: 64,
       justifyContent: "space-between",
     }}
   >
-    {card}
-    {card}
-    {card}
-    {card}
+    {headerCard}
+    {headerCard}
+    {headerCard}
+    {headerCard}
+    {headerCard}
+    {headerCard}
   </div>
 );
 
@@ -34,7 +46,7 @@ const row2 = (
     style={{
       display: "flex",
       marginBottom: 10,
-      height: 150,
+      height: 224,
       justifyContent: "space-between",
     }}
   >
@@ -45,30 +57,7 @@ const row2 = (
   </div>
 );
 
-const chart = (
-  <Skeleton
-    animation="pulse"
-    variant="rect"
-    height="100%"
-    width="100%"
-    style={skeletonStyle}
-  ></Skeleton>
-);
-
-const row3 = (
-  <div
-    style={{
-      display: "flex",
-      marginBottom: 15,
-      height: 400,
-      justifyContent: "space-between",
-    }}
-  >
-    {chart}
-  </div>
-);
-
-const MachineDetailsLoader = (
+const MachinesLoader = (
   <Grid
     item
     xs={12}
@@ -78,8 +67,8 @@ const MachineDetailsLoader = (
   >
     {row1}
     {row2}
-    {row3}
+    {row2}
   </Grid>
 );
 
-export default MachineDetailsLoader;
+export default MachinesLoader;

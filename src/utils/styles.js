@@ -1,3 +1,4 @@
+import { color } from "highcharts";
 import colors from "./colors";
 
 // const pageHeight = 630;
@@ -177,6 +178,11 @@ export const common = (theme) => ({
     },
   },
 });
+
+export const skeletonStyle = {
+  borderRadius: 5,
+  backgroundColor: colors.BLUEGREY[200],
+};
 
 export const formStyle = (theme) => ({
   paper: {

@@ -8,6 +8,8 @@ import {
   status,
   info1,
   info2,
+  gaugeItem1,
+  gaugeItem2,
 } from "../../../../data/workshopAndZoneSummaryCard";
 import { summaryHeader } from "../../../../data/summaryHeader";
 
@@ -54,6 +56,8 @@ export default function ZoneCards(props) {
                     status: status(),
                     info1: info1(),
                     info2: info2(),
+                    gaugeItem1: gaugeItem1(),
+                    gaugeItem2: gaugeItem2(),
                   }}
                 />
               </Grid>

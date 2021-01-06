@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import colors from "../../utils/colors";
+// import colors from "../../utils/colors";
 
 import Highcharts from "highcharts";
 import solidGauge from "highcharts/modules/solid-gauge";
@@ -11,10 +11,10 @@ highchartsMore(Highcharts);
 solidGauge(Highcharts);
 
 const paneOuterRadius = 70;
-const trackWidth = 12;
+const trackWidth = 10;
 const item1OuterRadius = paneOuterRadius + 40;
 const item1InnerRadius = item1OuterRadius - trackWidth;
-const item2OuterRadius = item1InnerRadius - 6;
+const item2OuterRadius = item1InnerRadius - 4;
 const item2InnerRadius = item2OuterRadius - trackWidth;
 
 // const item1OffsetName = 45;
@@ -23,20 +23,7 @@ const item2InnerRadius = item2OuterRadius - trackWidth;
 const item1OffsetValue = 0;
 const item2OffsetValue = item1OffsetValue - 25;
 
-const opacity = 0.1;
-
-const colorSets = {
-  item1: {
-    high: colors.GREEN[500],
-    normal: colors.INDIGO[500],
-    low: colors.RED[500],
-  },
-  item2: {
-    high: colors.TEAL[500],
-    normal: colors.CYAN[500],
-    low: colors.ORANGE[500],
-  },
-};
+const opacity = 0.2;
 
 const getColor = (change, thresholds, colors) => {
   return change >= thresholds.high
@@ -78,9 +65,17 @@ const bg2 = (color2) => ({
   enableMouseTracking: false,
 });
 
-const commonOptions = (item1, item2) => {
-  const item1Color = getColor(item1.value, item1.thresholds, colorSets.item1);
-  const item2Color = getColor(item2.value, item2.thresholds, colorSets.item2);
+const commonOptions = (item1, item2, colorSets) => {
+  const item1Color = getColor(
+    item1.value,
+    item1.thresholds,
+    colorSets.gaugeItem1
+  );
+  const item2Color = getColor(
+    item2.value,
+    item2.thresholds,
+    colorSets.gaugeItem2
+  );
 
   return {
     chart: {
@@ -164,9 +159,11 @@ const commonOptions = (item1, item2) => {
           backgroundColor: "none",
           color: item1Color,
           shadow: false,
+          padding: 1,
           style: {
             //  font
             textOutline: "none",
+            fontSize: 10,
           },
         },
         enableMouseTracking: true,
@@ -190,8 +187,11 @@ const commonOptions = (item1, item2) => {
           backgroundColor: "none",
           color: item2Color,
           shadow: false,
+          padding: 1,
           style: {
+            //  font
             textOutline: "none",
+            fontSize: 10,
           },
         },
         enableMouseTracking: true,
@@ -201,8 +201,8 @@ const commonOptions = (item1, item2) => {
 };
 
 const DualGauge = (props) => {
-  const { item1, item2 } = props;
-  const [chartOptions, setChartOptions] = useState(commonOptions(item1, item2));
+  const { item1, item2, colorSets } = props;
+  const [chartOptions] = useState(commonOptions(item1, item2, colorSets));
 
   return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;
 };

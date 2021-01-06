@@ -2,6 +2,9 @@ import { machinesAndNodes } from "./actionTypes";
 import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
+import { placeholderRes } from "../../data/common";
+
+const loadingTime = 2000;
 
 export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
   dispatch({
@@ -16,22 +19,32 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
     },
   };
 
-  axios(config)
-    .then((res) => {
-      const { data } = res;
-      if (isNotEmpty(data)) {
-        const allMachinesInAZone = data.filter((x) => x);
-        dispatch({
-          type: machinesAndNodes.getAllMachinesInAZone,
-          payload: { allMachinesInAZone, zoneID },
-        });
-      } else {
-        console.log("error: unexpected response", data);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        const { data } = res;
+        if (isNotEmpty(data)) {
+          // Need to filter all machines in the zone by zone ID
+          const allMachinesInAZone = data.filter((x) => x);
+          dispatch({
+            type: machinesAndNodes.getAllMachinesInAZone,
+            payload: { allMachinesInAZone, zoneID },
+          });
+        } else {
+          console.log("error: unexpected response", data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.getAllMachinesInAZone,
+        payload: { allMachinesInAZone: placeholderRes.getAllMachines, zoneID },
+      });
+    }, loadingTime);
+  }
 };
 
 export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
@@ -47,56 +60,108 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
     },
   };
 
-  axios(config)
-    .then((res) => {
-      const { data } = res;
-      if (isNotEmpty(data)) {
-        const allNodesInAZone = data;
-        const allNodesConfig = {
-          method: "get",
-          url: keys.server + "/nodes",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        const { data } = res;
+        if (isNotEmpty(data)) {
+          const allNodesInAZone = data;
 
-        axios(allNodesConfig)
-          .then((res) => {
-            const { data } = res;
-            if (isNotEmpty(data)) {
-              const allNodes = data.filter((x) => x);
-              const allNodesInAZoneProfiles = Object.keys(allNodesInAZone).map(
-                (node) => {
-                  for (let i = 0; i < allNodes.length; i++) {
-                    if (node === allNodes[i].mac) return allNodes[i];
+          const allNodesConfig = {
+            method: "get",
+            url: keys.server + "/nodes",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+
+          axios(allNodesConfig)
+            .then((res) => {
+              const { data } = res;
+              if (isNotEmpty(data)) {
+                const allNodes = data.filter((x) => x);
+                let allNodesInAZoneProfiles = Object.keys(allNodesInAZone).map(
+                  (node) => {
+                    for (let i = 0; i < allNodes.length; i++) {
+                      if (node === allNodes[i].mac) return allNodes[i];
+                    }
                   }
-                }
-              );
+                );
 
-              dispatch({
-                type: machinesAndNodes.getAllNodesInAZone,
-                payload: {
-                  allNodesInAZoneProfiles: allNodesInAZoneProfiles.filter(
-                    (x) => x
-                  ),
-                  allNodesInAZone,
-                  zoneID,
-                },
-              });
-            } else {
-              console.log("error: unexpected response", data);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        console.log("error: unexpected response", data);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
+                allNodesInAZoneProfiles = allNodesInAZoneProfiles.filter(
+                  (x) => x
+                );
+
+                dispatch({
+                  type: machinesAndNodes.getAllNodesInAZone,
+                  payload: {
+                    allNodesInAZoneProfiles,
+                    allNodesInAZone,
+                    zoneID,
+                  },
+                });
+              } else {
+                console.log("error: unexpected response", data);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          console.log("error: unexpected response", data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    dispatch({
+      type: machinesAndNodes.getAllNodesInAZone,
+      payload: {
+        allNodesInAZoneProfiles: placeholderRes.getAllNodes,
+        allNodesInAZone: placeholderRes.getAllNodeToMachineMappingInAZone,
+        zoneID,
+      },
     });
+  }
+};
+
+export const getAllMachineMappingsAction = (dispatch) => {
+  dispatch({
+    type: machinesAndNodes.machinesLoading,
+  });
+
+  const config = {
+    method: "get",
+    url: keys.server + "/MachineMappings",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        const { data } = res;
+        if (isNotEmpty(data)) {
+          const allMachineMappings = data.filter((x) => x);
+          dispatch({
+            type: machinesAndNodes.getAllMachineMappings,
+            payload: allMachineMappings,
+          });
+        } else {
+          console.log("error: unexpected response", data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    dispatch({
+      type: machinesAndNodes.getAllMachineMappings,
+      payload: placeholderRes.getAllMachineMappings,
+    });
+  }
 };
 
 export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
@@ -345,35 +410,4 @@ export const deleteNodeAction = (dispatch, body) => {
   //   .catch((error) => {
   //     console.log(error);
   //   });
-};
-
-export const getAllMachineMappingsAction = (dispatch) => {
-  dispatch({
-    type: machinesAndNodes.machinesLoading,
-  });
-
-  const config = {
-    method: "get",
-    url: keys.server + "/MachineMappings",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  axios(config)
-    .then((res) => {
-      const { data } = res;
-      if (isNotEmpty(data)) {
-        const allMachineMappings = data.filter((x) => x);
-        dispatch({
-          type: machinesAndNodes.getAllMachineMappings,
-          payload: allMachineMappings,
-        });
-      } else {
-        console.log("error: unexpected response", data);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 };

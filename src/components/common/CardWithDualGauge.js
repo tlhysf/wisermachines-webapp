@@ -28,22 +28,18 @@ import {
 
 const useStyles = makeStyles((theme) => styles(theme));
 
+const colorTheme = {
+  high: colors.TEAL[700],
+  normal: colors.INDIGO[700],
+  low: colors.ORANGE[700],
+};
+
 const colorSets = {
-  info1: {
-    high: colors.GREEN[700],
-    normal: colors.BLUE[700],
-    low: colors.RED[700],
-  },
-  info2: {
-    high: colors.LIGHTGREEN[700],
-    normal: colors.INDIGO[700],
-    low: colors.ORANGE[700],
-  },
-  status: {
-    high: colors.TEAL[700],
-    normal: colors.CYAN[700],
-    low: colors.BROWN[700],
-  },
+  info1: colorTheme,
+  info2: colorTheme,
+  status: colorTheme,
+  gaugeItem1: colorTheme,
+  gaugeItem2: colorTheme,
 };
 
 const getColor = (change, thresholds, colors) => {
@@ -60,30 +56,18 @@ const CardWithDualGauge = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { name, ID, mapping, status, info1, info2 } = props.data;
+  const { compact } = props;
 
-  const gaugeItem1Name = "Utilization";
-  const gaugeItem1Value = Math.round(Math.random() * 100);
-  const gaugeItem1Suffix = "%";
-  const gaugeItem2Name = "Units";
-  const gaugeItem2Value = Math.round(Math.random() * 100);
-  const gaugeItem2Suffix = "KWh";
-  const gaugeItem1Thresholds = { high: 66, low: 33 };
-  const gaugeItem2Thresholds = { high: 66, low: 33 };
-
-  const gaugeItem1 = {
-    name: gaugeItem1Name,
-    value: gaugeItem1Value,
-    suffix: gaugeItem1Suffix,
-    thresholds: gaugeItem1Thresholds,
-  };
-
-  const gaugeItem2 = {
-    name: gaugeItem2Name,
-    value: gaugeItem2Value,
-    suffix: gaugeItem2Suffix,
-    thresholds: gaugeItem2Thresholds,
-  };
+  const {
+    name,
+    ID,
+    mapping,
+    status,
+    info1,
+    info2,
+    gaugeItem1,
+    gaugeItem2,
+  } = props.data;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -116,7 +100,7 @@ const CardWithDualGauge = (props) => {
       style={{
         color: getColor(status.change, status.thresholds, colorSets.status),
         display: "inline-block",
-        padding: 2,
+        padding: 3,
       }}
     >
       {data}
@@ -129,7 +113,7 @@ const CardWithDualGauge = (props) => {
       style={{
         color: getColor(info1.change, info1.thresholds, colorSets.info1),
         display: "inline-block",
-        padding: 2,
+        padding: 3,
       }}
     >
       {data}
@@ -142,7 +126,41 @@ const CardWithDualGauge = (props) => {
       style={{
         color: getColor(info2.change, info2.thresholds, colorSets.info2),
         display: "inline-block",
-        padding: 2,
+        padding: 3,
+      }}
+    >
+      {data}
+    </Typography>
+  );
+
+  const renderGaugeItem1Text = (data) => (
+    <Typography
+      variant="caption"
+      style={{
+        color: getColor(
+          gaugeItem1.value,
+          gaugeItem1.thresholds,
+          colorSets.gaugeItem1
+        ),
+        display: "inline-block",
+        padding: 3,
+      }}
+    >
+      {data}
+    </Typography>
+  );
+
+  const renderGaugeItem2Text = (data) => (
+    <Typography
+      variant="caption"
+      style={{
+        color: getColor(
+          gaugeItem2.value,
+          gaugeItem2.thresholds,
+          colorSets.gaugeItem2
+        ),
+        display: "inline-block",
+        padding: 3,
       }}
     >
       {data}
@@ -203,6 +221,98 @@ const CardWithDualGauge = (props) => {
         </Grid>
         <Grid item>{renderInfo2Text(info2.name + ":")}</Grid>
         <Grid item>{renderInfo2Text(info2.value)}</Grid>
+      </Grid>
+    </Grid>
+  );
+
+  const renderGaugeItem1 = (
+    <Grid item xs={12}>
+      <Grid container spacing={0} justify="center">
+        <Grid item>
+          <div
+            style={{
+              color: getColor(
+                gaugeItem1.value,
+                gaugeItem1.thresholds,
+                colorSets.gaugeItem1
+              ),
+            }}
+          >
+            {gaugeItem1.icon}
+          </div>
+        </Grid>
+        <Grid item>{renderGaugeItem1Text(gaugeItem1.name + ":")}</Grid>
+        <Grid item>
+          {renderGaugeItem1Text(gaugeItem1.value + gaugeItem1.suffix)}
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+
+  const renderGaugeItem2 = (
+    <Grid item xs={12}>
+      <Grid container spacing={0} justify="center">
+        <Grid item>
+          <div
+            style={{
+              color: getColor(
+                gaugeItem2.value,
+                gaugeItem2.thresholds,
+                colorSets.gaugeItem2
+              ),
+            }}
+          >
+            {gaugeItem2.icon}
+          </div>
+        </Grid>
+        <Grid item>{renderGaugeItem2Text(gaugeItem2.name + ":")}</Grid>
+        <Grid item>
+          {renderGaugeItem2Text(gaugeItem2.value + gaugeItem2.suffix)}
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+
+  const renderCompactView = (
+    <Grid item xs={12}>
+      <Grid
+        container
+        justify="space-between"
+        alignItems="flex-start"
+        style={{ padding: 5 }}
+      >
+        <Grid item xs={12}>
+          <Grid
+            container
+            direction="column"
+            justify="flex-start"
+            alignItems="flex-start"
+          >
+            <Grid item>{renderStatus}</Grid>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Grid
+            container
+            direction="column"
+            justify="flex-start"
+            alignItems="flex-start"
+          >
+            <Grid item>{renderInfo1}</Grid>
+            <Grid item>{renderInfo2}</Grid>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Grid
+            container
+            direction="column"
+            justify="flex-start"
+            alignItems="flex-start"
+          >
+            <Grid item>{renderGaugeItem1}</Grid>
+            <Grid item>{renderGaugeItem2}</Grid>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
@@ -269,22 +379,31 @@ const CardWithDualGauge = (props) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item lg={6} md={12}>
-          <DualGauge item1={gaugeItem1} item2={gaugeItem2} />
-        </Grid>
-        <Grid item lg={6} md={12}>
-          <Grid
-            container
-            direction="column"
-            justify="center"
-            alignItems="center"
-            style={{ padding: 10 }}
-          >
-            {renderStatus}
-            {renderInfo1}
-            {renderInfo2}
+        {compact ? null : (
+          <Grid item lg={6} md={12}>
+            <DualGauge
+              item1={gaugeItem1}
+              item2={gaugeItem2}
+              colorSets={colorSets}
+            />
           </Grid>
-        </Grid>
+        )}
+        {compact ? null : (
+          <Grid item lg={6} md={12}>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+              style={{ padding: 5 }}
+            >
+              {renderStatus}
+              {renderInfo1}
+              {renderInfo2}
+            </Grid>
+          </Grid>
+        )}
+        {compact ? renderCompactView : null}
       </Grid>
     </Paper>
   );

@@ -3,6 +3,8 @@ import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import CancelIcon from "@material-ui/icons/Cancel";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import PowerOutlinedIcon from "@material-ui/icons/PowerOutlined";
 
 const randomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -23,6 +25,7 @@ const getStatusNameStr = (valueInt) => {
 
 const iconStyle = {
   width: 15,
+  paddingRight: 3,
 };
 
 const getStatusIcon = (valueInt) => {
@@ -98,5 +101,37 @@ export const info2 = () => {
     value: info2Value,
     icon: info2Icon,
     thresholds: info2Thresholds,
+  };
+};
+
+export const gaugeItem1 = () => {
+  const gaugeItem1Name = "Utilization";
+  const gaugeItem1Value = Math.round(Math.random() * 100);
+  const gaugeItem1Suffix = "%";
+  const gaugeItem1Icon = <TrendingUpIcon style={iconStyle} />;
+  const gaugeItem1Thresholds = { high: 66, low: 33 };
+
+  return {
+    name: gaugeItem1Name,
+    value: gaugeItem1Value,
+    suffix: gaugeItem1Suffix,
+    thresholds: gaugeItem1Thresholds,
+    icon: gaugeItem1Icon,
+  };
+};
+
+export const gaugeItem2 = () => {
+  const gaugeItem2Name = "Units";
+  const gaugeItem2Value = Math.round(Math.random() * 100);
+  const gaugeItem2Suffix = "KWh";
+  const gaugeItem2Icon = <PowerOutlinedIcon style={iconStyle} />;
+  const gaugeItem2Thresholds = { high: 66, low: 33 };
+
+  return {
+    name: gaugeItem2Name,
+    value: gaugeItem2Value,
+    suffix: gaugeItem2Suffix,
+    thresholds: gaugeItem2Thresholds,
+    icon: gaugeItem2Icon,
   };
 };

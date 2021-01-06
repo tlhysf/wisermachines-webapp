@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts/highstock";
@@ -115,10 +114,6 @@ const commonOptions = {
 };
 
 const LineChart = (props) => {
-  const togglePersistantSideBar = useSelector(
-    (state) => state.common.togglePersistantSideBarAction
-  );
-
   const [chartOptions, setChartOptions] = useState(commonOptions);
 
   useEffect(() => {

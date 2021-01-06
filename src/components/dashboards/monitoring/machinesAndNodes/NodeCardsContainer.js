@@ -1,32 +1,14 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import NodeCard from "./NodeCard";
+import Grow from "@material-ui/core/Grow";
+
+const animationDuration = 500;
 
 export default function NodeCards(props) {
   const { allNodesInAZone } = props;
 
-  const listOfNodeIDs = Object.keys(allNodesInAZone);
-
-  const listOfMachines = Object.values(allNodesInAZone);
-
-  let ListOfNodeToMachineMapping = listOfMachines.map(
-    (machinesMappedToNodeAtIndex, node_index) => {
-      let nodeToMachineMapping = {};
-
-      nodeToMachineMapping["mac"] = listOfNodeIDs[node_index];
-
-      if (machinesMappedToNodeAtIndex[0]) {
-        machinesMappedToNodeAtIndex.map((machine, machine_index) => {
-          if (machine.Sensor_Number) {
-            nodeToMachineMapping[machine.Sensor_Number] = machine.name;
-          }
-          return machine_index;
-        });
-      }
-
-      return nodeToMachineMapping;
-    }
-  );
+  const listOfNodeMACs = Object.keys(allNodesInAZone);
 
   return (
     <Grid container>
@@ -38,10 +20,21 @@ export default function NodeCards(props) {
           alignItems="center"
           spacing={2}
         >
-          {ListOfNodeToMachineMapping.map((item, index) => (
-            <Grid key={index} item lg={3} md={4} sm={12}>
-              <NodeCard data={{ name: item.mac }} />
-            </Grid>
+          {listOfNodeMACs.map((mac, index) => (
+            <Grow
+              in={true}
+              {...{ timeout: animationDuration + index * animationDuration }}
+            >
+              <Grid key={index} item lg={3} md={4} xs={12}>
+                <NodeCard
+                  data={{
+                    name: mac,
+                    sensor1: allNodesInAZone[mac][0],
+                    sensor2: allNodesInAZone[mac][1],
+                  }}
+                />
+              </Grid>
+            </Grow>
           ))}
         </Grid>
       </Grid>

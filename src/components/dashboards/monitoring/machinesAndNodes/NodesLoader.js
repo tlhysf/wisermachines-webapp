@@ -3,16 +3,6 @@ import Grid from "@material-ui/core/Grid";
 import { skeletonStyle } from "../../../../utils/styles";
 // import colors from "../../../../utils/colors";
 
-const headerCard = (
-  <Skeleton
-    animation="pulse"
-    variant="rect"
-    height="100%"
-    width="16.1%"
-    style={skeletonStyle}
-  ></Skeleton>
-);
-
 const card = (
   <Skeleton
     animation="pulse"
@@ -28,25 +18,7 @@ const row1 = (
     style={{
       display: "flex",
       marginBottom: 10,
-      height: 64,
-      justifyContent: "space-between",
-    }}
-  >
-    {headerCard}
-    {headerCard}
-    {headerCard}
-    {headerCard}
-    {headerCard}
-    {headerCard}
-  </div>
-);
-
-const row2 = (
-  <div
-    style={{
-      display: "flex",
-      marginBottom: 10,
-      height: 224,
+      height: 100,
       justifyContent: "space-between",
     }}
   >
@@ -57,7 +29,7 @@ const row2 = (
   </div>
 );
 
-const WorkshopsLoader = (
+const NodesLoader = (
   <Grid
     item
     xs={12}
@@ -66,9 +38,9 @@ const WorkshopsLoader = (
     }}
   >
     {row1}
-    {row2}
-    {row2}
+    {row1}
+    {row1}
   </Grid>
 );
 
-export default WorkshopsLoader;
+export default NodesLoader;

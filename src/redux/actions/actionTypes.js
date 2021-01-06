@@ -20,15 +20,28 @@ export const zones = {
 
 export const machinesAndNodes = {
   getAllMachinesInAZone: "GET_ALL_MACHINES_IN_A_ZONE",
-  machinesLoading: "LOADING_MACHINES",
-  addMachine: "ADD_MACHINE",
-  editOrDeleteMachine: "EDIT_OR_DELETE_MACHINE",
   getAllMachineMappings: "GET_ALL_MACHINE_MAPPINGS",
+  machinesLoading: "LOADING_MACHINES",
 
   getAllNodesInAZone: "GET_ALL_MACHINES_AND_NODES_IN_A_ZONE",
   nodesLoading: "LOADING_NODES",
+
+  addMachine: "ADD_MACHINE",
+  addMachineLoading: "ADD_MACHINE_LOADING",
+
+  editOrDeleteMachine: "EDIT_OR_DELETE_MACHINE",
+  editMachineLoading: "EDIT_MACHINE_LOADING",
+  deleteMachineLoading: "DELETE_MACHINE_LOADING",
+
+  editMachineMapping: "EDIT_MACHINE_MAPPING",
+  editMachineMappingLoading: "EDIT_MACHINE_MAPPING_LOADING",
+
   addNode: "ADD_NODE",
+  addNodeLoading: "ADD_NODE_LOADING",
+
   editOrDeleteNode: "EDIT_OR_DELETE_NODE",
+  editNodeLoading: "EDIT_NODE_LOADING",
+  deleteNodeLoading: "DELETE_NODE_LOADING",
 };
 
 export const machineDetails = {

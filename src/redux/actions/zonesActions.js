@@ -33,7 +33,7 @@ export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
               payload: { allZonesInAWorkshop, workshopID },
             });
           } else {
-            console.log("error: unexpected response", res.data);
+            console.log("error: unexpected response", allZonesInAWorkshop);
           }
         } else {
           console.log("error: unexpected response", res.data);

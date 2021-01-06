@@ -1,11 +1,7 @@
 import Skeleton from "@material-ui/lab/Skeleton";
 import Grid from "@material-ui/core/Grid";
+import { skeletonStyle } from "../../../../utils/styles";
 // import colors from "../../../../utils/colors";
-
-const skeletonStyle = {
-  borderRadius: 5,
-  backgroundColor: "white",
-};
 
 const headerCard = (
   <Skeleton

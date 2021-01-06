@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { breadCrumbsList } from "../../../../Routes";
+
+// MUI Components
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 
+// MUI Icons
 import AddIcon from "@material-ui/icons/Add";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ViewCompactIcon from "@material-ui/icons/ViewCompact";
 
-import { breadCrumbsList } from "../../../../Routes";
+// Styling
+import { makeStyles } from "@material-ui/core/styles";
 import { common } from "../../../../utils/styles";
 import colors from "../../../../utils/colors";
 
-import { makeStyles } from "@material-ui/core/styles";
-
+// Custom Components
 import MachineCards from "./MachineCardsContainer";
 import NodeCards from "./NodeCardsContainer";
-
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
+
+// Forms
 import AddMachine from "./inputs/AddMachine";
 import EditMachine from "./inputs/EditMachine";
 import AddNode from "./inputs/AddNode";
 import EditNode from "./inputs/EditNode";
 import EditMachineMapping from "./inputs/EditMachineMapping";
 
+// Redux
 import { useSelector, useDispatch } from "react-redux";
 import {
   getAllNodesInAZoneAction,
@@ -32,6 +39,10 @@ import {
 import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonAction";
 import { common as commonActionTypes } from "../../../../redux/actions/actionTypes";
 
+// Loaders
+import MachinesLoader from "./MachinesLoader";
+import NodesLoader from "./NodesLoader";
+
 const useStyles = makeStyles((theme) => common(theme));
 
 const machinesOrNodesFiltersList = ["machines", "nodes"];
@@ -40,6 +51,14 @@ const MachinesAndNodes = (props) => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
+
+  const [compact, setCompact] = useState(false);
+
+  const machinesLoading = useSelector(
+    (state) => state.machines.machinesLoading
+  );
+
+  const nodesLoading = useSelector((state) => state.nodes.nodesLoading);
 
   const allMachinesInAZone = useSelector(
     (state) => state.machines.allMachinesInAZone
@@ -101,6 +120,25 @@ const MachinesAndNodes = (props) => {
           alignItems="center"
           spacing={1}
         >
+          {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? null : (
+            <Grid item>
+              <Tooltip title="Compact View" placement="top">
+                <Button
+                  className={classes.button}
+                  onClick={(e) => setCompact(!compact)}
+                  style={compact ? { backgroundColor: colors.TEAL[700] } : {}}
+                  variant="contained"
+                >
+                  <ViewCompactIcon
+                    className={classes.iconInsideButton}
+                    style={
+                      compact ? { color: "white" } : { color: colors.TEAL[700] }
+                    }
+                  />
+                </Button>
+              </Tooltip>
+            </Grid>
+          )}
           <Grid item>
             <Tooltip
               title={
@@ -127,6 +165,23 @@ const MachinesAndNodes = (props) => {
     </Grid>
   );
 
+  const renderNodes = nodesLoading ? (
+    NodesLoader
+  ) : (
+    <NodeCards allNodesInAZone={allNodesInAZone} />
+  );
+
+  const renderMachines = machinesLoading ? (
+    MachinesLoader
+  ) : (
+    <MachineCards allMachinesInAZone={allMachinesInAZone} compact={compact} />
+  );
+
+  const renderMachinesOrNodes =
+    machinesOrNodesFilter === machinesOrNodesFiltersList[1]
+      ? renderNodes
+      : renderMachines;
+
   return (
     <React.Fragment>
       <Grid container justify="center" alignItems="center" spacing={2}>
@@ -134,11 +189,7 @@ const MachinesAndNodes = (props) => {
           {navbar}
         </Grid>
         <Grid item xs={12}>
-          {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? (
-            <NodeCards allNodesInAZone={allNodesInAZone} />
-          ) : (
-            <MachineCards allMachinesInAZone={allMachinesInAZone} />
-          )}
+          {renderMachinesOrNodes}
         </Grid>
       </Grid>
       {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? (
