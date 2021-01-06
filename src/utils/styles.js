@@ -1,4 +1,3 @@
-import { color } from "highcharts";
 import colors from "./colors";
 
 // const pageHeight = 630;

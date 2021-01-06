@@ -35,6 +35,7 @@ export const machinesAndNodes = {
 
   editMachineMapping: "EDIT_MACHINE_MAPPING",
   editMachineMappingLoading: "EDIT_MACHINE_MAPPING_LOADING",
+  deleteMachineMappingLoading: "DELETE_MACHINE_MAPPING_LOADING",
 
   addNode: "ADD_NODE",
   addNodeLoading: "ADD_NODE_LOADING",

@@ -115,14 +115,16 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
         console.log(error);
       });
   } else {
-    dispatch({
-      type: machinesAndNodes.getAllNodesInAZone,
-      payload: {
-        allNodesInAZoneProfiles: placeholderRes.getAllNodes,
-        allNodesInAZone: placeholderRes.getAllNodeToMachineMappingInAZone,
-        zoneID,
-      },
-    });
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.getAllNodesInAZone,
+        payload: {
+          allNodesInAZoneProfiles: placeholderRes.getAllNodes,
+          allNodesInAZone: placeholderRes.getAllNodeToMachineMappingInAZone,
+          zoneID,
+        },
+      });
+    }, loadingTime);
   }
 };
 
@@ -157,16 +159,20 @@ export const getAllMachineMappingsAction = (dispatch) => {
         console.log(error);
       });
   } else {
-    dispatch({
-      type: machinesAndNodes.getAllMachineMappings,
-      payload: placeholderRes.getAllMachineMappings,
-    });
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.getAllMachineMappings,
+        payload: placeholderRes.getAllMachineMappings,
+      });
+    }, loadingTime);
   }
 };
 
+// *** POST and PATCH request related to machines ***
+
 export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
   dispatch({
-    type: machinesAndNodes.machinesLoading,
+    type: machinesAndNodes.addMachineLoading,
   });
 
   const data = JSON.stringify(addRequestBody);
@@ -179,45 +185,57 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
     data: data,
   };
 
-  axios(config)
-    .then((res) => {
-      if (res.status === 201) {
-        mapRequestBody.machine_id = res.data._id;
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        if (res.status === 201) {
+          mapRequestBody.machine_id = res.data._id;
 
-        const mapRequestConfig = {
-          method: "post",
-          url: keys.server + "/MachineMapping",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: JSON.stringify(mapRequestBody),
-        };
+          const mapRequestConfig = {
+            method: "post",
+            url: keys.server + "/MachineMapping",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: JSON.stringify(mapRequestBody),
+          };
 
-        axios(mapRequestConfig)
-          .then((res) => {
-            if (res.status === 201) {
-              dispatch({
-                type: machinesAndNodes.addMachine,
-                payload: {
-                  // should be response body
-                  response: addRequestBody,
-                },
-              });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+          axios(mapRequestConfig)
+            .then((res) => {
+              if (res.status === 201) {
+                dispatch({
+                  type: machinesAndNodes.addMachine,
+                  payload: {
+                    // should be response body
+                    response: addRequestBody,
+                  },
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.addMachine,
+        payload: {
+          // should be response body
+          response: addRequestBody,
+        },
+      });
+    }, loadingTime);
+  }
 };
 
 export const editMachineAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.machinesLoading,
+    type: machinesAndNodes.editMachineLoading,
   });
 
   const data = JSON.stringify(body);
@@ -230,26 +248,38 @@ export const editMachineAction = (dispatch, body) => {
     data: data,
   };
 
-  axios(config)
-    .then((res) => {
-      if (res.status === 200) {
-        dispatch({
-          type: machinesAndNodes.editOrDeleteMachine,
-          payload: {
-            // should be response body
-            response: body,
-          },
-        });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch({
+            type: machinesAndNodes.editOrDeleteMachine,
+            payload: {
+              // should be response body
+              response: body,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.editOrDeleteMachine,
+        payload: {
+          // should be response body
+          response: body,
+        },
+      });
+    }, loadingTime);
+  }
 };
 
 export const deleteMachineAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.machinesLoading,
+    type: machinesAndNodes.deleteMachineLoading,
   });
 
   const data = JSON.stringify(body);
@@ -262,26 +292,76 @@ export const deleteMachineAction = (dispatch, body) => {
     data: data,
   };
 
-  axios(config)
-    .then((res) => {
-      if (res.status === 200) {
-        dispatch({
-          type: machinesAndNodes.editOrDeleteMachine,
-          payload: {
-            // should be response body
-            response: body,
-          },
-        });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch({
+            type: machinesAndNodes.editOrDeleteMachine,
+            payload: {
+              // should be response body
+              response: body,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.editOrDeleteMachine,
+        payload: {
+          // should be response body
+          response: body,
+        },
+      });
+    }, loadingTime);
+  }
 };
+
+export const editMachineMapping = (dispatch, body) => {
+  dispatch({
+    type: machinesAndNodes.editMachineMapping,
+  });
+
+  // Hit API end-point here
+
+  setTimeout(() => {
+    dispatch({
+      type: machinesAndNodes.editMachineMapping,
+      payload: {
+        // should be response body
+        response: body,
+      },
+    });
+  }, loadingTime);
+};
+
+export const deleteMachineMapping = (dispatch, body) => {
+  dispatch({
+    type: machinesAndNodes.deleteMachineMappingLoading,
+  });
+
+  // Hit API end-point here
+
+  setTimeout(() => {
+    dispatch({
+      type: machinesAndNodes.editMachineMapping,
+      payload: {
+        // should be response body
+        response: body,
+      },
+    });
+  }, loadingTime);
+};
+
+// *** POST and PATCH request related to nodes ***
 
 export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
   dispatch({
-    type: machinesAndNodes.nodesLoading,
+    type: machinesAndNodes.addNodeLoading,
   });
 
   const createNodeConfig = {
@@ -293,53 +373,62 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
     data: JSON.stringify(createNodeBody),
   };
 
-  axios(createNodeConfig)
-    .then((res) => {
-      if (res.status === 201) {
-        const nodeID = res.data._id;
+  if (!keys.showMockData) {
+    axios(createNodeConfig)
+      .then((res) => {
+        if (res.status === 201) {
+          const nodeID = res.data._id;
 
-        const mapNodeToTheZoneBody = {
-          zone_id: zoneID,
-          node_id: nodeID,
-        };
+          const mapNodeToTheZoneBody = {
+            zone_id: zoneID,
+            node_id: nodeID,
+          };
 
-        console.log(zoneID);
-        console.log(mapNodeToTheZoneBody);
+          const mapNodeToTheZoneConfig = {
+            method: "post",
+            url: keys.server + "/ZoneMapping",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: JSON.stringify(mapNodeToTheZoneBody),
+          };
 
-        const mapNodeToTheZoneConfig = {
-          method: "post",
-          url: keys.server + "/ZoneMapping",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: JSON.stringify(mapNodeToTheZoneBody),
-        };
-
-        axios(mapNodeToTheZoneConfig)
-          .then((res) => {
-            if (res.status === 201) {
-              dispatch({
-                type: machinesAndNodes.addNode,
-                payload: {
-                  // should be response body
-                  response: createNodeBody,
-                },
-              });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+          axios(mapNodeToTheZoneConfig)
+            .then((res) => {
+              if (res.status === 201) {
+                dispatch({
+                  type: machinesAndNodes.addNode,
+                  payload: {
+                    // should be response body
+                    response: createNodeBody,
+                  },
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.addNode,
+        payload: {
+          // should be response body
+          response: createNodeBody,
+        },
+      });
+    }, loadingTime);
+  }
 };
 
 export const editNodeAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.nodesLoading,
+    type: machinesAndNodes.editNodeLoading,
   });
 
   const data = JSON.stringify(body);
@@ -352,62 +441,75 @@ export const editNodeAction = (dispatch, body) => {
     data: data,
   };
 
-  axios(config)
-    .then((res) => {
-      if (res.status === 200) {
-        dispatch({
-          type: machinesAndNodes.editOrDeleteNode,
-          payload: {
-            // should be response body
-            response: body,
-          },
-        });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch({
+            type: machinesAndNodes.editOrDeleteNode,
+            payload: {
+              // should be response body
+              response: body,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.editOrDeleteNode,
+        payload: {
+          // should be response body
+          response: body,
+        },
+      });
+    }, loadingTime);
+  }
 };
 
 export const deleteNodeAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.nodesLoading,
+    type: machinesAndNodes.deleteNodeLoading,
   });
 
-  console.log(body);
-
-  dispatch({
-    type: machinesAndNodes.editOrDeleteNode,
-    payload: {
-      // should be response body
-      response: body,
+  const data = JSON.stringify(body);
+  const config = {
+    method: "delete",
+    url: keys.server + "/node",
+    headers: {
+      "Content-Type": "application/json",
     },
-  });
+    data: data,
+  };
 
-  // const data = JSON.stringify(body);
-  // const config = {
-  //   method: "delete",
-  //   url: keys.server + "/node",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   data: data,
-  // };
-
-  // axios(config)
-  //   .then((res) => {
-  //     console.log(res);
-  //     if (res.status === 200) {
-  //       dispatch({
-  //         type: machinesAndNodes.editOrDeleteNode,
-  //         payload: {
-  //           // should be response body
-  //           response: body,
-  //         },
-  //       });
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch({
+            type: machinesAndNodes.editOrDeleteNode,
+            payload: {
+              // should be response body
+              response: body,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } else {
+    setTimeout(() => {
+      dispatch({
+        type: machinesAndNodes.editOrDeleteNode,
+        payload: {
+          // should be response body
+          response: body,
+        },
+      });
+    }, loadingTime);
+  }
 };
