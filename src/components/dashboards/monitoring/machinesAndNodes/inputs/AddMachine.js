@@ -9,7 +9,9 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Drawer from "@material-ui/core/Drawer";
 import Slider from "@material-ui/core/Slider";
-import Snackbar from "@material-ui/core/Snackbar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import Grow from "@material-ui/core/Grow";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyle, formSlider } from "../../../../../utils/styles";
@@ -23,6 +25,8 @@ const AddMachine = (props) => {
 
   const openForm = useSelector((state) => state.common.toggleAddFormDrawer);
   const response = useSelector((state) => state.machines.addMachineResponse);
+  const loading = useSelector((state) => state.machines.addMachineLoading);
+
   const allNodesInAZone = useSelector((state) => state.nodes.allNodesInAZone);
   const allNodesInAZoneProfiles = useSelector(
     (state) => state.nodes.allNodesInAZoneProfiles
@@ -86,8 +90,10 @@ const AddMachine = (props) => {
     const addRequestBody = requestBodyFormat.addMachine;
 
     addRequestBody.name = formData.name !== "" ? formData.name : null;
+
     addRequestBody.idle_threshold =
       formData.idleThreshold > 0 ? formData.idleThreshold : null;
+
     addRequestBody.max_load =
       parseInt(formData.maxLoad) > 0 ? formData.maxLoad : null;
 
@@ -147,10 +153,11 @@ const AddMachine = (props) => {
   useEffect(() => {
     if (success) {
       setTimeout(() => {
-        cleanUp();
         toggleAddFormDrawerAction(dispatch);
+        cleanUp();
+
         window.location.href = props.url;
-      }, 1000);
+      }, 2000);
     }
   }, [success, dispatch, props]);
 
@@ -166,6 +173,18 @@ const AddMachine = (props) => {
             className={classes.form}
             onSubmit={(e) => e.preventDefault()}
           >
+            {success ? (
+              <Grow in={true} {...{ timeout: 500 }}>
+                <Button
+                  startIcon={<CheckCircleOutlineIcon />}
+                  fullWidth
+                  className={classes.success}
+                  onClick={(e) => e.preventDefault()}
+                >
+                  Success
+                </Button>
+              </Grow>
+            ) : null}
             <TextField
               variant="outlined"
               margin="normal"
@@ -324,15 +343,27 @@ const AddMachine = (props) => {
                 {errors.sensor}
               </Typography>
             ) : null}
-            <Button
-              fullWidth
-              variant="outlined"
-              color="primary"
-              className={classes.submit}
-              onClick={(e) => handleSave(e)}
-            >
-              Save
-            </Button>
+            {loading ? (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submitLoading}
+                onClick={(e) => e.preventDefault()}
+              >
+                <CircularProgress color="primary" size={20} />
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submit}
+                onClick={(e) => handleSave(e)}
+              >
+                Save
+              </Button>
+            )}
             <Button
               fullWidth
               variant="outlined"
@@ -341,15 +372,6 @@ const AddMachine = (props) => {
             >
               Cancel
             </Button>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={success}
-              autoHideDuration={6000}
-              message="Success!"
-            />
           </form>
         </div>
       </Container>

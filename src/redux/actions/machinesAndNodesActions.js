@@ -321,9 +321,9 @@ export const deleteMachineAction = (dispatch, body) => {
   }
 };
 
-export const editMachineMapping = (dispatch, body) => {
+export const editMachineMappingAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.editMachineMapping,
+    type: machinesAndNodes.editMachineMappingLoading,
   });
 
   // Hit API end-point here
@@ -339,7 +339,7 @@ export const editMachineMapping = (dispatch, body) => {
   }, loadingTime);
 };
 
-export const deleteMachineMapping = (dispatch, body) => {
+export const deleteMachineMappingAction = (dispatch, body) => {
   dispatch({
     type: machinesAndNodes.deleteMachineMappingLoading,
   });

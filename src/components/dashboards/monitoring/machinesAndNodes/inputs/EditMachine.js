@@ -12,7 +12,9 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Drawer from "@material-ui/core/Drawer";
 import Slider from "@material-ui/core/Slider";
-import Snackbar from "@material-ui/core/Snackbar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import Grow from "@material-ui/core/Grow";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyle, formSlider } from "../../../../../utils/styles";
@@ -24,11 +26,13 @@ const EditMachine = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const nameRef = React.useRef();
-  const maxLoadRef = React.useRef();
-
   const openForm = useSelector((state) => state.common.toggleEditFormDrawer);
   const response = useSelector((state) => state.machines.editMachineResponse);
+  const editLoading = useSelector((state) => state.machines.editMachineLoading);
+  const deleteLoading = useSelector(
+    (state) => state.machines.deleteMachineLoading
+  );
+
   const allMachinesInAZone = useSelector(
     (state) => state.machines.allMachinesInAZone
   );
@@ -43,10 +47,6 @@ const EditMachine = (props) => {
   const [expectedResponse, setExpectedResponse] = useState("");
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
-  const [focus, setFocus] = useState({
-    name: true,
-    maxLoad: false,
-  });
 
   const cleanUp = () => {
     setFormData({
@@ -55,10 +55,6 @@ const EditMachine = (props) => {
       idleThreshold: 0,
     });
     setErrors({});
-    setFocus({
-      name: true,
-      maxLoad: false,
-    });
     setSuccess(false);
   };
 
@@ -71,36 +67,6 @@ const EditMachine = (props) => {
       setErrors({
         [e.target.id]: null,
       });
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      switch (e.target.id) {
-        case "name":
-          try {
-            maxLoadRef.current.focus();
-          } catch (error) {
-            console.log(error);
-          }
-
-          setFocus({
-            ...focus,
-            [e.target.id]: false,
-            maxLoad: true,
-          });
-          break;
-
-        case "maxLoad":
-          setFocus({
-            ...focus,
-            [e.target.id]: false,
-          });
-          break;
-
-        default:
-          break;
-      }
     }
   };
 
@@ -160,7 +126,11 @@ const EditMachine = (props) => {
       }
     }
 
-    if (requestBody.id && Object.keys(requestBody).length > 1) {
+    if (
+      requestBody.id &&
+      Object.keys(requestBody).length > 1 &&
+      Object.values(errors).filter((x) => x).length === 0
+    ) {
       setExpectedResponse(requestBody.id);
       editMachineAction(dispatch, requestBody);
     }
@@ -205,7 +175,7 @@ const EditMachine = (props) => {
         cleanUp();
         toggleEditFormDrawerAction(dispatch);
         window.location.href = props.url;
-      }, 1000);
+      }, 2000);
     }
   }, [success, dispatch, props]);
 
@@ -221,6 +191,18 @@ const EditMachine = (props) => {
             className={classes.form}
             onSubmit={(e) => e.preventDefault()}
           >
+            {success ? (
+              <Grow in={true} {...{ timeout: 500 }}>
+                <Button
+                  startIcon={<CheckCircleOutlineIcon />}
+                  fullWidth
+                  className={classes.success}
+                  onClick={(e) => e.preventDefault()}
+                >
+                  Success
+                </Button>
+              </Grow>
+            ) : null}
             <TextField
               variant="outlined"
               margin="normal"
@@ -232,10 +214,8 @@ const EditMachine = (props) => {
               placeholder={errors.name ? errors.name : formData.name}
               color={errors.name ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
-              focused={errors.name ? true : focus.name}
-              inputRef={nameRef}
+              focused={true}
             />
             <TextField
               variant="outlined"
@@ -247,10 +227,8 @@ const EditMachine = (props) => {
               name="maxLoad"
               color={errors.maxLoad ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
-              focused={errors.maxLoad ? true : focus.maxLoad}
-              inputRef={maxLoadRef}
+              focused={true}
               defaultValue={formData.maxLoad}
               type="number"
               inputProps={{ min: 0 }}
@@ -301,15 +279,27 @@ const EditMachine = (props) => {
                 </Typography>
               ) : null}
             </div>
-            <Button
-              fullWidth
-              variant="outlined"
-              color="primary"
-              className={classes.submit}
-              onClick={(e) => handleSave(e)}
-            >
-              Save
-            </Button>
+            {editLoading ? (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submitLoading}
+                onClick={(e) => e.preventDefault()}
+              >
+                <CircularProgress color="primary" size={20} />
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submit}
+                onClick={(e) => handleSave(e)}
+              >
+                Save
+              </Button>
+            )}
             <Button
               fullWidth
               variant="outlined"
@@ -319,24 +309,27 @@ const EditMachine = (props) => {
               Cancel
             </Button>
             <hr className={classes.divider} />
-            <Button
-              fullWidth
-              variant="outlined"
-              className={classes.submit}
-              color="secondary"
-              onClick={(e) => handleDelete(e)}
-            >
-              Delete
-            </Button>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={success}
-              autoHideDuration={6000}
-              message="Success!"
-            />
+            {deleteLoading ? (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="secondary"
+                className={classes.submitLoading}
+                onClick={(e) => e.preventDefault()}
+              >
+                <CircularProgress color="secondary" size={20} />
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="outlined"
+                className={classes.submit}
+                color="secondary"
+                onClick={(e) => handleDelete(e)}
+              >
+                Delete
+              </Button>
+            )}
           </form>
         </div>
       </Container>

@@ -13,7 +13,9 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Drawer from "@material-ui/core/Drawer";
 import Slider from "@material-ui/core/Slider";
-import Snackbar from "@material-ui/core/Snackbar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import Grow from "@material-ui/core/Grow";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyle, formSlider } from "../../../../../utils/styles";
@@ -84,12 +86,14 @@ const sensorRatings = [
 const EditNode = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const MACRef = React.useRef();
 
   const openForm = useSelector((state) => state.common.toggleEditFormDrawer);
   const response = useSelector((state) => state.nodes.editNodeResponse);
-  const zoneID = useSelector((state) => state.nodes.zoneID);
 
+  const editLoading = useSelector((state) => state.nodes.editNodeLoading);
+  const deleteLoading = useSelector((state) => state.nodes.deleteNodeLoading);
+
+  const zoneID = useSelector((state) => state.machines.zoneID);
   const allNodesInAZoneProfiles = useSelector(
     (state) => state.nodes.allNodesInAZoneProfiles
   );
@@ -106,11 +110,6 @@ const EditNode = (props) => {
   const [errors, setErrors] = useState({});
   const [expectedResponse, setExpectedResponse] = useState("");
   const [success, setSuccess] = useState(false);
-  const [focus, setFocus] = useState({
-    MAC: true,
-    sensor1Rating: false,
-    sensor2Rating: false,
-  });
 
   const cleanUp = () => {
     setFormData({
@@ -119,11 +118,6 @@ const EditNode = (props) => {
       sensor2Rating: 0,
     });
     setErrors({});
-    setFocus({
-      MAC: true,
-      sensor1Rating: sensorRatings[0].value,
-      sensor2Rating: sensorRatings[0].value,
-    });
     setSuccess(false);
   };
 
@@ -136,24 +130,6 @@ const EditNode = (props) => {
     setErrors({
       [e.target.id]: null,
     });
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      switch (e.target.id) {
-        case "MAC":
-          setFocus({
-            ...focus,
-            [e.target.id]: false,
-            sensor1Rating: true,
-            sensor2Rating: true,
-          });
-          break;
-
-        default:
-          break;
-      }
-    }
   };
 
   const handleSlider1 = (e, value) => {
@@ -208,7 +184,11 @@ const EditNode = (props) => {
       requestBody.sensor_2_rating = formData.sensor2Rating;
     }
 
-    if (requestBody.id && Object.keys(requestBody).length > 1) {
+    if (
+      requestBody.id &&
+      Object.keys(requestBody).length > 1 &&
+      Object.values(errors).filter((x) => x).length === 0
+    ) {
       setExpectedResponse(requestBody.id);
       editNodeAction(dispatch, requestBody);
     }
@@ -253,7 +233,7 @@ const EditNode = (props) => {
         cleanUp();
         toggleEditFormDrawerAction(dispatch);
         getAllNodesInAZoneAction(dispatch, zoneID);
-      }, 1000);
+      }, 2000);
     }
   }, [success, dispatch, props]);
 
@@ -269,6 +249,19 @@ const EditNode = (props) => {
             className={classes.form}
             onSubmit={(e) => e.preventDefault()}
           >
+            {success ? (
+              <Grow in={true} {...{ timeout: 500 }}>
+                <Button
+                  startIcon={<CheckCircleOutlineIcon />}
+                  fullWidth
+                  className={classes.success}
+                  onClick={(e) => e.preventDefault()}
+                >
+                  Success
+                </Button>
+              </Grow>
+            ) : null}
+
             <TextField
               variant="outlined"
               margin="normal"
@@ -280,10 +273,8 @@ const EditNode = (props) => {
               value={formData.MAC}
               color={errors.MAC ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
-              onKeyPress={(e) => handleKeyPress(e)}
               autoComplete="off"
-              focused={errors.MAC ? true : focus.MAC}
-              inputRef={MACRef}
+              focused={true}
               inputProps={{
                 maxLength: 17,
               }}
@@ -304,13 +295,7 @@ const EditNode = (props) => {
                 align={"center"}
                 gutterBottom
                 style={formSlider.title}
-                color={
-                  errors.sensor1Rating
-                    ? "secondary"
-                    : focus.sensor1Rating
-                    ? "primary"
-                    : "textSecondary"
-                }
+                color={errors.sensor1Rating ? "secondary" : "primary"}
               >
                 Sensor 1*
               </Typography>
@@ -349,13 +334,7 @@ const EditNode = (props) => {
                 align={"center"}
                 gutterBottom
                 style={formSlider.title}
-                color={
-                  errors.sensor2Rating
-                    ? "secondary"
-                    : focus.sensor2Rating
-                    ? "primary"
-                    : "textSecondary"
-                }
+                color={errors.sensor2Rating ? "secondary" : "primary"}
               >
                 Sensor 2*
               </Typography>
@@ -388,16 +367,27 @@ const EditNode = (props) => {
                 {errors.sensor2Rating}
               </Typography>
             ) : null}
-
-            <Button
-              fullWidth
-              variant="outlined"
-              color="primary"
-              className={classes.submit}
-              onClick={(e) => handleSave(e)}
-            >
-              Save
-            </Button>
+            {editLoading ? (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submitLoading}
+                onClick={(e) => e.preventDefault()}
+              >
+                <CircularProgress color="primary" size={20} />
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submit}
+                onClick={(e) => handleSave(e)}
+              >
+                Save
+              </Button>
+            )}
 
             <Button
               fullWidth
@@ -408,24 +398,27 @@ const EditNode = (props) => {
               Cancel
             </Button>
             <hr className={classes.divider} />
-            <Button
-              fullWidth
-              variant="outlined"
-              className={classes.submit}
-              color="secondary"
-              onClick={(e) => handleDelete(e)}
-            >
-              Delete
-            </Button>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={success}
-              autoHideDuration={6000}
-              message="Success!"
-            />
+            {deleteLoading ? (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="secondary"
+                className={classes.submitLoading}
+                onClick={(e) => e.preventDefault()}
+              >
+                <CircularProgress color="secondary" size={20} />
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="outlined"
+                className={classes.submit}
+                color="secondary"
+                onClick={(e) => handleDelete(e)}
+              >
+                Delete
+              </Button>
+            )}
           </form>
         </div>
       </Container>

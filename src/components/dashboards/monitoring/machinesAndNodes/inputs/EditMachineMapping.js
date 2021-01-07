@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleEditMappingFormDrawerAction } from "../../../../../redux/actions/commonAction";
-// import {
-//   editMachineMappingAction,
-// } from "../../../../../redux/actions/machinesAndNodesActions";
+import {
+  editMachineMappingAction,
+  deleteMachineMappingAction,
+} from "../../../../../redux/actions/machinesAndNodesActions";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Drawer from "@material-ui/core/Drawer";
-import Snackbar from "@material-ui/core/Snackbar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import Grow from "@material-ui/core/Grow";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyle, formSlider } from "../../../../../utils/styles";
-import { requestBodyFormat } from "../../../../../utils/validation";
 
 const useStyles = makeStyles((theme) => formStyle(theme));
 
@@ -30,23 +32,36 @@ const EditMachineMapping = (props) => {
     (state) => state.machines.editMachineMappingResponse
   );
 
+  const editLoading = useSelector(
+    (state) => state.machines.editMachineMappingLoading
+  );
+  const deleteLoading = useSelector(
+    (state) => state.machines.deleteMachineMappingLoading
+  );
+
+  // Get 'mapping' object ID
   const allMachineMappings = useSelector(
     (state) => state.machines.machineMappings
   );
-
   const thisMapping = allMachineMappings
     .filter((item) => (item.machine_id === openForm.ID ? item : false))
     .pop();
 
+  // Get nodes available in the zone for mapping
   const allNodesInAZone = useSelector((state) => state.nodes.allNodesInAZone);
-
   const allNodesInAZoneProfiles = useSelector(
     (state) => state.nodes.allNodesInAZoneProfiles
   );
-
   const MACAddresses = Object.keys(allNodesInAZone).filter((key) =>
     allNodesInAZone[key].length < 2 ? allNodesInAZone[key] : false
   );
+
+  // Get current form data:
+  // 1) sensor number:  from thisMapping object
+  // 2) node MAC:
+  //    1.1) get node ID from thisMapping object
+  //    1.2) get node thisNode from allNodesInAZone
+  //    1.3) get MAC from thisNode
 
   const [formData, setFormData] = useState({
     MAC: "",
@@ -82,9 +97,9 @@ const EditMachineMapping = (props) => {
   const handleSave = (e) => {
     e.preventDefault();
 
-    const mapRequestBody = requestBodyFormat.mapMachine;
+    const mapRequestBody = {};
 
-    // mapRequestBody._id = ?
+    mapRequestBody._id = thisMapping._id;
 
     if (formData.MAC !== "") {
       const nodeID = allNodesInAZoneProfiles.map((x) =>
@@ -109,9 +124,24 @@ const EditMachineMapping = (props) => {
 
     // console.log(mapRequestBody, formData, errors);
 
-    if (mapRequestBody._id) {
+    if (
+      mapRequestBody._id &&
+      Object.values(mapRequestBody).filter((x) => x).length > 1 &&
+      Object.values(errors).filter((x) => x).length === 0
+    ) {
       setExpectedResponse(mapRequestBody._id);
-      //   editMachineMappingAction(dispatch, mapRequestBody);
+      editMachineMappingAction(dispatch, mapRequestBody);
+    }
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      const requestBody = { id: thisMapping._id };
+
+      setExpectedResponse(requestBody.id);
+      deleteMachineMappingAction(dispatch, requestBody);
     }
   };
 
@@ -123,7 +153,7 @@ const EditMachineMapping = (props) => {
   };
 
   useEffect(() => {
-    if (response._id === expectedResponse) {
+    if (response._id === expectedResponse || response.id === expectedResponse) {
       setSuccess(true);
     }
   }, [response]);
@@ -134,7 +164,7 @@ const EditMachineMapping = (props) => {
         cleanUp();
         toggleEditMappingFormDrawerAction(dispatch);
         window.location.href = props.url;
-      }, 1000);
+      }, 2000);
     }
   }, [success, dispatch, props]);
 
@@ -150,6 +180,18 @@ const EditMachineMapping = (props) => {
             className={classes.form}
             onSubmit={(e) => e.preventDefault()}
           >
+            {success ? (
+              <Grow in={true} {...{ timeout: 500 }}>
+                <Button
+                  startIcon={<CheckCircleOutlineIcon />}
+                  fullWidth
+                  className={classes.success}
+                  onClick={(e) => e.preventDefault()}
+                >
+                  Success
+                </Button>
+              </Grow>
+            ) : null}
             <TextField
               variant="outlined"
               margin="normal"
@@ -232,15 +274,27 @@ const EditMachineMapping = (props) => {
                 {errors.sensor}
               </Typography>
             ) : null}
-            <Button
-              fullWidth
-              variant="outlined"
-              color="primary"
-              className={classes.submit}
-              onClick={(e) => handleSave(e)}
-            >
-              Save
-            </Button>
+            {editLoading ? (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submitLoading}
+                onClick={(e) => e.preventDefault()}
+              >
+                <CircularProgress color="primary" size={20} />
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="primary"
+                className={classes.submit}
+                onClick={(e) => handleSave(e)}
+              >
+                Save
+              </Button>
+            )}
             <Button
               fullWidth
               variant="outlined"
@@ -249,15 +303,28 @@ const EditMachineMapping = (props) => {
             >
               Cancel
             </Button>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={success}
-              autoHideDuration={6000}
-              message="Success!"
-            />
+            <hr className={classes.divider} />
+            {deleteLoading ? (
+              <Button
+                fullWidth
+                variant="outlined"
+                color="secondary"
+                className={classes.submitLoading}
+                onClick={(e) => e.preventDefault()}
+              >
+                <CircularProgress color="secondary" size={20} />
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="outlined"
+                className={classes.submit}
+                color="secondary"
+                onClick={(e) => handleDelete(e)}
+              >
+                Delete
+              </Button>
+            )}
           </form>
         </div>
       </Container>
