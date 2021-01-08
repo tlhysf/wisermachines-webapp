@@ -5,8 +5,8 @@ import { parseDataFromSSN } from "../../../../utils/parse";
 import { common } from "../../../../redux/actions/actionTypes";
 import { common as styles } from "../../../../utils/styles";
 import { isNotEmpty } from "../../../../utils/validation";
-import { timeDifference } from "../../../../utils/parse";
 import colors from "../../../../utils/colors";
+import { timeDifference } from "../../../../utils/parse";
 
 import Grid from "@material-ui/core/Grid";
 import HistoryIcon from "@material-ui/icons/History";
@@ -17,9 +17,11 @@ import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import MachineDetailsRow1 from "./MachineDetailsRow1";
 import MachineDetailsRow2 from "./MachineDetailsRow2";
 import MachineDetailsRow3 from "./MachineDetailsRow3";
-import MachineDetailsLoader from "./MachineDetailsLoader";
+import Loader from "../../../common/Loader";
 
 import { breadCrumbsList } from "../../../../Routes";
+
+import { liveMachineData } from "../../../../data/machineData";
 
 import keys from "../../../../utils/keys";
 
@@ -27,6 +29,14 @@ import io from "socket.io-client";
 const client = io(keys.server, {
   transports: ["websocket"],
 });
+
+const chartColors = {
+  machineCurrent: colors.GREEN[500],
+  machineState: colors.PURPLE[500],
+  machinePower: colors.YELLOW[500],
+  temperature: colors.ORANGE[500],
+  humidity: colors.BLUE[500],
+};
 
 const timeFiltersList = ["Last Hour", "Last 12 Hours", "Last Day"];
 
@@ -38,8 +48,8 @@ export default function MachineDetails(props) {
   const dispatch = useDispatch();
 
   const [timeFilter, settimeFilter] = useState(timeFiltersList[0]);
-  const [timeSinceLastUpdate, setTimeSinceLastUpdate] = useState("Updating...");
   const [liveData, setLiveData] = useState(null);
+  const [timeSinceLastUpdate, setTimeSinceLastUpdate] = useState("Updating...");
 
   const machineLoading = useSelector(
     (state) => state.machineDetails.machineLoading
@@ -69,19 +79,31 @@ export default function MachineDetails(props) {
   }, [dispatch, machineID]);
 
   useEffect(() => {
-    client.emit("send-data-demo-machine", { _id: machineID });
-    // client.on(`data-demo-machine-${machineID}`, (msg) => {
-    //   try {
-    //     if (msg) {
-    //       setLiveData(msg);
-    //     } else {
-    //       setLiveData(null);
-    //     }
-    //   } catch (error) {
-    //     setLiveData(null);
-    //     console.log(error);
-    //   }
-    // });
+    if (!keys.showMockData) {
+      client.emit("send-data-demo-machine", { _id: machineID });
+    }
+
+    if (!keys.showMockData) {
+      client.on(`data-demo-machine-${machineID}`, (msg) => {
+        try {
+          if (msg) {
+            setLiveData(msg);
+          } else {
+            setLiveData(null);
+          }
+        } catch (error) {
+          setLiveData(null);
+          console.log(error);
+        }
+      });
+    } else {
+      // Mock live data generator
+
+      const interval = 5000;
+      setInterval(() => {
+        setLiveData(liveMachineData());
+      }, interval);
+    }
   }, [machineID]);
 
   const {
@@ -126,10 +148,14 @@ export default function MachineDetails(props) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeSinceLastUpdate(
-        timeDifference(new Date().getTime(), timestampEnd)
-      );
-    }, 1000 * 5);
+      if (timestampEnd > 0) {
+        setTimeSinceLastUpdate(
+          timeDifference(new Date().getTime(), timestampEnd)
+        );
+      } else {
+        setTimeSinceLastUpdate("Unknown");
+      }
+    }, 10 * 1000);
     return () => clearInterval(interval);
   }, [timestampEnd]);
 
@@ -138,35 +164,32 @@ export default function MachineDetails(props) {
       series: machineState,
       timestamps: timestamps,
       name: "State",
+      color: chartColors.machineState,
       step: "center",
-      color: 4,
     },
     machinePower: {
       series: instantPower,
       timestamps: timestamps,
       name: "Power",
-      step: "",
-      color: 7,
+      color: chartColors.machinePower,
     },
     machineCurrent: {
       series: loadCurrent,
       timestamps: timestamps,
       name: "Current",
-      step: "",
-      color: 2,
+      color: chartColors.machineCurrent,
     },
     temperature: {
       series: temperature,
       timestamps: timestamps,
       name: "Temperature",
-      color: 3,
+      color: chartColors.temperature,
     },
     humidity: {
       series: humidity,
       timestamps: timestamps,
       name: "Humidity",
-      step: "",
-      color: 6,
+      color: chartColors.humidity,
     },
   };
 
@@ -209,19 +232,21 @@ export default function MachineDetails(props) {
       <Grid item xs={12}>
         {navbar}
       </Grid>
-      {machineLoading ? MachineDetailsLoader : null}
+
+      {machineLoading ? <Loader /> : null}
+
       {machineLoading ? null : (
         <Grid item xs={12}>
           <MachineDetailsRow1
             data={{
               currentNow,
               lastUpdateTimestamp,
+              timeSinceLastUpdate,
               stateNow,
               stateNowDuration,
               unitsConsumed,
               timeFilter,
               liveData,
-              timeSinceLastUpdate,
             }}
           />
         </Grid>

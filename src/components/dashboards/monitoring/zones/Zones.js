@@ -17,9 +17,9 @@ import EditZone from "./inputs/EditZone";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getAllZonesInAWorkshopAction } from "../../../../redux/actions/zonesActions";
-import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonAction";
+import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonActions";
 
-import ZonesLoader from "./ZonesLoader";
+import Loader from "../../../common/Loader";
 
 const useStyles = makeStyles((theme) => common(theme));
 
@@ -81,7 +81,7 @@ const Zones = (props) => {
         </Grid>
         <Grid item xs={12}>
           {zonesLoading ? (
-            ZonesLoader
+            <Loader />
           ) : (
             <ZoneCards allZonesInAWorkshop={allZonesInAWorkshop} />
           )}

@@ -2,9 +2,9 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Gauge from "../../../common/Gauge";
+import Gauge from "../../../../common/Gauge";
 
-import colors from "../../../../utils/colors";
+import colors from "../../../../../utils/colors";
 
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";

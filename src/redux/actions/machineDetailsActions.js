@@ -5,6 +5,8 @@ import axios from "axios";
 
 import { machineData } from "../../data/machineData";
 
+const loadingTime = 2000;
+
 export const getMachineDataByIDAction = (dispatch, ID) => {
   dispatch({
     type: machineDetails.machineLoading,
@@ -18,38 +20,40 @@ export const getMachineDataByIDAction = (dispatch, ID) => {
     },
   };
 
-  setTimeout(() => {
-    dispatch({
-      type: machineDetails.getMachineDataByID,
-      payload: {
-        ID: ID,
-        data: machineData,
-      },
-    });
-  }, 2000);
-
-  // axios(config)
-  //   .then((res) => {
-  //     const { data } = res;
-  //     if (res.status === 200) {
-  //       if (isNotEmpty(data) && data[0]) {
-  //         dispatch({
-  //           type: machineDetails.getMachineDataByID,
-  //           payload: {
-  //             ID: ID,
-  //             data: data,
-  //           },
-  //         });
-  //       } else {
-  //         // error: unexpected response
-  //         console.log("error: unexpected response", data);
-  //       }
-  //     } else {
-  //       console.log(res.status);
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     // error: fetch failed
-  //     console.log(error);
-  //   });
+  if (!keys.showMockData) {
+    axios(config)
+      .then((res) => {
+        const { data } = res;
+        if (res.status === 200) {
+          if (isNotEmpty(data)) {
+            dispatch({
+              type: machineDetails.getMachineDataByID,
+              payload: {
+                ID: ID,
+                data: data,
+              },
+            });
+          } else {
+            // error: unexpected response
+            console.log("error: unexpected response", data);
+          }
+        } else {
+          console.log(res.status);
+        }
+      })
+      .catch((error) => {
+        // error: fetch failed
+        console.log(error);
+      });
+  } else {
+    setTimeout(() => {
+      dispatch({
+        type: machineDetails.getMachineDataByID,
+        payload: {
+          ID: ID,
+          data: machineData(),
+        },
+      });
+    }, loadingTime);
+  }
 };

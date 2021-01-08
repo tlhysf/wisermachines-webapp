@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleAddFormDrawerAction } from "../../../../../redux/actions/commonAction";
+import { toggleAddFormDrawerAction } from "../../../../../redux/actions/commonActions";
 import { addMachineAction } from "../../../../../redux/actions/machinesAndNodesActions";
 
 import Button from "@material-ui/core/Button";

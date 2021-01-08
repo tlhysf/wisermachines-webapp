@@ -173,9 +173,10 @@ export const common = (theme) => ({
   },
   cardHover: {
     "&:hover": {
-      boxShadow: "0px 0.5px 1px 2px" + colors.TEAL[400],
+      boxShadow: "0px 0.5px 1px 2px" + colors.INDIGO[400],
     },
   },
+  
 });
 
 export const skeletonStyle = {

@@ -16,9 +16,9 @@ import { breadCrumbsList } from "../../../../Routes";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getAllWorkshopsAction } from "../../../../redux/actions/workshopsActions";
-import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonAction";
+import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonActions";
 
-import WorkshopsLoader from "./WorkshopsLoader";
+import Loader from "../../../common/Loader";
 
 const useStyles = makeStyles((theme) => common(theme));
 
@@ -80,7 +80,7 @@ const Workshops = (props) => {
         </Grid>
         <Grid item xs={12}>
           {workshopsLoading ? (
-            WorkshopsLoader
+            <Loader />
           ) : (
             <WorkshopCards allWorkshops={allWorkshops} />
           )}

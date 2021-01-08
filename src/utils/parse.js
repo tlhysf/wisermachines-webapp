@@ -50,9 +50,7 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
       const latest = packets.slice(-1)[0];
 
       // Time
-      timestamps = packets.map((packet) =>
-        Date.parse(packet.timestamp.slice(0, -1))
-      );
+      timestamps = packets.map((packet) => Date.parse(packet.timestamp));
       timestampStart = timestamps[0];
       timestampEnd = timestamps.slice(-1)[0];
       timestampStartFilter = subtractHours(numOfHours, timestampEnd);

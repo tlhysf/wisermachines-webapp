@@ -1,12 +1,23 @@
 import React, { useState } from "react";
+
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import LineChart from "../../../common/LineChart";
-import { Button } from "@material-ui/core";
-import { Typography } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Tooltip from "@material-ui/core/Tooltip";
+import Grow from "@material-ui/core/Grow";
+
+import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../../utils/colors";
+import { common } from "../../../../utils/styles";
+
+const animationDuration = 500;
+
+const useStyles = makeStyles((theme) => common(theme));
 
 export default function MachineDetailsRow3(props) {
+  const classes = useStyles();
   const {
     machineCurrent,
     machineState,
@@ -34,20 +45,29 @@ export default function MachineDetailsRow3(props) {
   ];
 
   const chartButtons = chartsList.map((chart, chartIndex) => {
-    const selected = colors.BLUEGREY[600];
-    const unSelected = colors.BLUEGREY[400];
-    const color = chartIndex === buttonIndex ? selected : unSelected;
+    const selectedBackground = chart.color;
+    const selected = "white";
+
+    const unselectedBackground = colors.BLUEGREY[200];
+    const unselected = colors.BLUEGREY[500];
+
+    const color = chartIndex === buttonIndex ? selected : unselected;
+    const backgroundColor =
+      chartIndex === buttonIndex ? selectedBackground : unselectedBackground;
 
     return (
-      <Grid item key={chartIndex}>
-        <Button
-          style={{ color: color }}
-          onClick={(e) => setButtonIndex(chartIndex)}
-        >
-          <Typography variant="body2" color={color}>
-            {chartNamesList[chartIndex]}
-          </Typography>
-        </Button>
+      <Grid item lg={2} md={4} sm={6} xs={12} key={chartIndex}>
+        <Tooltip title="Switch Between Charts" placement="top">
+          <Button
+            fullWidth
+            style={{ color, backgroundColor, padding: 0 }}
+            onClick={(e) => setButtonIndex(chartIndex)}
+          >
+            <Typography variant="caption" color={color} style={{ padding: 3 }}>
+              {chartNamesList[chartIndex]}
+            </Typography>
+          </Button>
+        </Tooltip>
       </Grid>
     );
   });
@@ -57,21 +77,33 @@ export default function MachineDetailsRow3(props) {
   ));
 
   return (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      component={Paper}
-      elevation={2}
-    >
-      <Grid item xs={12} style={{ padding: 15 }}>
-        <Grid container spacing={1} justify="center" alignItems="center">
-          {chartButtons}
+    <Grow in={true} {...{ timeout: animationDuration + 9 * animationDuration }}>
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        component={Paper}
+        elevation={2}
+        className={classes.cardHover}
+      >
+        <Grid
+          item
+          xs={12}
+          style={{
+            paddingTop: 15,
+            paddingLeft: 15,
+            paddingRight: 15,
+            paddingBottom: 30,
+          }}
+        >
+          <Grid container spacing={1} justify="center" alignItems="center">
+            {chartButtons}
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          {chartRenders[buttonIndex]}
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-        {chartRenders[buttonIndex]}
-      </Grid>
-    </Grid>
+    </Grow>
   );
 }

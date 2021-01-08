@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleEditMappingFormDrawerAction } from "../../../../../redux/actions/commonAction";
+import { toggleEditMappingFormDrawerAction } from "../../../../../redux/actions/commonActions";
 import {
   editMachineMappingAction,
   deleteMachineMappingAction,

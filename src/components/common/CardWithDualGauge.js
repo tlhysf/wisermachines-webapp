@@ -24,7 +24,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import {
   toggleEditFormDrawerAction,
   toggleEditMappingFormDrawerAction,
-} from "../../redux/actions/commonAction";
+} from "../../redux/actions/commonActions";
 
 const useStyles = makeStyles((theme) => styles(theme));
 

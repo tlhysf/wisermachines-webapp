@@ -1,7 +1,9 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import Card from "./Card";
-import CardWithAnimation from "./CardWithAnimation";
+import Grow from "@material-ui/core/Grow";
+
+import Card from "./cards/Card";
+import LastUpdatedCard from "./cards/LastUpdatedCard";
 
 import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
@@ -10,6 +12,8 @@ import PowerIcon from "@material-ui/icons/Power";
 import FlashOnOutlinedIcon from "@material-ui/icons/FlashOnOutlined";
 
 import colors from "../../../../utils/colors";
+
+const animationDuration = 500;
 
 export default function MachineDetailsRow1(props) {
   const {
@@ -72,18 +76,38 @@ export default function MachineDetailsRow1(props) {
 
   return (
     <Grid container justify="center" alignItems="center" spacing={2}>
-      <Grid item md={3} xs={12}>
-        <CardWithAnimation data={updateStatus} />
-      </Grid>
-      <Grid item md={3} xs={12}>
-        <Card data={stateRightNow} />
-      </Grid>
-      <Grid item md={3} xs={12}>
-        <Card data={currentRightNow} />
-      </Grid>
-      <Grid item md={3} xs={12}>
-        <Card data={unitsUntilNow} />
-      </Grid>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 0 * animationDuration }}
+      >
+        <Grid item md={3} xs={12}>
+          <LastUpdatedCard data={updateStatus} />
+        </Grid>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 1 * animationDuration }}
+      >
+        <Grid item md={3} xs={12}>
+          <Card data={stateRightNow} />
+        </Grid>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 3 * animationDuration }}
+      >
+        <Grid item md={3} xs={12}>
+          <Card data={currentRightNow} />
+        </Grid>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 4 * animationDuration }}
+      >
+        <Grid item md={3} xs={12}>
+          <Card data={unitsUntilNow} />
+        </Grid>
+      </Grow>
     </Grid>
   );
 }

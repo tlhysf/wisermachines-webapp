@@ -87,6 +87,10 @@ const commonOptions = {
     },
     buttons: [
       {
+        type: "all",
+        text: "All",
+      },
+      {
         type: "day",
         count: 1,
         text: "1 Day",
@@ -101,14 +105,10 @@ const commonOptions = {
         count: 5,
         text: "5 Min",
       },
-      {
-        type: "all",
-        text: "All",
-      },
     ],
     selected: 2,
     buttonTheme: {
-      width: 50,
+      width: 45,
     },
   },
 };
@@ -123,9 +123,9 @@ const LineChart = (props) => {
       name: "",
       step: "",
       decimal: 0,
-      color: 0,
+      color: "#ffffff",
     };
-    const { series, timestamps, name, step, color } = props.chartData
+    const { series, timestamps, name, step, color, yMax } = props.chartData
       ? props.chartData
       : defaultChartData;
 
@@ -134,7 +134,7 @@ const LineChart = (props) => {
         {
           // offset: -20,
           min: 0,
-          max: props.yMax ? props.yMax : Math.max(...series),
+          max: yMax ? yMax : Math.max(...series),
         },
       ],
       series: [
@@ -150,11 +150,11 @@ const LineChart = (props) => {
             }
             return data;
           })(),
+          step: step,
           name: name,
           type: "areaspline",
-          step: step,
 
-          color: Highcharts.getOptions().colors[color],
+          color: color,
           fillColor: {
             linearGradient: {
               x1: 0,
@@ -163,13 +163,8 @@ const LineChart = (props) => {
               y2: 1,
             },
             stops: [
-              [0, Highcharts.getOptions().colors[color]],
-              [
-                0.6,
-                Highcharts.color(Highcharts.getOptions().colors[color])
-                  .setOpacity(0.1)
-                  .get("rgba"),
-              ],
+              [0, color],
+              [0.6, Highcharts.color(color).setOpacity(0.1).get("rgba")],
             ],
           },
           threshold: null,

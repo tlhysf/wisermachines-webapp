@@ -17,7 +17,7 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 
-import { toggleEditFormDrawerAction } from "../../../../redux/actions/commonAction";
+import { toggleEditFormDrawerAction } from "../../../../redux/actions/commonActions";
 
 const useStyles = makeStyles((theme) => styles(theme));
 

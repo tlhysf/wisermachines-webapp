@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import Routes from "../../Routes";
 // import { useDispatch } from "react-redux";
-// import { togglePersistantSideBarAction } from "../../redux/actions/commonAction";
+// import { togglePersistantSideBarAction } from "../../redux/actions/commonActions";
 
 // Components
 import AppBar from "@material-ui/core/AppBar";

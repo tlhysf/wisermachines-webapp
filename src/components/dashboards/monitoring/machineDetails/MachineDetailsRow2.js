@@ -1,6 +1,9 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import CardWithGauge from "./CardWithGauge";
+import CardWithGauge from "./cards/CardWithGauge";
+import Grow from "@material-ui/core/Grow";
+
+const animationDuration = 500;
 
 export default function MachineDetailsRow2(props) {
   const {
@@ -73,18 +76,38 @@ export default function MachineDetailsRow2(props) {
 
   return (
     <Grid container justify="center" alignItems="center" spacing={2}>
-      <Grid item md={3} xs={12}>
-        <CardWithGauge data={utilizationCard} />
-      </Grid>
-      <Grid item md={3} xs={12}>
-        <CardWithGauge data={oeeCard} />
-      </Grid>
-      <Grid item md={3} xs={12}>
-        <CardWithGauge data={temperatureCard} />
-      </Grid>
-      <Grid item md={3} xs={12}>
-        <CardWithGauge data={humidityCard} />
-      </Grid>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 5 * animationDuration }}
+      >
+        <Grid item md={3} xs={12}>
+          <CardWithGauge data={utilizationCard} />
+        </Grid>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 6 * animationDuration }}
+      >
+        <Grid item md={3} xs={12}>
+          <CardWithGauge data={oeeCard} />
+        </Grid>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 7 * animationDuration }}
+      >
+        <Grid item md={3} xs={12}>
+          <CardWithGauge data={temperatureCard} />
+        </Grid>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 8 * animationDuration }}
+      >
+        <Grid item md={3} xs={12}>
+          <CardWithGauge data={humidityCard} />
+        </Grid>
+      </Grow>
     </Grid>
   );
 }

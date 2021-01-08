@@ -26,7 +26,6 @@ import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import AddMachine from "./inputs/AddMachine";
 import EditMachine from "./inputs/EditMachine";
 import AddNode from "./inputs/AddNode";
-import EditNode from "./inputs/EditNode";
 import EditMachineMapping from "./inputs/EditMachineMapping";
 
 // Redux
@@ -36,12 +35,11 @@ import {
   getAllMachinesInAZoneAction,
   getAllMachineMappingsAction,
 } from "../../../../redux/actions/machinesAndNodesActions";
-import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonAction";
+import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonActions";
 import { common as commonActionTypes } from "../../../../redux/actions/actionTypes";
 
 // Loaders
-import MachinesLoader from "./MachinesLoader";
-import NodesLoader from "./NodesLoader";
+import Loader from "../../../common/Loader";
 
 const useStyles = makeStyles((theme) => common(theme));
 
@@ -166,13 +164,13 @@ const MachinesAndNodes = (props) => {
   );
 
   const renderNodes = nodesLoading ? (
-    NodesLoader
+    <Loader />
   ) : (
     <NodeCards allNodesInAZone={allNodesInAZone} />
   );
 
   const renderMachines = machinesLoading ? (
-    MachinesLoader
+    <Loader />
   ) : (
     <MachineCards allMachinesInAZone={allMachinesInAZone} compact={compact} />
   );
