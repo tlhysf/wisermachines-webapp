@@ -87,7 +87,7 @@ const AddWorkshop = (props) => {
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Add Workshop
+            Add
           </Typography>
 
           <form

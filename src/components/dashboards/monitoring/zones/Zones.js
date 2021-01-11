@@ -5,7 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 import AddIcon from "@material-ui/icons/Add";
 
-import { breadCrumbsList } from "../../../../Routes";
+import keys from "../../../../utils/keys";
 import { common } from "../../../../utils/styles";
 import colors from "../../../../utils/colors";
 import { makeStyles } from "@material-ui/core/styles";
@@ -48,14 +48,14 @@ const Zones = (props) => {
           alignItems="center"
         >
           <Grid item>
-            <BreadcrumbsNav list={breadCrumbsList.monitoring} />
+            <BreadcrumbsNav list={keys.navigationList.monitoring} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12} md={6}>
         <Grid container direction="row" justify="flex-end" alignItems="center">
           <Grid item>
-            <Tooltip placement="top" title="Add Zone">
+            <Tooltip placement="top" title="Add">
               <Button
                 className={classes.button}
                 variant="contained"

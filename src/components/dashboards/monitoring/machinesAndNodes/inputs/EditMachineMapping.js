@@ -156,7 +156,7 @@ const EditMachineMapping = (props) => {
     if (response._id === expectedResponse || response.id === expectedResponse) {
       setSuccess(true);
     }
-  }, [response]);
+  }, [response, expectedResponse]);
 
   useEffect(() => {
     if (success) {
@@ -166,7 +166,8 @@ const EditMachineMapping = (props) => {
         window.location.href = props.url;
       }, 2000);
     }
-  }, [success, dispatch, props]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success, dispatch, props.url]);
 
   return (
     <Drawer open={openForm.open} anchor="right" onClose={(e) => handleCancel()}>

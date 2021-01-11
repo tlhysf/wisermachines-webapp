@@ -199,7 +199,7 @@ const AddNode = (props) => {
     if (response.mac === expectedResponse) {
       setSuccess(true);
     } else setSuccess(false);
-  }, [response]);
+  }, [response, expectedResponse]);
 
   useEffect(() => {
     if (success) {
@@ -209,7 +209,7 @@ const AddNode = (props) => {
         getAllNodesInAZoneAction(dispatch, zoneID);
       }, 2000);
     }
-  }, [success, dispatch, props]);
+  }, [success, dispatch, zoneID]);
 
   return (
     <Drawer open={openForm} anchor="right" onClose={(e) => handleCancel()}>

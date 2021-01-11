@@ -2,9 +2,12 @@ const randomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+const machineNamePrefix = "Air-Compressor-";
+const zoneNamePrefix = "Factory-";
+
 export const placeholderRes = {
   getAllWorkshops: [
-    { _id: "5fdf356185790c04ec5d4310", name: "Tumbling Workshop", __v: 0 },
+    { _id: "5fdf356185790c04ec5d4310", name: "Balochistan", __v: 0 },
     { _id: "5fdf356185790c04ec5d4310", name: "drying workshop", __v: 0 },
     { _id: "5fdf356185790c04ec5d4310", name: "Stitching Workshop", __v: 0 },
     { _id: "5fdf356185790c04ec5d4310", name: "Looming Workshop", __v: 0 },
@@ -17,49 +20,49 @@ export const placeholderRes = {
   getAllZones: [
     {
       _id: "5fdb233b3edf4e2a3889fe36",
-      name: "Zone-123",
+      name: zoneNamePrefix + randomIntFromInterval(0, 100),
       workshop_id: "5fdb23113edf4e2a3889fe35",
       __v: 0,
     },
     {
       _id: "5fdb233b3edf4e2a3889fe36",
-      name: "Zone-456",
+      name: zoneNamePrefix + randomIntFromInterval(0, 100),
       workshop_id: "5fdf356185790c04ec5d4310",
       __v: 0,
     },
     {
       _id: "5fdb233b3edf4e2a3889fe36",
-      name: "Zone-789",
+      name: zoneNamePrefix + randomIntFromInterval(0, 100),
       workshop_id: "5fdf356185790c04ec5d4310",
       __v: 0,
     },
     {
       _id: "5fdb233b3edf4e2a3889fe36",
-      name: "Zone-1011",
+      name: zoneNamePrefix + randomIntFromInterval(0, 100),
       workshop_id: "5fdf356185790c04ec5d4310",
       __v: 0,
     },
     {
       _id: "5fdb233b3edf4e2a3889fe36",
-      name: "Zone-1112",
+      name: zoneNamePrefix + randomIntFromInterval(0, 100),
       workshop_id: "5fdb23113edf4e2a3889fe35",
       __v: 0,
     },
     {
       _id: "5fdb233b3edf4e2a3889fe36",
-      name: "Zone-1213",
+      name: zoneNamePrefix + randomIntFromInterval(0, 100),
       workshop_id: "5fdf356185790c04ec5d4310",
       __v: 0,
     },
     {
       _id: "5fdb233b3edf4e2a3889fe36",
-      name: "Zone-1314",
+      name: zoneNamePrefix + randomIntFromInterval(0, 100),
       workshop_id: "5fdf356185790c04ec5d4310",
       __v: 0,
     },
     {
       _id: "5fdb233b3edf4e2a3889fe36",
-      name: "Zone-1516",
+      name: zoneNamePrefix + randomIntFromInterval(0, 100),
       workshop_id: "5fdf356185790c04ec5d4310",
       __v: 0,
     },
@@ -68,7 +71,7 @@ export const placeholderRes = {
   getAllMachines: [
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: "Air-Compressor-" + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -76,7 +79,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -84,7 +87,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -92,7 +95,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -100,7 +103,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -108,7 +111,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -116,7 +119,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -124,7 +127,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -132,7 +135,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -140,7 +143,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -148,7 +151,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -156,7 +159,7 @@ export const placeholderRes = {
     },
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Machine-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,
@@ -192,64 +195,64 @@ export const placeholderRes = {
     "70:B3:D5:FE:4C:00": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:01": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:02": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:03": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
     ],
     "70:B3:D5:FE:4C:04": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:05": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:06": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: "Machine-" + randomIntFromInterval(0, 100),
+        name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
     ],

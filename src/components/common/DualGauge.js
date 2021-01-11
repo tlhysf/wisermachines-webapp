@@ -154,7 +154,7 @@ const commonOptions = (item1, item2, colorSets) => {
         dataLabels: {
           enabled: true,
           y: item1OffsetValue,
-          format: item1.name + ":" + "{y}" + item1.suffix,
+          format: `${item1.name}:{y}${item1.suffix}`,
           borderWidth: 0,
           backgroundColor: "none",
           color: item1Color,
@@ -182,7 +182,7 @@ const commonOptions = (item1, item2, colorSets) => {
         dataLabels: {
           enabled: true,
           y: item2OffsetValue,
-          format: item2.name + ":" + "{y}" + item2.suffix,
+          format: `${item2.name}:{y}${item2.suffix}`,
           borderWidth: 0,
           backgroundColor: "none",
           color: item2Color,

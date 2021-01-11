@@ -85,6 +85,7 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
                     for (let i = 0; i < allNodes.length; i++) {
                       if (node === allNodes[i].mac) return allNodes[i];
                     }
+                    return null;
                   }
                 );
 
@@ -265,6 +266,7 @@ export const editMachineAction = (dispatch, body) => {
         console.log(error);
       });
   } else {
+    // console.log(body);
     setTimeout(() => {
       dispatch({
         type: machinesAndNodes.editOrDeleteMachine,

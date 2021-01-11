@@ -161,13 +161,13 @@ const EditMachine = (props) => {
       maxLoad: thisMachine.max_load,
       idleThreshold: thisMachine.idle_threshold,
     });
-  }, [thisMachine]);
+  }, [thisMachine.name, thisMachine.max_load, thisMachine.idle_threshold]);
 
   useEffect(() => {
     if (response.id === expectedResponse) {
       setSuccess(true);
     }
-  }, [response]);
+  }, [response, expectedResponse]);
 
   useEffect(() => {
     if (success) {
@@ -212,6 +212,7 @@ const EditMachine = (props) => {
               label="Name"
               name="name"
               placeholder={errors.name ? errors.name : formData.name}
+              defaultValue={formData.name}
               color={errors.name ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
               autoComplete="off"

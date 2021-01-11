@@ -88,7 +88,7 @@ const AddZone = (props) => {
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Add Zone
+            Add
           </Typography>
           <form
             noValidate

@@ -2,7 +2,7 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import Tooltip from "@material-ui/core/Tooltip";
 import Loader from "react-loader-spinner";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { smallCard } from "../../../../../utils/styles";
@@ -10,6 +10,8 @@ import colors from "../../../../../utils/colors";
 
 const LastUpdatedCard = (props) => {
   const { timeSinceLastUpdate, liveData } = props.data;
+
+  // console.log(timeSinceLastUpdate);
 
   const updateIconRender =
     liveData !== null ? (
@@ -44,7 +46,7 @@ const LastUpdatedCard = (props) => {
   );
 
   return (
-    <ButtonBase style={{ height: "100%", width: "100%" }}>
+    <Tooltip placement="top" title={timeSinceLastUpdate}>
       <Grid
         container
         component={Paper}
@@ -78,7 +80,7 @@ const LastUpdatedCard = (props) => {
           </Paper>
         </Grid>
       </Grid>
-    </ButtonBase>
+    </Tooltip>
   );
 };
 

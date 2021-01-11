@@ -94,19 +94,22 @@ const EditNode = (props) => {
   const deleteLoading = useSelector((state) => state.nodes.deleteNodeLoading);
 
   const zoneID = useSelector((state) => state.machines.zoneID);
+
+  // Get this node
   const allNodesInAZoneProfiles = useSelector(
     (state) => state.nodes.allNodesInAZoneProfiles
   );
-
   const index = allNodesInAZoneProfiles.findIndex(
     (item) => item.mac === openForm.name
   );
-
   const thisNode = index < 0 ? {} : allNodesInAZoneProfiles[index];
 
   const [formData, setFormData] = useState({
     MAC: "",
+    sensor1Rating: 0,
+    sensor2Rating: 0,
   });
+
   const [errors, setErrors] = useState({});
   const [expectedResponse, setExpectedResponse] = useState("");
   const [success, setSuccess] = useState(false);
@@ -155,6 +158,8 @@ const EditNode = (props) => {
   const handleSave = (e) => {
     e.preventDefault();
 
+    // console.log(formData, thisNode);
+
     const requestBody = requestBodyFormat.editNode;
 
     requestBody.id = thisNode._id;
@@ -190,6 +195,7 @@ const EditNode = (props) => {
       Object.values(errors).filter((x) => x).length === 0
     ) {
       setExpectedResponse(requestBody.id);
+      // console.log(requestBody);
       editNodeAction(dispatch, requestBody);
     }
   };
@@ -219,13 +225,13 @@ const EditNode = (props) => {
       sensor1Rating: thisNode.sensor_1_rating,
       sensor2Rating: thisNode.sensor_2_rating,
     });
-  }, [thisNode]);
+  }, [thisNode.mac, thisNode.sensor_1_rating, thisNode.sensor_2_rating]);
 
   useEffect(() => {
     if (response.id === expectedResponse) {
       setSuccess(true);
     } else setSuccess(false);
-  }, [response]);
+  }, [response, expectedResponse]);
 
   useEffect(() => {
     if (success) {
@@ -235,7 +241,7 @@ const EditNode = (props) => {
         getAllNodesInAZoneAction(dispatch, zoneID);
       }, 2000);
     }
-  }, [success, dispatch, props]);
+  }, [success, dispatch, zoneID]);
 
   return (
     <Drawer open={openForm.open} anchor="right" onClose={(e) => handleCancel()}>
@@ -270,7 +276,8 @@ const EditNode = (props) => {
               id="MAC"
               label="MAC"
               name="MAC"
-              value={formData.MAC}
+              placeholder={thisNode.mac}
+              defaultValue={thisNode.mac}
               color={errors.MAC ? "secondary" : "primary"}
               onChange={(e) => handleFormData(e)}
               autoComplete="off"
@@ -316,6 +323,7 @@ const EditNode = (props) => {
                 marks={sensorRatings}
                 onChange={(e, value) => handleSlider1(e, value)}
                 color={errors.sensor1Rating ? "secondary" : "primary"}
+                defaultValue={thisNode.sensor_1_rating}
               />
             </div>
             {errors.sensor1Rating ? (
@@ -355,6 +363,7 @@ const EditNode = (props) => {
                 marks={sensorRatings}
                 onChange={(e, value) => handleSlider2(e, value)}
                 color={errors.sensor2Rating ? "secondary" : "primary"}
+                defaultValue={thisNode.sensor_2_rating}
               />
             </div>
             {errors.sensor2Rating ? (

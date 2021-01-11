@@ -27,11 +27,11 @@ const AddMachine = (props) => {
   const response = useSelector((state) => state.machines.addMachineResponse);
   const loading = useSelector((state) => state.machines.addMachineLoading);
 
+  // Get available nodes
   const allNodesInAZone = useSelector((state) => state.nodes.allNodesInAZone);
   const allNodesInAZoneProfiles = useSelector(
     (state) => state.nodes.allNodesInAZoneProfiles
   );
-
   const MACAddresses = Object.keys(allNodesInAZone).filter((key) =>
     allNodesInAZone[key].length < 2 ? allNodesInAZone[key] : false
   );
@@ -148,7 +148,7 @@ const AddMachine = (props) => {
     if (response.name === expectedResponse) {
       setSuccess(true);
     }
-  }, [response]);
+  }, [response, expectedResponse]);
 
   useEffect(() => {
     if (success) {
@@ -159,7 +159,8 @@ const AddMachine = (props) => {
         window.location.href = props.url;
       }, 2000);
     }
-  }, [success, dispatch, props]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success, dispatch, props.url]);
 
   return (
     <Drawer open={openForm} anchor="right" onClose={(e) => handleCancel()}>

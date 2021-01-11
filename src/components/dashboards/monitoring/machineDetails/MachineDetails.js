@@ -19,8 +19,6 @@ import MachineDetailsRow2 from "./MachineDetailsRow2";
 import MachineDetailsRow3 from "./MachineDetailsRow3";
 import Loader from "../../../common/Loader";
 
-import { breadCrumbsList } from "../../../../Routes";
-
 import { liveMachineData } from "../../../../data/machineData";
 
 import keys from "../../../../utils/keys";
@@ -98,11 +96,9 @@ export default function MachineDetails(props) {
       });
     } else {
       // Mock live data generator
-
-      const interval = 5000;
       setInterval(() => {
         setLiveData(liveMachineData());
-      }, interval);
+      }, 5000);
     }
   }, [machineID]);
 
@@ -147,17 +143,23 @@ export default function MachineDetails(props) {
   );
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (timestampEnd > 0) {
-        setTimeSinceLastUpdate(
-          timeDifference(new Date().getTime(), timestampEnd)
-        );
-      } else {
-        setTimeSinceLastUpdate("Unknown");
-      }
-    }, 10 * 1000);
-    return () => clearInterval(interval);
-  }, [timestampEnd]);
+    if (liveData !== null) {
+      // console.log("live");
+      setTimeSinceLastUpdate(
+        timeDifference(new Date().getTime(), timestampEnd)
+      );
+    } else {
+      setInterval(() => {
+        setTimeSinceLastUpdate(timeSinceLastUpdate);
+        if (timestampEnd > 0) {
+          // console.log("interval");
+          setTimeSinceLastUpdate(
+            timeDifference(new Date().getTime(), timestampEnd)
+          );
+        }
+      }, 10 * 1000);
+    }
+  }, [timestampEnd, liveData, timeSinceLastUpdate]);
 
   const lineCharts = {
     machineState: {
@@ -203,7 +205,7 @@ export default function MachineDetails(props) {
           alignItems="center"
         >
           <Grid item>
-            <BreadcrumbsNav list={breadCrumbsList.monitoring} />
+            <BreadcrumbsNav list={keys.navigationList.monitoring} />
           </Grid>
         </Grid>
       </Grid>

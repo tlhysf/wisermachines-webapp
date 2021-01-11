@@ -12,7 +12,7 @@ import WorkshopCards from "./WorkshopCardsContainer";
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import AddWorkshop from "./inputs/AddWorkshop";
 import EditWorkshop from "./inputs/EditWorkshop";
-import { breadCrumbsList } from "../../../../Routes";
+import keys from "../../../../utils/keys";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getAllWorkshopsAction } from "../../../../redux/actions/workshopsActions";
@@ -47,14 +47,14 @@ const Workshops = (props) => {
           alignItems="center"
         >
           <Grid item>
-            <BreadcrumbsNav list={breadCrumbsList.monitoring} />
+            <BreadcrumbsNav list={keys.navigationList.monitoring} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12} md={6}>
         <Grid container direction="row" justify="flex-end" alignItems="center">
           <Grid item>
-            <Tooltip placement="top" title="Add Workshop">
+            <Tooltip placement="top" title="Add">
               <Button
                 className={classes.button}
                 variant="contained"

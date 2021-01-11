@@ -58,3 +58,9 @@ export const common = {
   toggleEditMappingFormDrawer: "TOGGLE_EDIT_MAPPING_FORM_DRAWER",
   togglePersistantSideBar: "TOGGLE_PERSISTANT_SIDEBAR",
 };
+
+export const auth = {
+  signin: "SIGNIN",
+  signinLoading: "SIGNIN_LOADING",
+  SIGNIN_ERROR: "SIGN_ERROR",
+};

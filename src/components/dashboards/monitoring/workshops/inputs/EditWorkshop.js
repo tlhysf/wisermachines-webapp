@@ -107,7 +107,7 @@ const EditWorkshop = (props) => {
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Edit Workshop
+            Edit
           </Typography>
           <form
             className={classes.form}

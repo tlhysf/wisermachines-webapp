@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { breadCrumbsList } from "../../../../Routes";
+import keys from "../../../../utils/keys";
 
 // MUI Components
 import Grid from "@material-ui/core/Grid";
@@ -26,6 +26,7 @@ import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import AddMachine from "./inputs/AddMachine";
 import EditMachine from "./inputs/EditMachine";
 import AddNode from "./inputs/AddNode";
+import EditNode from "./inputs/EditNode";
 import EditMachineMapping from "./inputs/EditMachineMapping";
 
 // Redux
@@ -93,7 +94,7 @@ const MachinesAndNodes = (props) => {
           spacing={2}
         >
           <Grid item>
-            <BreadcrumbsNav list={breadCrumbsList.monitoring} />
+            <BreadcrumbsNav list={keys.navigationList.monitoring} />
           </Grid>
           <Grid item>
             <FilterAndSortMenu

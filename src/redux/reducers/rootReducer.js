@@ -4,6 +4,7 @@ import { zonesReducer } from "./zonesReducer";
 import { machinesReducer, nodesReducer } from "./machinesAndNodesReducer";
 import { machineDetailsReducer } from "./machineDetailsReducer";
 import { commonReducer } from "./commonReducer";
+import { authReducer } from "./authReducer";
 
 const rootReducer = combineReducers({
   workshops: workshopsReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   nodes: nodesReducer,
   machineDetails: machineDetailsReducer,
   common: commonReducer,
+  auth: authReducer,
 });
 
 export default rootReducer;

@@ -37,7 +37,7 @@ import { layoutStyle } from "../../utils/styles";
 
 const useStyles = makeStyles((theme) => layoutStyle(theme));
 
-const Layout = (props) => {
+const General = (props) => {
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -226,7 +226,7 @@ const Layout = (props) => {
     </Menu>
   );
 
-  return (
+  return props.signedin ? (
     <div className={classes.grow}>
       <AppBar
         position="fixed"
@@ -304,13 +304,15 @@ const Layout = (props) => {
             alignItems="flex-start"
           >
             <Grid item xs={12}>
-              <Routes {...props} />
+              <Routes {...props} signedin={props.signedin} />
             </Grid>
           </Grid>
         </div>
       </main>
     </div>
+  ) : (
+    <Routes {...props} signedin={props.signedin} />
   );
 };
 
-export default Layout;
+export default General;
