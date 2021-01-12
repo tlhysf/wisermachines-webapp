@@ -1,9 +1,6 @@
-import React from "react";
-import clsx from "clsx";
+import React, { useState } from "react";
 import Routes from "../../Routes";
-// import { useDispatch } from "react-redux";
 import { signoutAction } from "../../redux/actions/authActions";
-// import { togglePersistantSideBarAction } from "../../redux/actions/commonActions";
 
 // Components
 import AppBar from "@material-ui/core/AppBar";
@@ -13,7 +10,6 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
-import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Drawer from "@material-ui/core/Drawer";
@@ -33,33 +29,24 @@ import EventOutlinedIcon from "@material-ui/icons/EventOutlined";
 import SupervisedUserCircleOutlinedIcon from "@material-ui/icons/SupervisedUserCircleOutlined";
 import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { layoutStyle } from "../../utils/styles";
 
 const useStyles = makeStyles((theme) => layoutStyle(theme));
 
 const General = (props) => {
-  // const { window } = props;
   const classes = useStyles();
-  const theme = useTheme();
-  // const dispatch = useDispatch();
 
-  const [open] = React.useState(false);
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [sideBarOpen, setSideBarOpen] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleDrawerToggle = () => {
-    // setOpen(!open);
-    // togglePersistantSideBarAction(dispatch);
-    setMobileOpen(!mobileOpen);
-  };
-
-  const handleMobileDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const handleSideBarDrawerToggle = () => {
+    setSideBarOpen(!sideBarOpen);
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -84,9 +71,6 @@ const General = (props) => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  // const container =
-  //   window !== undefined ? () => window().document.body : undefined;
 
   const sideBarListItems = [
     {
@@ -119,7 +103,7 @@ const General = (props) => {
         <Tooltip
           title={obj.title}
           placement="right"
-          disableHoverListener={mobileOpen}
+          disableHoverListener={sideBarOpen}
         >
           <ListItem button key={index}>
             {obj.icon}
@@ -135,9 +119,8 @@ const General = (props) => {
   const desktopDrawerButton = (
     <IconButton
       color="inherit"
-      aria-label="open drawer"
       edge="start"
-      onClick={handleDrawerToggle}
+      onClick={handleSideBarDrawerToggle}
       className={classes.menuButtonDesktop}
     >
       <MenuIcon className={classes.listItemIcon} />
@@ -145,55 +128,39 @@ const General = (props) => {
   );
 
   const desktopDrawer = (
-    <Hidden xsDown implementation="css">
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.drawerHeader}>{desktopDrawerButton}</div>
-        {drawerList}
-      </Drawer>
-    </Hidden>
+    <Drawer
+      variant="permanent"
+      className={classes.drawerClose}
+      classes={{
+        paper: classes.drawerClose,
+      }}
+    >
+      <div className={classes.drawerHeader}>{desktopDrawerButton}</div>
+      {drawerList}
+    </Drawer>
   );
 
-  const mobileDrawer = (
-    <Hidden smUp implementation="css">
-      <React.Fragment>
-        <Drawer
-          // container={container}
-          variant="temporary"
-          anchor={theme.direction === "rtl" ? "right" : "left"}
-          open={mobileOpen}
-          onClose={handleMobileDrawerToggle}
-          classes={{
-            paper: classes.drawer,
-          }}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-        >
-          <div className={classes.drawerHeader}></div>
-          {drawerList}
-        </Drawer>
-      </React.Fragment>
-    </Hidden>
+  const sideBarDrawer = (
+    <Drawer
+      anchor={"left"}
+      open={sideBarOpen}
+      onClose={handleSideBarDrawerToggle}
+      classes={{
+        paper: classes.drawer,
+      }}
+      ModalProps={{
+        keepMounted: true, // Better open performance on mobile.
+      }}
+    >
+      <div className={classes.drawerHeader}></div>
+      {drawerList}
+    </Drawer>
   );
 
-  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
       keepMounted
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
@@ -204,12 +171,10 @@ const General = (props) => {
     </Menu>
   );
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
       keepMounted
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
@@ -222,12 +187,7 @@ const General = (props) => {
         <p>Notifications</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
+        <IconButton color="inherit">
           <AccountCircle />
         </IconButton>
         <p>User</p>
@@ -236,89 +196,75 @@ const General = (props) => {
   );
 
   return props.signedin ? (
-    <div className={classes.grow}>
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleMobileDrawerToggle}
-            className={classes.menuButtonMobile}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Tooltip title="WiserMachines" placement="right">
-            <Button edge="start">
-              <img
-                src="/img/logo.png"
-                alt="WiserMachines"
-                className={classes.logo}
-              />
-            </Button>
-          </Tooltip>
-
-          <div className={classes.grow}></div>
-
-          <div className={classes.sectionDesktop}>
-            <IconButton color="inherit">
-              <NotificationsIcon />
-            </IconButton>
+    <React.Fragment>
+      <div className={classes.grow}>
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            {/* Show menu button in Appbar from size equal to less than medium */}
             <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
               color="inherit"
+              edge="start"
+              onClick={handleSideBarDrawerToggle}
+              className={classes.menuButtonMobile}
             >
-              <AccountCircle />
+              <MenuIcon />
             </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-      {mobileDrawer}
-      {desktopDrawer}
 
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
-        <div style={{ paddingTop: 56 }}></div>
-        <div>
-          <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="flex-start"
-          >
-            <Grid item xs={12}>
-              <Routes {...props} />
+            <Tooltip title="WiserMachines" placement="right">
+              <Button edge="start">
+                <img
+                  src="/img/logo.png"
+                  alt="WiserMachines"
+                  className={classes.logo}
+                />
+              </Button>
+            </Tooltip>
+
+            {/* Push all content after this point to the right  */}
+            <div className={classes.grow}></div>
+
+            <div className={classes.sectionDesktop}>
+              <IconButton color="inherit">
+                <NotificationsIcon />
+              </IconButton>
+              <IconButton
+                edge="end"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </div>
+            <div className={classes.sectionMobile}>
+              <IconButton onClick={handleMobileMenuOpen} color="inherit">
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
+
+        {renderMobileMenu}
+        {renderMenu}
+        {sideBarDrawer}
+        {desktopDrawer}
+
+        <main className={classes.content}>
+          <div style={{ paddingTop: 56 }}></div>
+          <div>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="flex-start"
+            >
+              <Grid item xs={12}>
+                <Routes {...props} />
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
-      </main>
-    </div>
+          </div>
+        </main>
+      </div>
+    </React.Fragment>
   ) : (
     <Routes {...props} />
   );

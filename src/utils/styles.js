@@ -22,60 +22,9 @@ export const layoutStyle = (theme) => ({
     },
     width: "100%",
     marginLeft: 0,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
     backgroundColor: colors.BLUEGREY[100],
     color: colors.BLUEGREY[500],
     boxShadow: "0px 0px 0px 0px",
-  },
-
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    [theme.breakpoints.down(drawerBreakpoint)]: {
-      width: "100%",
-      marginLeft: 0,
-    },
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    backgroundColor: colors.BLUEGREY[100],
-    color: colors.BLUEGREY[500],
-    boxShadow: "0px 0px 0px 0px",
-  },
-
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-    boxShadow: "0px 0px 0px 0px",
-  },
-
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    [theme.breakpoints.down(drawerBreakpoint)]: {
-      display: "none",
-    },
-  },
-
-  drawerClose: {
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: "hidden",
-    width: drawerCompactWidth,
-
-    [theme.breakpoints.down(drawerBreakpoint)]: {
-      display: "none",
-    },
   },
 
   menuButtonDesktop: {
@@ -95,6 +44,26 @@ export const layoutStyle = (theme) => ({
     },
   },
 
+  logo: {
+    maxWidth: "80px",
+  },
+
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+    boxShadow: "0px 0px 0px 0px",
+  },
+
+  drawerClose: {
+    overflowX: "hidden",
+    width: drawerCompactWidth,
+
+    [theme.breakpoints.down(drawerBreakpoint)]: {
+      display: "none",
+    },
+  },
+
   listItem: {
     marginBottom: theme.spacing(2),
   },
@@ -108,10 +77,6 @@ export const layoutStyle = (theme) => ({
     paddingLeft: 20,
     paddingTop: 2,
     color: colors.TEAL[700],
-  },
-
-  logo: {
-    maxWidth: "80px",
   },
 
   sectionDesktop: {
@@ -134,17 +99,6 @@ export const layoutStyle = (theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(1),
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   },
 });
 

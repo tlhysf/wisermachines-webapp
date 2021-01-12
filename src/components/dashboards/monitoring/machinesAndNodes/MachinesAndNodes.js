@@ -182,7 +182,7 @@ const MachinesAndNodes = (props) => {
       : renderMachines;
 
   return (
-    <React.Fragment>
+    <>
       <Grid container justify="center" alignItems="center" spacing={2}>
         <Grid item xs={12}>
           {navbar}
@@ -202,7 +202,7 @@ const MachinesAndNodes = (props) => {
         <EditMachine url={props.match.url} params={props.match.params} />
       )}
       <EditMachineMapping url={props.match.url} params={props.match.params} />
-    </React.Fragment>
+    </>
   );
 };
 

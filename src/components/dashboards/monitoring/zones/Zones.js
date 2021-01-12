@@ -74,7 +74,7 @@ const Zones = (props) => {
   );
 
   return (
-    <React.Fragment>
+    <>
       <Grid container justify="center" alignItems="center" spacing={2}>
         <Grid item xs={12}>
           {navbar}
@@ -89,7 +89,7 @@ const Zones = (props) => {
       </Grid>
       <AddZone url={props.match.url} params={props.match.params} />
       <EditZone url={props.match.url} params={props.match.params} />
-    </React.Fragment>
+    </>
   );
 };
 
