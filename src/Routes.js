@@ -17,7 +17,7 @@ import keys from "./utils/keys";
 
 // *** Paths ***
 
-// auth
+// Auth
 const signin = "/signin";
 
 // Error screens
@@ -53,53 +53,82 @@ export const makePath = (currentPath, ID, name) => {
 };
 
 const Routes = (props) => {
+  const { signedin } = props;
+
   return (
     <Router>
-      {props.signedin ? (
-        <Switch>
-          <Route exact path={signin}>
-            <Redirect to={home} />
-          </Route>
-          <Route exact path={home}>
-            <Redirect to={workshops} />
-          </Route>
-          <Route exact path={monitoring}>
-            <Redirect to={workshops} />
-          </Route>
-          <Route
-            exact
-            path={workshops}
-            render={(props) => <Workshops {...props} />}
-          />
-          <Route exact path={zones} render={(props) => <Zones {...props} />} />
-          <Route
-            exact
-            path={machinesAndNodes}
-            render={(props) => <MachinesAndNodes {...props} />}
-          />
-          <Route
-            exact
-            path={machineDetails}
-            render={(props) => <MachinesDetails {...props} />}
-          />
-          <Route
-            exact
-            path={pageNotFound}
-            render={(props) => <PageNotFound {...props} />}
-          />
-          {/* Has to be rendered at the very end */}
-          <Redirect from="*" to={pageNotFound} />
-        </Switch>
-      ) : (
-        <Switch>
-          <Route
-            exact
-            path={signin}
-            render={(props) => <Signin {...props} />}
-          />
-          <Redirect from="*" to={signin} />
-        </Switch>
-      )}
+      <Switch>
+        <Route
+          exact
+          path={signin}
+          render={(props) =>
+            signedin ? <Redirect to={home} /> : <Signin {...props} />
+          }
+        />
+
+        <Route
+          exact
+          path={home}
+          render={(props) =>
+            signedin ? <Redirect to={workshops} /> : <Redirect to={signin} />
+          }
+        />
+
+        <Route
+          exact
+          path={monitoring}
+          render={(props) =>
+            signedin ? <Redirect to={workshops} /> : <Redirect to={signin} />
+          }
+        />
+
+        <Route
+          exact
+          path={workshops}
+          render={(props) =>
+            signedin ? <Workshops {...props} /> : <Redirect to={signin} />
+          }
+        />
+
+        <Route
+          exact
+          path={zones}
+          render={(props) =>
+            signedin ? <Zones {...props} /> : <Redirect to={signin} />
+          }
+        />
+
+        <Route
+          exact
+          path={machinesAndNodes}
+          render={(props) =>
+            signedin ? (
+              <MachinesAndNodes {...props} />
+            ) : (
+              <Redirect to={signin} />
+            )
+          }
+        />
+
+        <Route
+          exact
+          path={machineDetails}
+          render={(props) =>
+            signedin ? <MachinesDetails {...props} /> : <Redirect to={signin} />
+          }
+        />
+
+        <Route
+          exact
+          path={pageNotFound}
+          render={(props) =>
+            signedin ? <PageNotFound {...props} /> : <Redirect to={signin} />
+          }
+        />
+
+        {/* Has to be rendered at the very end */}
+        <Redirect from="*" to={pageNotFound} />
+      </Switch>
     </Router>
   );
 };

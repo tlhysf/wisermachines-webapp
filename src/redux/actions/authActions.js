@@ -1,16 +1,43 @@
 import { auth } from "./actionTypes";
 import keys from "../../utils/keys";
 
-export const signinAction = (dispatch, user) => {
-  // TODO: dispatch loading
+const loadingTime = 2000;
 
-  const thisUser = keys.users.map((x) => {
-    if (user.name === x.name && user.password === x.password) {
-      // TODO: set user in local storage
-      localStorage.setItem("user", { ...user });
-      localStorage.setItem("signedin", true);
-    } else {
-      //TODO: dispatch error
-    }
+export const signinAction = (dispatch, user) => {
+  dispatch({
+    type: auth.signinLoading,
   });
+
+  setTimeout(() => {
+    const thisUser = keys.users.map((x) => {
+      const nameMatch = user.name === x.name;
+      const passwordMatch = user.password === x.password;
+      if (nameMatch && passwordMatch) {
+        localStorage.setItem("user", { ...user });
+        localStorage.setItem("signedin", true);
+        dispatch({
+          type: auth.signin,
+          payload: "Successfully signed in.",
+        });
+        return x;
+      }
+      return null;
+    });
+
+    const userMatch = thisUser.filter((x) => x);
+    if (userMatch.length === 0) {
+      dispatch({
+        type: auth.signinError,
+        payload:
+          "The user name or password you entered isn't correct. Try entering it again.",
+      });
+    }
+  }, loadingTime);
+};
+
+export const signoutAction = () => {
+  localStorage.clear();
+  // dispatch({
+  //   type: auth.signout,
+  // });
 };

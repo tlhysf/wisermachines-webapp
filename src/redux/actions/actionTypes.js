@@ -62,5 +62,7 @@ export const common = {
 export const auth = {
   signin: "SIGNIN",
   signinLoading: "SIGNIN_LOADING",
-  SIGNIN_ERROR: "SIGN_ERROR",
+  signinError: "SIGNIN_ERROR",
+
+  // signout: "SIGNOUT",
 };

@@ -4,7 +4,7 @@ const keys = {
   navigationList: {
     monitoring: [
       "monitoring",
-      "Air Compressors",
+      "workshops",
       "workshopName",
       "zoneName",
       "machineName",

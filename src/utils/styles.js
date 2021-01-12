@@ -176,7 +176,6 @@ export const common = (theme) => ({
       boxShadow: "0px 0.5px 1px 2px" + colors.INDIGO[400],
     },
   },
-  
 });
 
 export const skeletonStyle = {

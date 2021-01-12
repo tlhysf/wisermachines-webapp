@@ -5,13 +5,10 @@ import General from "./components/layouts/General";
 import colors from "./utils/colors";
 
 const App = (props) => {
-  const [signedin, setSignedin] = useState(false);
+  const signedin = localStorage.getItem("signedin");
 
   useEffect(() => {
     document.body.style.backgroundColor = colors.BLUEGREY[100];
-    if (localStorage.getItem("signedin")) {
-      setSignedin(true);
-    }
   }, []);
 
   return (

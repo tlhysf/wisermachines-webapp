@@ -2,6 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import Routes from "../../Routes";
 // import { useDispatch } from "react-redux";
+import { signoutAction } from "../../redux/actions/authActions";
 // import { togglePersistantSideBarAction } from "../../redux/actions/commonActions";
 
 // Components
@@ -38,7 +39,7 @@ import { layoutStyle } from "../../utils/styles";
 const useStyles = makeStyles((theme) => layoutStyle(theme));
 
 const General = (props) => {
-  const { window } = props;
+  // const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
   // const dispatch = useDispatch();
@@ -74,12 +75,18 @@ const General = (props) => {
     handleMobileMenuClose();
   };
 
+  const handleSignout = () => {
+    handleMenuClose();
+    signoutAction();
+    window.location.href = "/";
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  // const container =
+  //   window !== undefined ? () => window().document.body : undefined;
 
   const sideBarListItems = [
     {
@@ -160,22 +167,24 @@ const General = (props) => {
 
   const mobileDrawer = (
     <Hidden smUp implementation="css">
-      <Drawer
-        container={container}
-        variant="temporary"
-        anchor={theme.direction === "rtl" ? "right" : "left"}
-        open={mobileOpen}
-        onClose={handleMobileDrawerToggle}
-        classes={{
-          paper: classes.drawer,
-        }}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-      >
-        <div className={classes.drawerHeader}></div>
-        {drawerList}
-      </Drawer>
+      <React.Fragment>
+        <Drawer
+          // container={container}
+          variant="temporary"
+          anchor={theme.direction === "rtl" ? "right" : "left"}
+          open={mobileOpen}
+          onClose={handleMobileDrawerToggle}
+          classes={{
+            paper: classes.drawer,
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          <div className={classes.drawerHeader}></div>
+          {drawerList}
+        </Drawer>
+      </React.Fragment>
     </Hidden>
   );
 
@@ -191,7 +200,7 @@ const General = (props) => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleSignout}>Signout</MenuItem>
     </Menu>
   );
 
@@ -304,14 +313,14 @@ const General = (props) => {
             alignItems="flex-start"
           >
             <Grid item xs={12}>
-              <Routes {...props} signedin={props.signedin} />
+              <Routes {...props} />
             </Grid>
           </Grid>
         </div>
       </main>
     </div>
   ) : (
-    <Routes {...props} signedin={props.signedin} />
+    <Routes {...props} />
   );
 };
 

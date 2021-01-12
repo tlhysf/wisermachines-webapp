@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -8,13 +8,17 @@ import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
+import Grow from "@material-ui/core/Grow";
+import CircularProgress from "@material-ui/core/CircularProgress";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 // import Checkbox from "@material-ui/core/Checkbox";
 // import Grid from "@material-ui/core/Grid";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 
 import { makeStyles } from "@material-ui/core/styles";
+import colors from "../../utils/colors";
 
 import { signinAction } from "../../redux/actions/authActions";
 import { useSelector, useDispatch } from "react-redux";
@@ -50,11 +54,34 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  submitLoading: {
+    margin: theme.spacing(3, 0, 2),
+    height: 36,
+    padding: 6,
+  },
+  failure: {
+    marginTop: 20,
+    backgroundColor: colors.RED[600],
+    color: "white",
+    padding: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+  },
+  success: {
+    marginTop: 20,
+    backgroundColor: colors.LIGHTGREEN[400],
+    color: "white",
+    padding: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+  },
 }));
 
 const SignIn = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const signinError = useSelector((state) => state.auth.signinError);
+  const signinResponse = useSelector((state) => state.auth.signinResponse);
+  const signinLoading = useSelector((state) => state.auth.signinLoading);
 
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
@@ -88,6 +115,12 @@ const SignIn = () => {
     }
   };
 
+  useEffect(() => {
+    if (signinResponse !== null) {
+      window.location.href = "/";
+    }
+  }, [signinResponse]);
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -99,6 +132,30 @@ const SignIn = () => {
           Sign in
         </Typography>
         <form className={classes.form} noValidate>
+          {signinError ? (
+            <Grow in={true} {...{ timeout: 500 }}>
+              <Button
+                startIcon={<CancelOutlinedIcon />}
+                fullWidth
+                className={classes.failure}
+                onClick={(e) => e.preventDefault()}
+              >
+                <Typography variant="caption">{signinError}</Typography>
+              </Button>
+            </Grow>
+          ) : null}
+          {signinResponse ? (
+            <Grow in={true} {...{ timeout: 500 }}>
+              <Button
+                startIcon={<CancelOutlinedIcon />}
+                fullWidth
+                className={classes.success}
+                onClick={(e) => e.preventDefault()}
+              >
+                <Typography variant="caption">{signinResponse}</Typography>
+              </Button>
+            </Grow>
+          ) : null}
           <TextField
             variant="outlined"
             margin="normal"
@@ -138,19 +195,31 @@ const SignIn = () => {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           /> */}
-          <Button
-            type="submit"
-            fullWidth
-            variant="outlined"
-            color="primary"
-            className={classes.submit}
-            onClick={(e) => handleSave(e)}
-            style={{
-              marginTop: 20,
-            }}
-          >
-            Sign In
-          </Button>
+          {signinLoading ? (
+            <Button
+              fullWidth
+              variant="outlined"
+              color="primary"
+              className={classes.submitLoading}
+              onClick={(e) => e.preventDefault()}
+            >
+              <CircularProgress color="primary" size={20} />
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              fullWidth
+              variant="outlined"
+              color="primary"
+              className={classes.submit}
+              onClick={(e) => handleSave(e)}
+              style={{
+                marginTop: 20,
+              }}
+            >
+              Sign In
+            </Button>
+          )}
           {/* <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
