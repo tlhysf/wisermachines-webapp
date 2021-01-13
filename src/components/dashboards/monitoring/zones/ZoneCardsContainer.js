@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import CardWithDualGauge from "../../../common/CardWithDualGauge";
+import DashboardSummaryCard from "../../../common/DashboardSummaryCard";
 import Card from "../../../common/Card";
 import Grow from "@material-ui/core/Grow";
 
@@ -23,6 +23,7 @@ export default function ZoneCards(props) {
           {summaryHeader().map((item, index) => {
             return (
               <Grow
+                key={index}
                 in={true}
                 {...{ timeout: animationDuration + index * animationDuration }}
               >
@@ -44,11 +45,12 @@ export default function ZoneCards(props) {
         >
           {props.allZonesInAWorkshop.map((item, index) => (
             <Grow
+              key={index}
               in={true}
               {...{ timeout: animationDuration + index * animationDuration }}
             >
               <Grid key={index} item lg={3} md={4} sm={12}>
-                <CardWithDualGauge
+                <DashboardSummaryCard
                   data={{
                     name: item.name,
                     ID: item._id,

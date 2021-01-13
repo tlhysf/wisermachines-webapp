@@ -2,6 +2,8 @@ import { machinesAndNodes } from "./actionTypes";
 import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
+import { httpRequestErrorAction } from "./errorActions";
+
 import { placeholderRes } from "../../data/common";
 
 const loadingTime = 2000;
@@ -34,9 +36,7 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -105,16 +105,12 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
                 console.log("error: unexpected response", data);
               }
             })
-            .catch((error) => {
-              console.log(error);
-            });
+            .catch((error) => httpRequestErrorAction(error, dispatch));
         } else {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -156,9 +152,7 @@ export const getAllMachineMappingsAction = (dispatch) => {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -189,7 +183,7 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200 || res.status === 201) {
           mapRequestBody.machine_id = res.data._id;
 
           const mapRequestConfig = {
@@ -203,7 +197,7 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
 
           axios(mapRequestConfig)
             .then((res) => {
-              if (res.status === 201) {
+              if (res.status === 200 || res.status === 201) {
                 dispatch({
                   type: machinesAndNodes.addMachine,
                   payload: {
@@ -213,14 +207,10 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
                 });
               }
             })
-            .catch((error) => {
-              console.log(error);
-            });
+            .catch((error) => httpRequestErrorAction(error, dispatch));
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -252,7 +242,7 @@ export const editMachineAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: machinesAndNodes.editOrDeleteMachine,
             payload: {
@@ -262,9 +252,7 @@ export const editMachineAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     // console.log(body);
     setTimeout(() => {
@@ -297,7 +285,7 @@ export const deleteMachineAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: machinesAndNodes.editOrDeleteMachine,
             payload: {
@@ -307,9 +295,7 @@ export const deleteMachineAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -378,7 +364,7 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
   if (!keys.showMockData) {
     axios(createNodeConfig)
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200 || res.status === 201) {
           const nodeID = res.data._id;
 
           const mapNodeToTheZoneBody = {
@@ -397,7 +383,7 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
 
           axios(mapNodeToTheZoneConfig)
             .then((res) => {
-              if (res.status === 201) {
+              if (res.status === 200 || res.status === 201) {
                 dispatch({
                   type: machinesAndNodes.addNode,
                   payload: {
@@ -407,14 +393,10 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
                 });
               }
             })
-            .catch((error) => {
-              console.log(error);
-            });
+            .catch((error) => httpRequestErrorAction(error, dispatch));
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -446,7 +428,7 @@ export const editNodeAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: machinesAndNodes.editOrDeleteNode,
             payload: {
@@ -456,9 +438,7 @@ export const editNodeAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -490,7 +470,7 @@ export const deleteNodeAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: machinesAndNodes.editOrDeleteNode,
             payload: {
@@ -500,9 +480,7 @@ export const deleteNodeAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({

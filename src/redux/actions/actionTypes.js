@@ -48,6 +48,7 @@ export const machinesAndNodes = {
 export const machineDetails = {
   getMachineDataByID: "GET_MACHINE_DATA_BY_ID",
   machineLoading: "LOADING_MACHINE",
+  noStoredMachineDataResponse: "NO_STORED_MACHINE_DATA_RESPONSE",
 };
 
 export const common = {
@@ -56,13 +57,11 @@ export const common = {
   filterByNodesOrMachines: "FILTER_BY_NODES_OR_MACHINES",
   toggleEditFormDrawer: "TOGGLE_EDIT_FORM_DRAWER",
   toggleEditMappingFormDrawer: "TOGGLE_EDIT_MAPPING_FORM_DRAWER",
-  togglePersistantSideBar: "TOGGLE_PERSISTANT_SIDEBAR",
+  toggleSideBar: "TOGGLE_SIDEBAR",
 };
 
 export const auth = {
   signin: "SIGNIN",
   signinLoading: "SIGNIN_LOADING",
   signinError: "SIGNIN_ERROR",
-
-  // signout: "SIGNOUT",
 };

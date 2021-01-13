@@ -52,7 +52,7 @@ const getColor = (change, thresholds, colors) => {
     : colors.low;
 };
 
-const CardWithDualGauge = (props) => {
+const DashboardSummaryCard = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -409,4 +409,106 @@ const CardWithDualGauge = (props) => {
   );
 };
 
-export default withRouter(CardWithDualGauge);
+export default withRouter(DashboardSummaryCard);
+
+const DashboardSummaryCardMinimal = (props) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const { name, ID, mapping } = props.data;
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handlePageChange = () => {
+    const { pathname } = props.location;
+    window.location.href = makePath(pathname, ID, name);
+  };
+
+  const handleEdit = () => {
+    handleClose();
+    toggleEditFormDrawerAction(dispatch, ID, name);
+  };
+
+  const handleMapping = () => {
+    handleClose();
+    toggleEditMappingFormDrawerAction(dispatch, ID, name);
+  };
+
+  return (
+    <Paper elevation={2} style={{ padding: 10 }} className={classes.cardHover}>
+      <Grid container justify="space-around" alignItems="center">
+        <Grid item xs={12}>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="center"
+          >
+            <Grid item>
+              {ID ? (
+                <Tooltip title="Open" placement="top">
+                  <Button onClick={handlePageChange}>
+                    <Typography
+                      variant="button"
+                      style={{ color: colors.BLUEGREY[600] }}
+                    >
+                      {name}
+                    </Typography>
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Button disableRipple>
+                  <Typography
+                    variant="button"
+                    style={{ color: colors.BLUEGREY[600] }}
+                  >
+                    {name}
+                  </Typography>
+                </Button>
+              )}
+            </Grid>
+            <Grid item>
+              <Tooltip title="Settings" placement="top">
+                <IconButton onClick={(e) => handleClick(e)}>
+                  <MoreHorizIcon className={classes.iconButton} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                id="settingsMenu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleEdit}>
+                  <EditIcon className={classes.menuItemIcon} />
+
+                  <Typography variant="inherit">Edit</Typography>
+                </MenuItem>
+                {mapping ? (
+                  <MenuItem onClick={handleMapping}>
+                    <LinkIcon className={classes.menuItemIcon} />
+
+                    <Typography variant="inherit">Change Mapping</Typography>
+                  </MenuItem>
+                ) : null}
+              </Menu>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Paper>
+  );
+};
+
+export const DashboardSummaryCardMinimalVersion = withRouter(
+  DashboardSummaryCardMinimal
+);

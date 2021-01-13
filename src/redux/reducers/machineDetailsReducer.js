@@ -5,6 +5,7 @@ const initialState = {
   data: [],
   timeFilter: "",
   machineLoading: false,
+  noStoredMachineDataResponse: null,
 };
 
 export const machineDetailsReducer = (state = initialState, action) => {
@@ -20,6 +21,17 @@ export const machineDetailsReducer = (state = initialState, action) => {
         ...state,
         machineID: action.payload.ID,
         data: action.payload.data,
+        noStoredMachineDataResponse: null,
+        machineLoading: false,
+      };
+
+    case machineDetails.noStoredMachineDataResponse:
+      return {
+        ...state,
+        machineID: action.payload.ID,
+        noStoredMachineDataResponse:
+          "No data has yet been stored for this machine.",
+        data: [],
         machineLoading: false,
       };
 

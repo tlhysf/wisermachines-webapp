@@ -2,6 +2,7 @@ import { machineDetails } from "./actionTypes";
 import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
+import { httpRequestErrorAction } from "./errorActions";
 
 import { machineData } from "../../data/machineData";
 
@@ -24,7 +25,7 @@ export const getMachineDataByIDAction = (dispatch, ID) => {
     axios(config)
       .then((res) => {
         const { data } = res;
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           if (isNotEmpty(data)) {
             dispatch({
               type: machineDetails.getMachineDataByID,
@@ -34,17 +35,18 @@ export const getMachineDataByIDAction = (dispatch, ID) => {
               },
             });
           } else {
-            // error: unexpected response
-            console.log("error: unexpected response", data);
+            dispatch({
+              type: machineDetails.noStoredMachineDataResponse,
+              payload: {
+                ID: ID,
+              },
+            });
           }
         } else {
           console.log(res.status);
         }
       })
-      .catch((error) => {
-        // error: fetch failed
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({

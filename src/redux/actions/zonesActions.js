@@ -3,6 +3,7 @@ import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
 import { placeholderRes } from "../../data/common";
+import { httpRequestErrorAction } from "./errorActions";
 
 const loadingTime = 2000;
 
@@ -39,9 +40,7 @@ export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
           console.log("error: unexpected response", res.data);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -73,7 +72,7 @@ export const addZoneAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: zones.addZone,
             payload: {
@@ -83,9 +82,7 @@ export const addZoneAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -118,7 +115,7 @@ export const editZoneAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: zones.editOrDeleteZone,
             payload: {
@@ -128,9 +125,7 @@ export const editZoneAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -163,7 +158,7 @@ export const deleteZoneAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: zones.editOrDeleteZone,
             payload: {
@@ -173,9 +168,7 @@ export const deleteZoneAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({

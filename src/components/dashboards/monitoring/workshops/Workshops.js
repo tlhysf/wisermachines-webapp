@@ -53,20 +53,22 @@ const Workshops = (props) => {
       </Grid>
       <Grid item xs={12} md={6}>
         <Grid container direction="row" justify="flex-end" alignItems="center">
-          <Grid item>
-            <Tooltip placement="top" title="Add">
-              <Button
-                className={classes.button}
-                variant="contained"
-                onClick={(e) => toggleAddFormDrawerAction(dispatch)}
-              >
-                <AddIcon
-                  className={classes.iconInsideButton}
-                  style={{ color: colors.TEAL[700] }}
-                />
-              </Button>
-            </Tooltip>
-          </Grid>
+          {keys.featureTemporarilyUnavailable ? null : (
+            <Grid item>
+              <Tooltip placement="top" title="Add">
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  onClick={(e) => toggleAddFormDrawerAction(dispatch)}
+                >
+                  <AddIcon
+                    className={classes.iconInsideButton}
+                    style={{ color: colors.TEAL[700] }}
+                  />
+                </Button>
+              </Tooltip>
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Grid>
@@ -86,7 +88,9 @@ const Workshops = (props) => {
           )}
         </Grid>
       </Grid>
+
       <AddWorkshop url={props.match.url} params={props.match.params} />
+
       <EditWorkshop url={props.match.url} params={props.match.params} />
     </>
   );

@@ -5,6 +5,7 @@ import { machinesReducer, nodesReducer } from "./machinesAndNodesReducer";
 import { machineDetailsReducer } from "./machineDetailsReducer";
 import { commonReducer } from "./commonReducer";
 import { authReducer } from "./authReducer";
+import { errorReducer } from "./errorReducer";
 
 const rootReducer = combineReducers({
   workshops: workshopsReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   machineDetails: machineDetailsReducer,
   common: commonReducer,
   auth: authReducer,
+  errors: errorReducer,
 });
 
 export default rootReducer;

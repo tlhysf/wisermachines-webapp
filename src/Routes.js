@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import PageNotFound from "./components/errorScreens/PageNotFound";
+import UnderConstruction from "./components/errorScreens/UnderConstruction";
 import Workshops from "./components/dashboards/monitoring/workshops/Workshops";
 import Zones from "./components/dashboards/monitoring/zones/Zones";
 import MachinesDetails from "./components/dashboards/monitoring/machineDetails/MachineDetails";
@@ -21,8 +22,8 @@ import keys from "./utils/keys";
 const signin = "/signin";
 
 // Error screens
-const pageNotFound = "/pagenotfound";
-// const underConstruction = "/commingsoon";
+export const pageNotFound = "/pagenotfound";
+export const underConstruction = "/commingsoon";
 
 // Monitoring
 export const home = "/";
@@ -68,9 +69,21 @@ const Routes = (props) => {
 
         <Route
           exact
+          path={underConstruction}
+          render={(props) =>
+            signedin ? (
+              <UnderConstruction {...props} />
+            ) : (
+              <Redirect to={signin} />
+            )
+          }
+        />
+
+        <Route
+          exact
           path={home}
           render={(props) =>
-            signedin ? <Redirect to={workshops} /> : <Redirect to={signin} />
+            signedin ? <Redirect to={monitoring} /> : <Redirect to={signin} />
           }
         />
 

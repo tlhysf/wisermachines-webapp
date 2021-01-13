@@ -17,6 +17,8 @@ import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import MachineDetailsRow1 from "./MachineDetailsRow1";
 import MachineDetailsRow2 from "./MachineDetailsRow2";
 import MachineDetailsRow3 from "./MachineDetailsRow3";
+import AlertCard from "../../../common/AlertCard";
+
 import Loader from "../../../common/Loader";
 
 import { liveMachineData } from "../../../../data/machineData";
@@ -54,6 +56,9 @@ export default function MachineDetails(props) {
   );
   const timeFilterSelected = useSelector((state) => state.common.timeFilter);
   const storedData = useSelector((state) => state.machineDetails.data);
+  const noStoredMachineDataResponse = useSelector(
+    (state) => state.machineDetails.noStoredMachineDataResponse
+  );
 
   const allData = !isNotEmpty(storedData)
     ? []
@@ -229,52 +234,82 @@ export default function MachineDetails(props) {
     </Grid>
   );
 
-  return (
+  const renderLoading = (
     <Grid container justify="center" alignItems="center" spacing={2}>
       <Grid item xs={12}>
         {navbar}
       </Grid>
 
-      {machineLoading ? <Loader /> : null}
-
-      {machineLoading ? null : (
-        <Grid item xs={12}>
-          <MachineDetailsRow1
-            data={{
-              currentNow,
-              lastUpdateTimestamp,
-              timeSinceLastUpdate,
-              stateNow,
-              stateNowDuration,
-              unitsConsumed,
-              timeFilter,
-              liveData,
-            }}
-          />
-        </Grid>
-      )}
-      {machineLoading ? null : (
-        <Grid item xs={12}>
-          <MachineDetailsRow2
-            data={{
-              utilization,
-              uptime,
-              downtime,
-              temperatureNow,
-              temperatureMax,
-              temperatureMin,
-              humidityNow,
-              humidityMax,
-              humidityMin,
-            }}
-          />
-        </Grid>
-      )}
-      {machineLoading ? null : (
-        <Grid item xs={12}>
-          <MachineDetailsRow3 lineCharts={lineCharts} />
-        </Grid>
-      )}
+      <Loader />
     </Grid>
   );
+
+  const renderLoaded = (
+    <Grid container justify="center" alignItems="center" spacing={2}>
+      <Grid item xs={12}>
+        {navbar}
+      </Grid>
+
+      <Grid item xs={12}>
+        <MachineDetailsRow1
+          data={{
+            currentNow,
+            lastUpdateTimestamp,
+            timeSinceLastUpdate,
+            stateNow,
+            stateNowDuration,
+            unitsConsumed,
+            timeFilter,
+            liveData,
+          }}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <MachineDetailsRow2
+          data={{
+            utilization,
+            uptime,
+            downtime,
+            temperatureNow,
+            temperatureMax,
+            temperatureMin,
+            humidityNow,
+            humidityMax,
+            humidityMin,
+          }}
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <MachineDetailsRow3 lineCharts={lineCharts} />
+      </Grid>
+    </Grid>
+  );
+
+  const renderNoData = (
+    <Grid container justify="center" alignItems="center" spacing={2}>
+      <Grid item xs={12}>
+        {navbar}
+      </Grid>
+
+      <Grid item>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{ height: "70vh" }}
+          spacing={4}
+        >
+          <AlertCard message={noStoredMachineDataResponse} />
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+
+  return machineLoading
+    ? renderLoading
+    : noStoredMachineDataResponse !== null
+    ? renderNoData
+    : renderLoaded;
 }

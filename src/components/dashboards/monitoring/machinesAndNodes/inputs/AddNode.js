@@ -62,10 +62,12 @@ const isHex = (string) => {
 const formatToMAC = (string) => {
   const array = Array.from(string);
 
+  /*eslint-disable */
   // 2, 4 + 1, 6 + 2, 8 + 3, 10 + 4;
   for (let i = 0, j = 2; i < 5, j < 12; i++, j += 2) {
     array.splice(j + i, 0, ":");
   }
+  /*eslint-enable */
 
   const result = array.join().split(",").join("");
 

@@ -14,7 +14,7 @@ const initialState = {
     name: "",
   },
   machinesOrNodesFilter: "machines",
-  togglePersistantSideBar: false,
+  toggleSideBar: false,
 };
 
 export const commonReducer = (state = initialState, action) => {
@@ -62,10 +62,10 @@ export const commonReducer = (state = initialState, action) => {
       };
     }
 
-    case common.togglePersistantSideBar: {
+    case common.toggleSideBar: {
       return {
         ...state,
-        togglePersistantSideBar: !state.togglePersistantSideBar,
+        toggleSideBar: !state.toggleSideBar,
       };
     }
 

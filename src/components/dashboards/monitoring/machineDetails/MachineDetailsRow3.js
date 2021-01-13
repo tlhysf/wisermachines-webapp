@@ -63,7 +63,7 @@ export default function MachineDetailsRow3(props) {
             style={{ color, backgroundColor, padding: 0 }}
             onClick={(e) => setButtonIndex(chartIndex)}
           >
-            <Typography variant="caption" color={color} style={{ padding: 3 }}>
+            <Typography variant="caption" style={{ padding: 3, color: color }}>
               {chartNamesList[chartIndex]}
             </Typography>
           </Button>

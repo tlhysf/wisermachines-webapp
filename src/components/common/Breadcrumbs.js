@@ -59,7 +59,7 @@ const BreadcrumbsNav = (props) => {
 
   const renderBreadcrumbs = allPaths.map((path, index) =>
     index === allPaths.length - 1 ? (
-      <ToolTip title={"Current page"} placement="top">
+      <ToolTip key={index} title={"Current page"} placement="top">
         <Typography
           variant="overline"
           style={{ color: colors.TEAL[800] }}
@@ -76,6 +76,7 @@ const BreadcrumbsNav = (props) => {
         style={style.link}
       >
         <ToolTip
+          key={index}
           title={"Go to " + breadcrumbsNames[index].toLowerCase()}
           placement="top"
         >
@@ -91,6 +92,7 @@ const BreadcrumbsNav = (props) => {
         key={index}
       >
         <ToolTip
+          key={index}
           title={"Go to " + breadcrumbsNames[index].toLowerCase()}
           placement="top"
         >

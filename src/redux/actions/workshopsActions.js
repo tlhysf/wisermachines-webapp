@@ -2,6 +2,8 @@ import { workshops } from "./actionTypes";
 import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
+import { httpRequestErrorAction } from "./errorActions";
+
 import { placeholderRes } from "../../data/common";
 
 const loadingTime = 2000;
@@ -31,9 +33,7 @@ export const getAllWorkshopsAction = (dispatch) => {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -62,7 +62,7 @@ export const addWorkshopAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 201) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: workshops.addWorkshop,
             payload: {
@@ -72,9 +72,7 @@ export const addWorkshopAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -107,7 +105,7 @@ export const editWorkshopAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: workshops.editOrDeleteWorkshop,
             payload: {
@@ -117,9 +115,7 @@ export const editWorkshopAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({
@@ -152,7 +148,7 @@ export const deleteWorkshopAction = (dispatch, body) => {
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 || res.status === 201) {
           dispatch({
             type: workshops.editOrDeleteWorkshop,
             payload: {
@@ -162,9 +158,7 @@ export const deleteWorkshopAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => httpRequestErrorAction(error, dispatch));
   } else {
     setTimeout(() => {
       dispatch({

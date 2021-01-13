@@ -22,6 +22,7 @@ export default function NodeCards(props) {
         >
           {listOfNodeMACs.map((mac, index) => (
             <Grow
+              key={index}
               in={true}
               {...{ timeout: animationDuration + index * animationDuration }}
             >

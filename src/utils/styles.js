@@ -100,6 +100,11 @@ export const layoutStyle = (theme) => ({
     flexGrow: 1,
     padding: theme.spacing(1),
   },
+
+  menuItemIcon: {
+    paddingRight: 10,
+    color: colors.TEAL[600],
+  },
 });
 
 export const common = (theme) => ({

@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { Provider } from "react-redux";
-import store from "./redux/store";
 import General from "./components/layouts/General";
 import colors from "./utils/colors";
+import ErrorModal from "./components/errorScreens/ErrorModal";
 
 const App = (props) => {
   const signedin = localStorage.getItem("signedin");
@@ -12,9 +11,10 @@ const App = (props) => {
   }, []);
 
   return (
-    <Provider store={store}>
+    <React.Fragment>
       <General {...props} signedin={signedin} />
-    </Provider>
+      <ErrorModal {...props} />
+    </React.Fragment>
   );
 };
 
