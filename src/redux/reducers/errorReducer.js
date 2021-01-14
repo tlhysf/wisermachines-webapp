@@ -7,27 +7,11 @@ const initialState = {
 
 export const errorReducer = (state = initialState, action) => {
   switch (action.type) {
-    case errors.notOkResponseFromServer: {
+    case 500: {
       return {
         ...state,
-        errorCode: action.payload.errorCode,
-        errorMessage: action.payload.errorMessage,
-      };
-    }
-
-    case errors.noResponseFromServer: {
-      return {
-        ...state,
-        errorCode: action.payload.errorCode,
-        errorMessage: action.payload.errorMessage,
-      };
-    }
-
-    case errors.errorInSettingUpTheRequest: {
-      return {
-        ...state,
-        errorCode: action.payload.errorCode,
-        errorMessage: action.payload.errorMessage,
+        errorCode: action.type,
+        errorMessage: "Internal Server Error",
       };
     }
 

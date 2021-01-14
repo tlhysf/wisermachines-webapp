@@ -12,7 +12,9 @@ import WorkshopCards from "./WorkshopCardsContainer";
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import AddWorkshop from "./inputs/AddWorkshop";
 import EditWorkshop from "./inputs/EditWorkshop";
+import AlertCard from "../../../common/AlertCard";
 import keys from "../../../../utils/keys";
+import { isNotEmpty } from "../../../../utils/validation";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getAllWorkshopsAction } from "../../../../redux/actions/workshopsActions";
@@ -74,6 +76,20 @@ const Workshops = (props) => {
     </Grid>
   );
 
+  const renderNoData = isNotEmpty(allWorkshops) ? null : (
+    <Grid item>
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        style={{ height: "70vh" }}
+        spacing={4}
+      >
+        <AlertCard message={"No workshops have been added yet."} />
+      </Grid>
+    </Grid>
+  );
+
   return (
     <>
       <Grid container justify="center" alignItems="center" spacing={2}>
@@ -87,6 +103,7 @@ const Workshops = (props) => {
             <WorkshopCards allWorkshops={allWorkshops} />
           )}
         </Grid>
+        {renderNoData}
       </Grid>
 
       <AddWorkshop url={props.match.url} params={props.match.params} />

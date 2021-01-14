@@ -65,9 +65,3 @@ export const auth = {
   signinLoading: "SIGNIN_LOADING",
   signinError: "SIGNIN_ERROR",
 };
-
-export const errors = {
-  noResponseFromServer: "NO_RESPONSE_FROM_SERVER",
-  errorInSettingUpTheRequest: "ERROR_IN_SETTING_UP_THE_REQUEST",
-  notOkResponseFromServer: "NOT_OK_RESPONSE_FROM_SERVER",
-};

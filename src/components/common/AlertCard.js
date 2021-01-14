@@ -6,19 +6,12 @@ import Typography from "@material-ui/core/Typography";
 import Grow from "@material-ui/core/Grow";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { common } from "../../utils/styles";
 import colors from "../../utils/colors";
 
 const animationDuration = 200;
 
-const useStyles = makeStyles((theme) => common(theme));
-
 export default function AlertCard(props) {
-  const classes = useStyles();
-
   const timeout = props.disableAnimation ? 0 : animationDuration;
 
   return (

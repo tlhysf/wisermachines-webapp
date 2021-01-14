@@ -5,6 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 import AddIcon from "@material-ui/icons/Add";
 
+import { isNotEmpty } from "../../../../utils/validation";
 import keys from "../../../../utils/keys";
 import { common } from "../../../../utils/styles";
 import colors from "../../../../utils/colors";
@@ -14,6 +15,7 @@ import ZoneCards from "./ZoneCardsContainer";
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import AddZone from "./inputs/AddZone";
 import EditZone from "./inputs/EditZone";
+import AlertCard from "../../../common/AlertCard";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getAllZonesInAWorkshopAction } from "../../../../redux/actions/zonesActions";
@@ -73,6 +75,20 @@ const Zones = (props) => {
     </Grid>
   );
 
+  const renderNoData = isNotEmpty(allZonesInAWorkshop) ? null : (
+    <Grid item>
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        style={{ height: "70vh" }}
+        spacing={4}
+      >
+        <AlertCard message={"No zones have been added yet."} />
+      </Grid>
+    </Grid>
+  );
+
   return (
     <>
       <Grid container justify="center" alignItems="center" spacing={2}>
@@ -86,6 +102,7 @@ const Zones = (props) => {
             <ZoneCards allZonesInAWorkshop={allZonesInAWorkshop} />
           )}
         </Grid>
+        {renderNoData}
       </Grid>
       <AddZone url={props.match.url} params={props.match.params} />
       <EditZone url={props.match.url} params={props.match.params} />
