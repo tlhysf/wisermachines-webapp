@@ -8,7 +8,7 @@ import { placeholderRes } from "../../data/common";
 
 const loadingTime = 2000;
 
-export const getAllWorkshopsAction = (dispatch) => {
+export const getAllWorkshopsAction = (dispatch, targetUser) => {
   dispatch({
     type: workshops.workshopsLoading,
   });
@@ -24,10 +24,22 @@ export const getAllWorkshopsAction = (dispatch) => {
       .then((res) => {
         const { data } = res;
         if (isNotEmpty(data)) {
-          const allWorkshops = data.filter((x) => x);
+          const data = res.data.filter((x) => x);
+          // const allWorkshops = data.filter((x) => x);
+
+          let thisUser = keys.users.map((user) =>
+            user.name === targetUser ? user : null
+          );
+          thisUser = thisUser.filter((x) => x).pop();
+
+          let allWorkshopsForThisUser = data.map((workshop) =>
+            workshop._id === thisUser.workshopID ? workshop : null
+          );
+          allWorkshopsForThisUser = allWorkshopsForThisUser.filter((x) => x);
+
           dispatch({
             type: workshops.getAllWorkshops,
-            payload: allWorkshops,
+            payload: allWorkshopsForThisUser,
           });
         } else {
           console.log("error: unexpected response", data);

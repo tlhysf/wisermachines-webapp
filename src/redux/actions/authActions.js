@@ -13,7 +13,7 @@ export const signinAction = (dispatch, user) => {
       const nameMatch = user.name === x.name;
       const passwordMatch = user.password === x.password;
       if (nameMatch && passwordMatch) {
-        localStorage.setItem("user", { ...user });
+        localStorage.setItem("user", x.name);
         localStorage.setItem("signedin", true);
         dispatch({
           type: auth.signin,

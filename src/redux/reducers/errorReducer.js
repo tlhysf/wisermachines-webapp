@@ -1,3 +1,5 @@
+import { errors } from "../actions/actionTypes";
+
 const initialState = {
   errorCode: null,
   errorMessage: null,
@@ -5,11 +7,27 @@ const initialState = {
 
 export const errorReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 500: {
+    case errors.notOkResponseFromServer: {
       return {
         ...state,
-        errorCode: action.type,
-        errorMessage: "Internal Server Error",
+        errorCode: action.payload.errorCode,
+        errorMessage: action.payload.errorMessage,
+      };
+    }
+
+    case errors.noResponseFromServer: {
+      return {
+        ...state,
+        errorCode: action.payload.errorCode,
+        errorMessage: action.payload.errorMessage,
+      };
+    }
+
+    case errors.errorInSettingUpTheRequest: {
+      return {
+        ...state,
+        errorCode: action.payload.errorCode,
+        errorMessage: action.payload.errorMessage,
       };
     }
 

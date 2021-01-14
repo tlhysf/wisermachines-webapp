@@ -5,6 +5,7 @@ const initialState = {
   signinError: null,
   signinResponse: null,
   signoutResponse: null,
+  user: localStorage.getItem("user"),
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -34,13 +35,6 @@ export const authReducer = (state = initialState, action) => {
       };
     }
 
-    // case auth.signout: {
-    //   return {
-    //     ...state,
-    //     signoutResponse: auth.signout,
-    //   };
-    // }
-    
     default:
       return state;
   }

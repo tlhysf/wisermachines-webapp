@@ -29,13 +29,15 @@ const Workshops = (props) => {
 
   const allWorkshops = useSelector((state) => state.workshops.allWorkshops);
 
+  const user = useSelector((state) => state.auth.user);
+
   const workshopsLoading = useSelector(
     (state) => state.workshops.workshopsLoading
   );
 
   useEffect(() => {
-    getAllWorkshopsAction(dispatch);
-  }, [dispatch]);
+    getAllWorkshopsAction(dispatch, user);
+  }, [dispatch, user]);
 
   const navbar = (
     <Grid container justify="center" alignItems="center" spacing={0}>
@@ -53,22 +55,20 @@ const Workshops = (props) => {
       </Grid>
       <Grid item xs={12} md={6}>
         <Grid container direction="row" justify="flex-end" alignItems="center">
-          {keys.featureTemporarilyUnavailable ? null : (
-            <Grid item>
-              <Tooltip placement="top" title="Add">
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  onClick={(e) => toggleAddFormDrawerAction(dispatch)}
-                >
-                  <AddIcon
-                    className={classes.iconInsideButton}
-                    style={{ color: colors.TEAL[700] }}
-                  />
-                </Button>
-              </Tooltip>
-            </Grid>
-          )}
+          <Grid item>
+            <Tooltip placement="top" title="Add">
+              <Button
+                className={classes.button}
+                variant="contained"
+                onClick={(e) => toggleAddFormDrawerAction(dispatch)}
+              >
+                <AddIcon
+                  className={classes.iconInsideButton}
+                  style={{ color: colors.TEAL[700] }}
+                />
+              </Button>
+            </Tooltip>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

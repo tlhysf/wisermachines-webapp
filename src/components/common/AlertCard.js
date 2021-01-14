@@ -5,6 +5,8 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grow from "@material-ui/core/Grow";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { common } from "../../utils/styles";
@@ -17,8 +19,10 @@ const useStyles = makeStyles((theme) => common(theme));
 export default function AlertCard(props) {
   const classes = useStyles();
 
+  const timeout = props.disableAnimation ? 0 : animationDuration;
+
   return (
-    <Grow in={true} {...{ timeout: animationDuration + 9 * animationDuration }}>
+    <Grow in={true} {...{ timeout: timeout }}>
       <Grid item>
         <Grid
           container
@@ -27,7 +31,7 @@ export default function AlertCard(props) {
           spacing={1}
           component={Paper}
           elevation={2}
-          className={classes.cardHover}
+          // className={classes.cardHover}
           style={{
             backgroundColor: colors.BLUE[600],
             color: "white",
@@ -47,3 +51,17 @@ export default function AlertCard(props) {
     </Grow>
   );
 }
+
+export const AlertDialog = (props) => {
+  return (
+    <Dialog
+      open={props.open}
+      onClose={(e) => props.onClose()}
+      PaperProps={{ elevation: 0, style: { backgroundColor: "rgb(0,0,0,0)" } }}
+    >
+      <div style={{ padding: 20 }}>
+        <AlertCard message={props.message} disableAnimation={true} />
+      </div>
+    </Dialog>
+  );
+};

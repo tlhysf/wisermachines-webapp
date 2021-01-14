@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -9,15 +11,19 @@ const ErrorModal = ({ classes }) => {
   const errorCode = useSelector((state) => state.errors.errorCode);
   const errorMessage = useSelector((state) => state.errors.errorMessage);
 
-  const handleClose = () => {
+  const handleRefresh = () => {
     window.location.reload();
+  };
+
+  const handleGoBack = () => {
+    window.history.go(-1);
   };
 
   return (
     <Drawer
       open={errorCode !== null ? true : false}
       anchor="top"
-      onClose={handleClose}
+      onClose={handleRefresh}
       type="temporary"
     >
       <Grid
@@ -45,14 +51,24 @@ const ErrorModal = ({ classes }) => {
               </Typography>
             </Grid>
             <Grid item>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={handleClose}
-                color="primary"
-              >
-                Refresh
-              </Button>
+              <ButtonGroup>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  onClick={(e) => handleRefresh()}
+                  color="primary"
+                >
+                  Refresh
+                </Button>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  onClick={(e) => handleGoBack()}
+                  color="primary"
+                >
+                  Go Back
+                </Button>
+              </ButtonGroup>
             </Grid>
           </Grid>
         </Grid>

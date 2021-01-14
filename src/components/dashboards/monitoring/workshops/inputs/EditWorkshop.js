@@ -19,6 +19,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { formStyle } from "../../../../../utils/styles";
 import { isNotEmpty, requestBodyFormat } from "../../../../../utils/validation";
 
+import keys from "../../../../../utils/keys";
+import { AlertDialog } from "../../../../common/AlertCard";
+
 const useStyles = makeStyles((theme) => formStyle(theme));
 
 const EditWorkshop = (props) => {
@@ -102,7 +105,13 @@ const EditWorkshop = (props) => {
     }
   }, [success, dispatch, props]);
 
-  return (
+  return keys.featureTemporarilyUnavailable ? (
+    <AlertDialog
+      open={openForm.open}
+      message="This feature is temporarily unavailable."
+      onClose={(e) => toggleEditFormDrawerAction(dispatch)}
+    />
+  ) : (
     <Drawer open={openForm.open} anchor="right" onClose={(e) => handleCancel()}>
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
