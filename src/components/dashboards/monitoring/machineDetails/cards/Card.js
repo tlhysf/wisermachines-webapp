@@ -2,11 +2,16 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import { smallCard } from "../../../../../utils/styles";
+import { smallCard, common } from "../../../../../utils/styles";
 import colors from "../../../../../utils/colors";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => common(theme));
 
 export default function Card(props) {
   const { icon, values } = props.data;
+  const classes = useStyles();
 
   return (
     <Grid
@@ -17,6 +22,7 @@ export default function Card(props) {
       alignItems="center"
       elevation={2}
       style={{ padding: 3 }}
+      className={classes.cardHover}
     >
       <Grid item xs={2}>
         <Paper style={smallCard.iconPaper} elevation={0}>

@@ -76,19 +76,20 @@ const Workshops = (props) => {
     </Grid>
   );
 
-  const renderNoData = isNotEmpty(allWorkshops) ? null : (
-    <Grid item>
-      <Grid
-        container
-        justify="center"
-        alignItems="center"
-        style={{ height: "70vh" }}
-        spacing={4}
-      >
-        <AlertCard message={"No workshops have been added yet."} />
+  const renderNoData =
+    !isNotEmpty(allWorkshops) && !workshopsLoading ? (
+      <Grid item>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{ height: "70vh" }}
+          spacing={4}
+        >
+          <AlertCard message={"No workshops have been added yet."} />
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    ) : null;
 
   return (
     <>

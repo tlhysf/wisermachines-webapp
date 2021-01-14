@@ -2,19 +2,19 @@ const randomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const machineNamePrefix = "Air-Compressor-";
-const zoneNamePrefix = "Factory-";
+const machineNamePrefix = "Machine-";
+const zoneNamePrefix = "Zone-";
 
 export const placeholderRes = {
   getAllWorkshops: [
-    { _id: "5fdf356185790c04ec5d4310", name: "Balochistan", __v: 0 },
-    { _id: "5fdf356185790c04ec5d4310", name: "drying workshop", __v: 0 },
-    { _id: "5fdf356185790c04ec5d4310", name: "Stitching Workshop", __v: 0 },
-    { _id: "5fdf356185790c04ec5d4310", name: "Looming Workshop", __v: 0 },
-    { _id: "5fdf356185790c04ec5d4310", name: "Workshop-123", __v: 0 },
-    { _id: "5fdf356185790c04ec5d4310", name: "worskhop-456", __v: 0 },
-    { _id: "5fdf356185790c04ec5d4310", name: "workshop-789", __v: 0 },
-    { _id: "5fdf356185790c04ec5d4310", name: "Workshop-1011", __v: 0 },
+    { _id: "6000163ba6f18b0f847ee574", name: "Workshop-0", __v: 0 },
+    { _id: "6000163ba6f18b0f847ee574", name: "Workshop-1", __v: 0 },
+    { _id: "6000163ba6f18b0f847ee574", name: "Workshop-2", __v: 0 },
+    { _id: "6000163ba6f18b0f847ee574", name: "Workshop-3", __v: 0 },
+    { _id: "6000163ba6f18b0f847ee574", name: "Workshop-4", __v: 0 },
+    { _id: "6000163ba6f18b0f847ee574", name: "Workshop-5", __v: 0 },
+    { _id: "6000163ba6f18b0f847ee574", name: "Workshop-6", __v: 0 },
+    { _id: "6000163ba6f18b0f847ee574", name: "Workshop-7", __v: 0 },
   ],
 
   getAllZones: [

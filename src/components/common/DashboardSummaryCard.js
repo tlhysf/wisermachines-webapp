@@ -28,18 +28,30 @@ import {
 
 const useStyles = makeStyles((theme) => styles(theme));
 
-const colorTheme = {
-  high: colors.TEAL[700],
-  normal: colors.INDIGO[700],
-  low: colors.ORANGE[700],
+const colorTheme1 = {
+  high: colors.TEAL[600],
+  normal: colors.INDIGO[600],
+  low: colors.ORANGE[600],
+};
+
+const colorTheme2 = {
+  high: colors.GREEN[600],
+  normal: colors.CYAN[600],
+  low: colors.RED[600],
+};
+
+const colorTheme3 = {
+  high: colors.LIGHTGREEN[600],
+  normal: colors.INDIGO[600],
+  low: colors.PURPLE[600],
 };
 
 const colorSets = {
-  info1: colorTheme,
-  info2: colorTheme,
-  status: colorTheme,
-  gaugeItem1: colorTheme,
-  gaugeItem2: colorTheme,
+  info1: colorTheme1,
+  info2: colorTheme2,
+  status: colorTheme3,
+  gaugeItem1: colorTheme1,
+  gaugeItem2: colorTheme2,
 };
 
 const getColor = (change, thresholds, colors) => {

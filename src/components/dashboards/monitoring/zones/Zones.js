@@ -75,19 +75,20 @@ const Zones = (props) => {
     </Grid>
   );
 
-  const renderNoData = isNotEmpty(allZonesInAWorkshop) ? null : (
-    <Grid item>
-      <Grid
-        container
-        justify="center"
-        alignItems="center"
-        style={{ height: "70vh" }}
-        spacing={4}
-      >
-        <AlertCard message={"No zones have been added yet."} />
+  const renderNoData =
+    !isNotEmpty(allZonesInAWorkshop) && !zonesLoading ? (
+      <Grid item>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{ height: "70vh" }}
+          spacing={4}
+        >
+          <AlertCard message={"No zones have been added yet."} />
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    ) : null;
 
   return (
     <>

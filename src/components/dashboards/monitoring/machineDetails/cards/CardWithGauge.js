@@ -9,6 +9,11 @@ import colors from "../../../../../utils/colors";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 
+import { common } from "../../../../../utils/styles";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => common(theme));
+
 const colorSets = {
   high: colors.RED[700],
   normal: colors.INDIGO[700],
@@ -28,6 +33,8 @@ const getColor = (change, thresholds, colorSet) => {
 const iconStyle = { height: 15, paddingTop: 5 };
 
 export default function CardMedium(props) {
+  const classes = useStyles();
+
   const {
     title,
     gaugeValue,
@@ -82,6 +89,7 @@ export default function CardMedium(props) {
       component={Paper}
       elevation={2}
       style={{ paddingTop: 10 }}
+      className={classes.cardHover}
     >
       <Grid item xs={7}>
         <Grid container direction="column" justify="center" alignItems="center">
