@@ -45,7 +45,7 @@ export const getAllWorkshopsAction = (dispatch, targetUser) => {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, workshops));
   } else {
     setTimeout(() => {
       dispatch({
@@ -84,7 +84,7 @@ export const addWorkshopAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, workshops));
   } else {
     setTimeout(() => {
       dispatch({
@@ -127,7 +127,7 @@ export const editWorkshopAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, workshops));
   } else {
     setTimeout(() => {
       dispatch({
@@ -170,7 +170,7 @@ export const deleteWorkshopAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, workshops));
   } else {
     setTimeout(() => {
       dispatch({

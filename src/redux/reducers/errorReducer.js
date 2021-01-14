@@ -1,5 +1,3 @@
-import { errors } from "../actions/actionTypes";
-
 const initialState = {
   errorCode: null,
   errorMessage: null,

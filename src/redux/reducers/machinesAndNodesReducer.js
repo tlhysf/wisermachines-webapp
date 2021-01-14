@@ -1,4 +1,4 @@
-import { machinesAndNodes } from "../actions/actionTypes";
+import { nodes, machines } from "../actions/actionTypes";
 
 const initialMachinesState = {
   zoneID: "",
@@ -16,69 +16,72 @@ const initialMachinesState = {
   deleteMachineLoading: false,
   editMachineMappingLoading: false,
   deleteMachineMappingLoading: false,
+  notFound: false,
 };
 
 export const machinesReducer = (state = initialMachinesState, action) => {
   switch (action.type) {
-    case machinesAndNodes.machinesLoading:
+    case machines.machinesLoading:
       return {
         ...state,
         machinesLoading: true,
       };
 
-    case machinesAndNodes.getAllMachinesInAZone:
+    case machines.getAllMachinesInAZone:
       return {
         ...state,
         allMachinesInAZone: action.payload.allMachinesInAZone,
         zoneID: action.payload.zoneID,
         machinesLoading: false,
+        notFound: false,
       };
 
-    case machinesAndNodes.getAllMachineMappings:
+    // TO DO: Combine machines get APIs
+    case machines.getAllMachineMappings:
       return {
         ...state,
         machineMappings: action.payload,
         machinesLoading: false,
       };
 
-    case machinesAndNodes.addMachineLoading:
+    case machines.addMachineLoading:
       return {
         ...state,
         addMachineLoading: true,
       };
 
-    case machinesAndNodes.editMachineLoading:
+    case machines.editMachineLoading:
       return {
         ...state,
         editMachineLoading: true,
       };
 
-    case machinesAndNodes.deleteMachineLoading:
+    case machines.deleteMachineLoading:
       return {
         ...state,
         deleteMachineLoading: true,
       };
 
-    case machinesAndNodes.editMachineMappingLoading:
+    case machines.editMachineMappingLoading:
       return {
         ...state,
         editMachineMappingLoading: true,
       };
 
-    case machinesAndNodes.deleteMachineMappingLoading:
+    case machines.deleteMachineMappingLoading:
       return {
         ...state,
         deleteMachineMappingLoading: true,
       };
 
-    case machinesAndNodes.addMachine:
+    case machines.addMachine:
       return {
         ...state,
         addMachineResponse: action.payload.response,
         addMachineLoading: false,
       };
 
-    case machinesAndNodes.editOrDeleteMachine:
+    case machines.editOrDeleteMachine:
       return {
         ...state,
         editMachineResponse: action.payload.response,
@@ -86,12 +89,18 @@ export const machinesReducer = (state = initialMachinesState, action) => {
         deleteMachineLoading: false,
       };
 
-    case machinesAndNodes.editMachineMapping:
+    case machines.editMachineMapping:
       return {
         ...state,
         editMachineMappingResponse: action.payload.response,
         editMachineMappingLoading: false,
         deleteMachineMappingLoading: false,
+      };
+
+    case machines.notFound:
+      return {
+        ...state,
+        notFound: true,
       };
 
     default:
@@ -112,56 +121,64 @@ const initialNodesState = {
   addNodeLoading: false,
   editNodeLoading: false,
   deleteNodeLoading: false,
+  notFound: false,
 };
 
 export const nodesReducer = (state = initialNodesState, action) => {
   switch (action.type) {
-    case machinesAndNodes.nodesLoading:
+    case nodes.nodesLoading:
       return {
         ...state,
         nodesLoading: true,
       };
 
-    case machinesAndNodes.getAllNodesInAZone:
+    case nodes.getAllNodesInAZone:
       return {
         ...state,
         allNodesInAZone: action.payload.allNodesInAZone,
         allNodesInAZoneProfiles: action.payload.allNodesInAZoneProfiles,
         zoneID: action.payload.zoneID,
         nodesLoading: false,
+        notFound: false,
       };
 
-    case machinesAndNodes.addNodeLoading:
+    case nodes.addNodeLoading:
       return {
         ...state,
         addNodeLoading: true,
       };
 
-    case machinesAndNodes.addNode:
+    case nodes.addNode:
       return {
         ...state,
         addNodeResponse: action.payload.response,
         addNodeLoading: false,
       };
 
-    case machinesAndNodes.editNodeLoading:
+    case nodes.editNodeLoading:
       return {
         ...state,
         editNodeLoading: true,
       };
 
-    case machinesAndNodes.deleteNodeLoading:
+    case nodes.deleteNodeLoading:
       return {
         ...state,
         deleteNodeLoading: true,
       };
 
-    case machinesAndNodes.editOrDeleteNode:
+    case nodes.editOrDeleteNode:
       return {
         ...state,
         editNodeResponse: action.payload.response,
         editNodeLoading: false,
         deleteNodeLoading: false,
+      };
+
+    case nodes.notFound:
+      return {
+        ...state,
+        notFound: true,
       };
 
     default:

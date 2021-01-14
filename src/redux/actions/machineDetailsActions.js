@@ -46,7 +46,9 @@ export const getMachineDataByIDAction = (dispatch, ID) => {
           console.log(res.status);
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) =>
+        httpRequestErrorAction(error, dispatch, machineDetails)
+      );
   } else {
     setTimeout(() => {
       dispatch({

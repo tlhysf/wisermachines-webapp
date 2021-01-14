@@ -8,6 +8,7 @@ const initialState = {
   addWorkshopLoading: false,
   editWorkshopLoading: false,
   deleteWorkshopLoading: false,
+  notFound: false,
 };
 
 export const workshopsReducer = (state = initialState, action) => {
@@ -23,6 +24,7 @@ export const workshopsReducer = (state = initialState, action) => {
         ...state,
         allWorkshops: action.payload,
         workshopsLoading: false,
+        notFound: false,
       };
 
     case workshops.addWorkshopLoading:
@@ -56,6 +58,12 @@ export const workshopsReducer = (state = initialState, action) => {
         editWorkshopResponse: action.payload.response,
         editWorkshopLoading: false,
         deleteWorkshopLoading: false,
+      };
+
+    case workshops.notFound:
+      return {
+        ...state,
+        notFound: true,
       };
 
     default:

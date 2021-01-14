@@ -1,4 +1,4 @@
-export const httpRequestErrorAction = (error, dispatch) => {
+export const httpRequestErrorAction = (error, dispatch, type) => {
   if (error.response) {
     console.log(
       "The request was made and the server responded with a status code !== 2xx",
@@ -7,6 +7,10 @@ export const httpRequestErrorAction = (error, dispatch) => {
     if (error.response.status === 500) {
       dispatch({
         type: error.response.status,
+      });
+    } else if (error.response.status === 404) {
+      dispatch({
+        type: type.notFound,
       });
     }
   } else if (error.request) {

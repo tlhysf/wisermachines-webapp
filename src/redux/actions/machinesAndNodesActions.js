@@ -1,4 +1,4 @@
-import { machinesAndNodes } from "./actionTypes";
+import { machines, nodes } from "./actionTypes";
 import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
@@ -8,9 +8,12 @@ import { placeholderRes } from "../../data/common";
 
 const loadingTime = 2000;
 
+// TO DO: Combine machines get APIs
+// TO DO: invoke 404 on empty responses
+
 export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
   dispatch({
-    type: machinesAndNodes.machinesLoading,
+    type: machines.machinesLoading,
   });
 
   const config = {
@@ -29,18 +32,18 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
           // Need to filter all machines in the zone by zone ID
           const allMachinesInAZone = data.filter((x) => x);
           dispatch({
-            type: machinesAndNodes.getAllMachinesInAZone,
+            type: machines.getAllMachinesInAZone,
             payload: { allMachinesInAZone, zoneID },
           });
         } else {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, machines));
   } else {
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.getAllMachinesInAZone,
+        type: machines.getAllMachinesInAZone,
         payload: { allMachinesInAZone: placeholderRes.getAllMachines, zoneID },
       });
     }, loadingTime);
@@ -49,7 +52,7 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
 
 export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
   dispatch({
-    type: machinesAndNodes.nodesLoading,
+    type: nodes.nodesLoading,
   });
 
   const config = {
@@ -94,7 +97,7 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
                 );
 
                 dispatch({
-                  type: machinesAndNodes.getAllNodesInAZone,
+                  type: nodes.getAllNodesInAZone,
                   payload: {
                     allNodesInAZoneProfiles,
                     allNodesInAZone,
@@ -105,16 +108,16 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
                 console.log("error: unexpected response", data);
               }
             })
-            .catch((error) => httpRequestErrorAction(error, dispatch));
+            .catch((error) => httpRequestErrorAction(error, dispatch, nodes));
         } else {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, nodes));
   } else {
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.getAllNodesInAZone,
+        type: nodes.getAllNodesInAZone,
         payload: {
           allNodesInAZoneProfiles: placeholderRes.getAllNodes,
           allNodesInAZone: placeholderRes.getAllNodeToMachineMappingInAZone,
@@ -127,7 +130,7 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
 
 export const getAllMachineMappingsAction = (dispatch) => {
   dispatch({
-    type: machinesAndNodes.machinesLoading,
+    type: machines.machinesLoading,
   });
 
   const config = {
@@ -145,18 +148,18 @@ export const getAllMachineMappingsAction = (dispatch) => {
         if (isNotEmpty(data)) {
           const allMachineMappings = data.filter((x) => x);
           dispatch({
-            type: machinesAndNodes.getAllMachineMappings,
+            type: machines.getAllMachineMappings,
             payload: allMachineMappings,
           });
         } else {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, machines));
   } else {
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.getAllMachineMappings,
+        type: machines.getAllMachineMappings,
         payload: placeholderRes.getAllMachineMappings,
       });
     }, loadingTime);
@@ -167,7 +170,7 @@ export const getAllMachineMappingsAction = (dispatch) => {
 
 export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
   dispatch({
-    type: machinesAndNodes.addMachineLoading,
+    type: machines.addMachineLoading,
   });
 
   const data = JSON.stringify(addRequestBody);
@@ -199,7 +202,7 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
             .then((res) => {
               if (res.status === 200 || res.status === 201) {
                 dispatch({
-                  type: machinesAndNodes.addMachine,
+                  type: machines.addMachine,
                   payload: {
                     // should be response body
                     response: addRequestBody,
@@ -207,14 +210,16 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
                 });
               }
             })
-            .catch((error) => httpRequestErrorAction(error, dispatch));
+            .catch((error) =>
+              httpRequestErrorAction(error, dispatch, machines)
+            );
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, machines));
   } else {
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.addMachine,
+        type: machines.addMachine,
         payload: {
           // should be response body
           response: addRequestBody,
@@ -226,7 +231,7 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
 
 export const editMachineAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.editMachineLoading,
+    type: machines.editMachineLoading,
   });
 
   const data = JSON.stringify(body);
@@ -244,7 +249,7 @@ export const editMachineAction = (dispatch, body) => {
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
           dispatch({
-            type: machinesAndNodes.editOrDeleteMachine,
+            type: machines.editOrDeleteMachine,
             payload: {
               // should be response body
               response: body,
@@ -252,12 +257,12 @@ export const editMachineAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, machines));
   } else {
     // console.log(body);
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.editOrDeleteMachine,
+        type: machines.editOrDeleteMachine,
         payload: {
           // should be response body
           response: body,
@@ -269,7 +274,7 @@ export const editMachineAction = (dispatch, body) => {
 
 export const deleteMachineAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.deleteMachineLoading,
+    type: machines.deleteMachineLoading,
   });
 
   const data = JSON.stringify(body);
@@ -287,7 +292,7 @@ export const deleteMachineAction = (dispatch, body) => {
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
           dispatch({
-            type: machinesAndNodes.editOrDeleteMachine,
+            type: machines.editOrDeleteMachine,
             payload: {
               // should be response body
               response: body,
@@ -295,11 +300,11 @@ export const deleteMachineAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, machines));
   } else {
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.editOrDeleteMachine,
+        type: machines.editOrDeleteMachine,
         payload: {
           // should be response body
           response: body,
@@ -311,14 +316,14 @@ export const deleteMachineAction = (dispatch, body) => {
 
 export const editMachineMappingAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.editMachineMappingLoading,
+    type: machines.editMachineMappingLoading,
   });
 
   // Hit API end-point here
 
   setTimeout(() => {
     dispatch({
-      type: machinesAndNodes.editMachineMapping,
+      type: machines.editMachineMapping,
       payload: {
         // should be response body
         response: body,
@@ -329,14 +334,14 @@ export const editMachineMappingAction = (dispatch, body) => {
 
 export const deleteMachineMappingAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.deleteMachineMappingLoading,
+    type: machines.deleteMachineMappingLoading,
   });
 
   // Hit API end-point here
 
   setTimeout(() => {
     dispatch({
-      type: machinesAndNodes.editMachineMapping,
+      type: machines.editMachineMapping,
       payload: {
         // should be response body
         response: body,
@@ -349,7 +354,7 @@ export const deleteMachineMappingAction = (dispatch, body) => {
 
 export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
   dispatch({
-    type: machinesAndNodes.addNodeLoading,
+    type: nodes.addNodeLoading,
   });
 
   const createNodeConfig = {
@@ -385,7 +390,7 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
             .then((res) => {
               if (res.status === 200 || res.status === 201) {
                 dispatch({
-                  type: machinesAndNodes.addNode,
+                  type: nodes.addNode,
                   payload: {
                     // should be response body
                     response: createNodeBody,
@@ -393,14 +398,14 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
                 });
               }
             })
-            .catch((error) => httpRequestErrorAction(error, dispatch));
+            .catch((error) => httpRequestErrorAction(error, dispatch, nodes));
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, nodes));
   } else {
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.addNode,
+        type: nodes.addNode,
         payload: {
           // should be response body
           response: createNodeBody,
@@ -412,7 +417,7 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
 
 export const editNodeAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.editNodeLoading,
+    type: nodes.editNodeLoading,
   });
 
   const data = JSON.stringify(body);
@@ -430,7 +435,7 @@ export const editNodeAction = (dispatch, body) => {
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
           dispatch({
-            type: machinesAndNodes.editOrDeleteNode,
+            type: nodes.editOrDeleteNode,
             payload: {
               // should be response body
               response: body,
@@ -438,11 +443,11 @@ export const editNodeAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, nodes));
   } else {
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.editOrDeleteNode,
+        type: nodes.editOrDeleteNode,
         payload: {
           // should be response body
           response: body,
@@ -454,7 +459,7 @@ export const editNodeAction = (dispatch, body) => {
 
 export const deleteNodeAction = (dispatch, body) => {
   dispatch({
-    type: machinesAndNodes.deleteNodeLoading,
+    type: nodes.deleteNodeLoading,
   });
 
   const data = JSON.stringify(body);
@@ -472,7 +477,7 @@ export const deleteNodeAction = (dispatch, body) => {
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
           dispatch({
-            type: machinesAndNodes.editOrDeleteNode,
+            type: nodes.editOrDeleteNode,
             payload: {
               // should be response body
               response: body,
@@ -480,11 +485,11 @@ export const deleteNodeAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, nodes));
   } else {
     setTimeout(() => {
       dispatch({
-        type: machinesAndNodes.editOrDeleteNode,
+        type: nodes.editOrDeleteNode,
         payload: {
           // should be response body
           response: body,

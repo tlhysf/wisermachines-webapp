@@ -40,7 +40,7 @@ export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
           console.log("error: unexpected response", res.data);
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, zones));
   } else {
     setTimeout(() => {
       dispatch({
@@ -82,7 +82,7 @@ export const addZoneAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, zones));
   } else {
     setTimeout(() => {
       dispatch({
@@ -125,7 +125,7 @@ export const editZoneAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, zones));
   } else {
     setTimeout(() => {
       dispatch({
@@ -168,7 +168,7 @@ export const deleteZoneAction = (dispatch, body) => {
           });
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch));
+      .catch((error) => httpRequestErrorAction(error, dispatch, zones));
   } else {
     setTimeout(() => {
       dispatch({

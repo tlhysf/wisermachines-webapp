@@ -6,6 +6,7 @@ export const workshops = {
   deleteWorkshopLoading: "DELETE_WORKSHOP_LOADING",
   addWorkshop: "ADD_WORKSHOP",
   editOrDeleteWorkshop: "EDIT_OR_DELETE_WORKSHOP",
+  notFound: "WORKSHOPS_NOT_FOUND",
 };
 
 export const zones = {
@@ -16,15 +17,13 @@ export const zones = {
   deleteZoneLoading: "DELETE_WORKSHOP_LOADING",
   addZone: "ADD_ZONE",
   editOrDeleteZone: "EDIT_OR_DELETE_ZONE",
+  notFound: "ZONES_NOT_FOUND",
 };
 
-export const machinesAndNodes = {
+export const machines = {
   getAllMachinesInAZone: "GET_ALL_MACHINES_IN_A_ZONE",
   getAllMachineMappings: "GET_ALL_MACHINE_MAPPINGS",
   machinesLoading: "LOADING_MACHINES",
-
-  getAllNodesInAZone: "GET_ALL_MACHINES_AND_NODES_IN_A_ZONE",
-  nodesLoading: "LOADING_NODES",
 
   addMachine: "ADD_MACHINE",
   addMachineLoading: "ADD_MACHINE_LOADING",
@@ -36,6 +35,12 @@ export const machinesAndNodes = {
   editMachineMapping: "EDIT_MACHINE_MAPPING",
   editMachineMappingLoading: "EDIT_MACHINE_MAPPING_LOADING",
   deleteMachineMappingLoading: "DELETE_MACHINE_MAPPING_LOADING",
+  notFound: "MACHINES_NOT_FOUND",
+};
+
+export const nodes = {
+  getAllNodesInAZone: "GET_ALL_MACHINES_AND_NODES_IN_A_ZONE",
+  nodesLoading: "LOADING_NODES",
 
   addNode: "ADD_NODE",
   addNodeLoading: "ADD_NODE_LOADING",
@@ -43,12 +48,15 @@ export const machinesAndNodes = {
   editOrDeleteNode: "EDIT_OR_DELETE_NODE",
   editNodeLoading: "EDIT_NODE_LOADING",
   deleteNodeLoading: "DELETE_NODE_LOADING",
+  notFound: "NODES_NOT_FOUND",
 };
 
 export const machineDetails = {
   getMachineDataByID: "GET_MACHINE_DATA_BY_ID",
   machineLoading: "LOADING_MACHINE",
   noStoredMachineDataResponse: "NO_STORED_MACHINE_DATA_RESPONSE",
+
+  notFound: "MACHINE_DETAILS_NOT_FOUND",
 };
 
 export const common = {

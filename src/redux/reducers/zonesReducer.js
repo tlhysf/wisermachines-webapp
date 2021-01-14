@@ -9,6 +9,7 @@ const initialState = {
   addZoneLoading: false,
   editZoneLoading: false,
   deleteZoneLoading: false,
+  notFound: false,
 };
 
 export const zonesReducer = (state = initialState, action) => {
@@ -25,6 +26,7 @@ export const zonesReducer = (state = initialState, action) => {
         allZonesInAWorkshop: action.payload.allZonesInAWorkshop,
         workshopID: action.payload.workshopID,
         zonesLoading: false,
+        notFound: false,
       };
 
     case zones.addZoneLoading:
@@ -58,6 +60,12 @@ export const zonesReducer = (state = initialState, action) => {
         editZoneResponse: action.payload.response,
         editZoneLoading: false,
         deleteZoneLoading: false,
+      };
+
+    case zones.notFound:
+      return {
+        ...state,
+        notFound: true,
       };
 
     default:
