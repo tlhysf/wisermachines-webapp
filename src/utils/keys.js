@@ -1,9 +1,9 @@
 const keys = {
   server: "http://115.186.183.129:37000",
-  showMockData: true,
-  showDashboardSummaryCards: true,
-  showDashboardSummaryHeaders: true,
-  featureTemporarilyUnavailable: false,
+  showMockData: false,
+  showDashboardSummaryCards: false,
+  showDashboardSummaryHeaders: false,
+  featureTemporarilyUnavailable: true,
   navigationList: {
     monitoring: [
       "monitoring",
