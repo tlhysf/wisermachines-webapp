@@ -197,7 +197,7 @@ export default function MachineDetails(props) {
           alignItems="center"
         >
           <Grid item>
-            <BreadcrumbsNav list={keys.navigationList.monitoring} />
+            <BreadcrumbsNav list={props.navigationList} />
           </Grid>
         </Grid>
       </Grid>

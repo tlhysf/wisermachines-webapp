@@ -5,7 +5,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
 
 import { isNotEmpty } from "../../../../utils/validation";
-import keys from "../../../../utils/keys";
 
 import { common } from "../../../../utils/styles";
 import colors from "../../../../utils/colors";
@@ -50,7 +49,7 @@ const Zones = (props) => {
           alignItems="center"
         >
           <Grid item>
-            <BreadcrumbsNav list={keys.navigationList.monitoring} />
+            <BreadcrumbsNav list={props.navigationList} />
           </Grid>
         </Grid>
       </Grid>

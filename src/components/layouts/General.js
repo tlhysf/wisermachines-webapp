@@ -1,5 +1,5 @@
 import React from "react";
-import Routes from "../../Routes";
+import Routes from "../../routes/Routes";
 
 // Components
 import AppBar from "@material-ui/core/AppBar";
@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => layoutStyle(theme));
 const General = (props) => {
   const classes = useStyles();
 
+  const handleLogoClick = () => {
+    window.location.href = "/";
+  };
+
   return props.signedin ? (
     <div className={classes.grow}>
       <AppBar position="fixed" className={classes.appBar}>
@@ -29,7 +33,12 @@ const General = (props) => {
           <OpenSideBarButton screen="mobile" />
 
           <Tooltip title="WiserMachines" placement="right">
-            <Button edge="start">
+            <Button
+              edge="start"
+              onClick={(e) => {
+                handleLogoClick();
+              }}
+            >
               <img
                 src="/img/logo.png"
                 alt="WiserMachines"

@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { makePath } from "../../Routes";
+import { makePath } from "../../routes/Routes";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { common as styles } from "../../utils/styles";

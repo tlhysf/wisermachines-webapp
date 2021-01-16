@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import keys from "../../../../utils/keys";
 
 // MUI Components
 import Grid from "@material-ui/core/Grid";
@@ -94,7 +93,7 @@ const MachinesAndNodes = (props) => {
           spacing={2}
         >
           <Grid item>
-            <BreadcrumbsNav list={keys.navigationList.monitoring} />
+            <BreadcrumbsNav list={props.navigationList} />
           </Grid>
           <Grid item>
             <FilterAndSortMenu

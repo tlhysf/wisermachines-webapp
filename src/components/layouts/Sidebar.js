@@ -1,5 +1,4 @@
 import React from "react";
-import { monitoring, underConstruction } from "../../Routes";
 import { useSelector, useDispatch } from "react-redux";
 
 import Drawer from "@material-ui/core/Drawer";
@@ -32,10 +31,12 @@ const SideBar = (props) => {
     window.location.href = url;
   };
 
+  const underConstruction = "/comingsoon";
+
   const sideBarListItems = [
     {
       title: "Monitoring",
-      url: monitoring,
+      url: underConstruction,
       icon: <ComputerIcon className={classes.listItemIcon} />,
     },
     {

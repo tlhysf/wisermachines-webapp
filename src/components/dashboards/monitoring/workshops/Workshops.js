@@ -4,7 +4,6 @@ import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import keys from "../../../../utils/keys";
 import { isNotEmpty } from "../../../../utils/validation";
 
 import { common } from "../../../../utils/styles";
@@ -52,7 +51,7 @@ const Workshops = (props) => {
           alignItems="center"
         >
           <Grid item>
-            <BreadcrumbsNav list={keys.navigationList.monitoring} />
+            <BreadcrumbsNav list={props.navigationList} />
           </Grid>
         </Grid>
       </Grid>

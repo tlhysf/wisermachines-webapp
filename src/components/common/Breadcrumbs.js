@@ -6,7 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import ComputerIcon from "@material-ui/icons/Computer";
+import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import ToolTip from "@material-ui/core/ToolTip";
 import colors from "../../utils/colors";
 
@@ -81,7 +81,7 @@ const BreadcrumbsNav = (props) => {
           placement="top"
         >
           <ButtonBase>
-            <ComputerIcon style={style.icon} />
+            <HomeRoundedIcon style={style.icon} />
           </ButtonBase>
         </ToolTip>
       </Link>
