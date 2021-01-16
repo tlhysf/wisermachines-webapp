@@ -18,7 +18,6 @@ const animationDuration = 500;
 export default function MachineDetailsRow1(props) {
   const {
     liveData,
-    timeSinceLastUpdate,
     currentNow,
     lastUpdateTimestamp,
     stateNow,
@@ -27,7 +26,7 @@ export default function MachineDetailsRow1(props) {
     timeFilter,
   } = props.data;
 
-  const updateStatus = { liveData, timeSinceLastUpdate };
+  const updateStatus = { liveData, lastUpdateTimestamp };
 
   const stateRightNow = {
     icon:

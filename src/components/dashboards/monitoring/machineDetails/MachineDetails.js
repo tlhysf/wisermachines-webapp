@@ -1,30 +1,39 @@
 import React, { useEffect, useState } from "react";
+
+// Utils
+import keys from "../../../../utils/keys";
+import { isNotEmpty } from "../../../../utils/validation";
+import { parseDataFromSSN } from "../../../../utils/parse";
+
+// Redux
 import { useSelector, useDispatch } from "react-redux";
 import { getMachineDataByIDAction } from "../../../../redux/actions/machineDetailsActions";
-import { parseDataFromSSN } from "../../../../utils/parse";
 import { common } from "../../../../redux/actions/actionTypes";
-import { common as styles } from "../../../../utils/styles";
-import { isNotEmpty } from "../../../../utils/validation";
-import colors from "../../../../utils/colors";
-import { timeDifference } from "../../../../utils/parse";
 
+// Styling
+import { common as styles } from "../../../../utils/styles";
+import colors from "../../../../utils/colors";
+
+// MUI
 import Grid from "@material-ui/core/Grid";
 import HistoryIcon from "@material-ui/icons/History";
 import { makeStyles } from "@material-ui/core/Styles";
 
-import BreadcrumbsNav from "../../../common/Breadcrumbs";
-import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
+// Custom Components
 import MachineDetailsRow1 from "./MachineDetailsRow1";
 import MachineDetailsRow2 from "./MachineDetailsRow2";
 import MachineDetailsRow3 from "./MachineDetailsRow3";
-import AlertCard from "../../../common/AlertCard";
 
+// Common Components
+import BreadcrumbsNav from "../../../common/Breadcrumbs";
+import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
+import AlertCard from "../../../common/AlertCard";
 import Loader from "../../../common/Loader";
 
+// Placeholder Data
 import { liveMachineData } from "../../../../data/machineData";
 
-import keys from "../../../../utils/keys";
-
+// Web-socket
 import io from "socket.io-client";
 const client = io(keys.server, {
   transports: ["websocket"],
@@ -47,16 +56,15 @@ export default function MachineDetails(props) {
 
   const dispatch = useDispatch();
 
+  const { machineID } = props.match.params;
+
   const [timeFilter, settimeFilter] = useState(timeFiltersList[0]);
   const [liveData, setLiveData] = useState(null);
-  const [timeSinceLastUpdate, setTimeSinceLastUpdate] = useState("Updating...");
 
-  const machineLoading = useSelector(
-    (state) => state.machineDetails.machineLoading
-  );
+  const loading = useSelector((state) => state.machineDetails.machineLoading);
   const timeFilterSelected = useSelector((state) => state.common.timeFilter);
   const storedData = useSelector((state) => state.machineDetails.data);
-  const noStoredMachineDataResponse = useSelector(
+  const noData = useSelector(
     (state) => state.machineDetails.noStoredMachineDataResponse
   );
 
@@ -70,8 +78,6 @@ export default function MachineDetails(props) {
     allData,
     timeFiltersList.indexOf(timeFilter)
   );
-
-  const { machineID } = props.match.params;
 
   useEffect(() => {
     settimeFilter(timeFilterSelected);
@@ -146,25 +152,6 @@ export default function MachineDetails(props) {
   const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
     "en-US"
   );
-
-  useEffect(() => {
-    if (liveData !== null) {
-      // console.log("live");
-      setTimeSinceLastUpdate(
-        timeDifference(new Date().getTime(), timestampEnd)
-      );
-    } else {
-      setInterval(() => {
-        setTimeSinceLastUpdate(timeSinceLastUpdate);
-        if (timestampEnd > 0) {
-          // console.log("interval");
-          setTimeSinceLastUpdate(
-            timeDifference(new Date().getTime(), timestampEnd)
-          );
-        }
-      }, 10 * 1000);
-    }
-  }, [timestampEnd, liveData, timeSinceLastUpdate]);
 
   const lineCharts = {
     machineState: {
@@ -255,7 +242,6 @@ export default function MachineDetails(props) {
           data={{
             currentNow,
             lastUpdateTimestamp,
-            timeSinceLastUpdate,
             stateNow,
             stateNowDuration,
             unitsConsumed,
@@ -301,15 +287,15 @@ export default function MachineDetails(props) {
           style={{ height: "70vh" }}
           spacing={4}
         >
-          <AlertCard message={noStoredMachineDataResponse} />
+          <AlertCard message={"No data has been stored yet for this machine"} />
         </Grid>
       </Grid>
     </Grid>
   );
 
-  return machineLoading
+  return loading
     ? renderLoading
-    : noStoredMachineDataResponse !== null
+    : noData !== null
     ? renderNoData
     : renderLoaded;
 }

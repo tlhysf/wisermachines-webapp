@@ -21,6 +21,8 @@ export const getMachineDataByIDAction = (dispatch, ID) => {
     },
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {

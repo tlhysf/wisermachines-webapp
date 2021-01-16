@@ -1,16 +1,21 @@
 import React from "react";
+
+import Loader from "react-loader-spinner";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Loader from "react-loader-spinner";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import { smallCard } from "../../../../../utils/styles";
+import { makeStyles } from "@material-ui/core/styles";
+
+import { common, smallCard } from "../../../../../utils/styles";
 import colors from "../../../../../utils/colors";
 
-const LastUpdatedCard = (props) => {
-  const { timeSinceLastUpdate, liveData } = props.data;
+const useStyles = makeStyles((theme) => common(theme));
 
-  // console.log(timeSinceLastUpdate);
+const LastUpdatedCard = (props) => {
+  const classes = useStyles();
+
+  const { lastUpdateTimestamp, liveData } = props.data;
 
   const updateIconRender =
     liveData !== null ? (
@@ -34,13 +39,13 @@ const LastUpdatedCard = (props) => {
     </Typography>
   );
 
-  const timeSinceLastUpdateRender = (
+  const lastUpdateTimestampRender = (
     <Typography
       align="center"
       variant="body2"
       style={{ color: colors.BLUEGREY[800] }}
     >
-      {liveData !== null ? null : timeSinceLastUpdate}
+      {liveData !== null ? null : lastUpdateTimestamp}
     </Typography>
   );
 
@@ -53,6 +58,7 @@ const LastUpdatedCard = (props) => {
       alignItems="center"
       elevation={2}
       style={{ padding: 3 }}
+      className={classes.cardHover}
     >
       <Grid item xs={2}>
         <Paper style={smallCard.iconPaper} elevation={0}>
@@ -72,7 +78,7 @@ const LastUpdatedCard = (props) => {
               {updateMessegeRender}
             </Grid>
             <Grid item xs="auto">
-              {timeSinceLastUpdateRender}
+              {lastUpdateTimestampRender}
             </Grid>
           </Grid>
         </Paper>
