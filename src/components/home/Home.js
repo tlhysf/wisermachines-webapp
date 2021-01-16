@@ -9,7 +9,7 @@ import ComputerIcon from "@material-ui/icons/Computer";
 
 import colors from "../../utils/colors";
 
-import { machineMonitoring, environment } from "../../routes/Routes";
+import { machineMonitoring, environmentMonitoring } from "../../routes/Routes";
 
 const styles = {
   root: { height: "80vh" },
@@ -64,7 +64,7 @@ const Home = () => {
           spacing={4}
         >
           {renderCard(machineMonitoring, <ComputerIcon />)}
-          {renderCard(environment, <ComputerIcon />)}
+          {renderCard(environmentMonitoring, <ComputerIcon />)}
         </Grid>
       </Grid>
     </Grid>

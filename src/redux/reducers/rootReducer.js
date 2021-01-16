@@ -1,8 +1,11 @@
 import { combineReducers } from "redux";
-import { workshopsReducer } from "./workshopsReducer";
-import { zonesReducer } from "./zonesReducer";
-import { machinesReducer, nodesReducer } from "./machinesAndNodesReducer";
-import { machineDetailsReducer } from "./machineDetailsReducer";
+import { workshopsReducer } from "./machineMonitoring/workshopsReducer";
+import { zonesReducer } from "./machineMonitoring/zonesReducer";
+import {
+  machinesReducer,
+  nodesReducer,
+} from "./machineMonitoring/machinesAndNodesReducer";
+import { machineDetailsReducer } from "./machineMonitoring/machineDetailsReducer";
 import { commonReducer } from "./commonReducer";
 import { authReducer } from "./authReducer";
 import { errorReducer } from "./errorReducer";

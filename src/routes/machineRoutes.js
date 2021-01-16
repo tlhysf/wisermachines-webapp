@@ -1,9 +1,9 @@
 import { Route, Redirect } from "react-router-dom";
 
-import Workshops from "../components/dashboards/monitoring/workshops/Workshops";
-import Zones from "../components/dashboards/monitoring/zones/Zones";
-import MachinesDetails from "../components/dashboards/monitoring/machineDetails/MachineDetails";
-import MachinesAndNodes from "../components/dashboards/monitoring/machinesAndNodes/MachinesAndNodes";
+import Workshops from "../components/dashboards/machineMonitoring/workshops/Workshops";
+import Zones from "../components/dashboards/machineMonitoring/zones/Zones";
+import MachinesDetails from "../components/dashboards/machineMonitoring/machineDetails/MachineDetails";
+import MachinesAndNodes from "../components/dashboards/machineMonitoring/machinesAndNodes/MachinesAndNodes";
 
 export const machineRoutes = (
   signedin,

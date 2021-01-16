@@ -41,7 +41,7 @@ export const underConstruction = "/comingsoon";
 
 // Modules:
 export const machineMonitoring = "Machine-Monitoring";
-export const environment = "Environment-Monitoring";
+export const environmentMonitoring = "Environment-Monitoring";
 
 const Routes = (props) => {
   const { signedin, thisUser } = props;
@@ -89,7 +89,7 @@ const Routes = (props) => {
         {environmentRoutes(
           signedin,
           thisUser,
-          environment,
+          environmentMonitoring,
           signin,
           home,
           props
