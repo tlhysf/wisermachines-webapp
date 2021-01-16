@@ -12,7 +12,7 @@ import Signin from "../components/auth/Signin";
 import Home from "../components/home/Home";
 
 import { machineRoutes } from "./machineRoutes";
-// import {environmentRoutes} from "./environmentRoutes";
+import { environmentRoutes } from "./environmentRoutes";
 
 export const makePath = (currentPath, ID, name) => {
   const PrimarySeparator = "/";
@@ -41,7 +41,7 @@ export const underConstruction = "/comingsoon";
 
 // Modules:
 export const machineMonitoring = "Machine-Monitoring";
-export const environment = "Environment";
+export const environment = "Environment-Monitoring";
 
 const Routes = (props) => {
   const { signedin, thisUser } = props;
@@ -85,7 +85,15 @@ const Routes = (props) => {
           home,
           props
         ).filter((x) => x)}
-        {/* {environment(signedin, thisUser, environment)  */}
+
+        {environmentRoutes(
+          signedin,
+          thisUser,
+          environment,
+          signin,
+          home,
+          props
+        ).filter((x) => x)}
 
         <Route
           exact
