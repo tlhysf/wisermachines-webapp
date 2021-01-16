@@ -48,10 +48,10 @@ const colorTheme3 = {
 
 const colorSets = {
   info1: colorTheme1,
-  info2: colorTheme2,
-  status: colorTheme3,
-  gaugeItem1: colorTheme1,
-  gaugeItem2: colorTheme2,
+  info2: colorTheme1,
+  status: colorTheme1,
+  gaugeItem1: colorTheme2,
+  gaugeItem2: colorTheme3,
 };
 
 const getColor = (change, thresholds, colors) => {

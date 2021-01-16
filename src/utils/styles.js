@@ -137,11 +137,6 @@ export const common = (theme) => ({
   },
 });
 
-export const skeletonStyle = {
-  borderRadius: 5,
-  backgroundColor: colors.BLUEGREY[200],
-};
-
 export const formStyle = (theme) => ({
   paper: {
     margin: theme.spacing(8),

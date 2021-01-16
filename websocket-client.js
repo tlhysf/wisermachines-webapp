@@ -7,7 +7,7 @@ const client = io(server, {
   transports: ["websocket"],
 });
 
-client.emit("send-data-demo-machine", { _id: '5fe364175b9f4732f805349a' });
+client.emit("send-data-demo-machine", { _id: "5fe364175b9f4732f805349a" });
 
 client.on("data-demo-machine-5fe364175b9f4732f805349a", (parseJSON) => {
   try {

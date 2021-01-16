@@ -4,6 +4,9 @@ import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 
+import keys from "../../../../utils/keys";
+import { isNotEmpty } from "../../../../utils/validation";
+
 import { common } from "../../../../utils/styles";
 import colors from "../../../../utils/colors";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,8 +16,6 @@ import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import AddWorkshop from "./inputs/AddWorkshop";
 import EditWorkshop from "./inputs/EditWorkshop";
 import AlertCard from "../../../common/AlertCard";
-import keys from "../../../../utils/keys";
-import { isNotEmpty } from "../../../../utils/validation";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getAllWorkshopsAction } from "../../../../redux/actions/workshopsActions";
@@ -106,9 +107,7 @@ const Workshops = (props) => {
         </Grid>
         {renderNoData}
       </Grid>
-
       <AddWorkshop url={props.match.url} params={props.match.params} />
-
       <EditWorkshop url={props.match.url} params={props.match.params} />
     </>
   );

@@ -160,7 +160,7 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
     instantPower,
     unitsConsumed,
 
-    //State
+    // State
     machineState,
     stateNowDuration,
     stateNow,

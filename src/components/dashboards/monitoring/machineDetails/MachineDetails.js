@@ -132,7 +132,7 @@ export default function MachineDetails(props) {
     instantPower,
     unitsConsumed,
 
-    //State
+    // State
     machineState,
     stateNowDuration,
     stateNow,

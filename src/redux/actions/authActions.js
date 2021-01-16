@@ -37,7 +37,4 @@ export const signinAction = (dispatch, user) => {
 
 export const signoutAction = () => {
   localStorage.clear();
-  // dispatch({
-  //   type: auth.signout,
-  // });
 };

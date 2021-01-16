@@ -71,7 +71,7 @@ export const placeholderRes = {
   getAllMachines: [
     {
       _id: "5fdb23ee3edf4e2a3889fe48",
-      name: "Air-Compressor-" + randomIntFromInterval(0, 100),
+      name: machineNamePrefix + randomIntFromInterval(0, 100),
       idle_threshold: randomIntFromInterval(0, 20),
       max_load: randomIntFromInterval(20, 100),
       sensor_voltage_scalar: 0,

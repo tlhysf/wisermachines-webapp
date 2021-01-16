@@ -16,6 +16,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
 import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../utils/colors";
@@ -23,12 +24,14 @@ import colors from "../../utils/colors";
 import { signinAction } from "../../redux/actions/authActions";
 import { useSelector, useDispatch } from "react-redux";
 
+const animationTimeout = 500;
+
 const Copyright = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="wisermachines.com/">
-        wiserMachines
+        {"WiserMachines "}
       </Link>
       {new Date().getFullYear()}
       {"."}
@@ -117,7 +120,9 @@ const SignIn = () => {
 
   useEffect(() => {
     if (signinResponse !== null) {
-      window.location.href = "/";
+      setTimeout(() => {
+        window.location.href = "/";
+      }, animationTimeout * 2);
     }
   }, [signinResponse]);
 
@@ -133,7 +138,7 @@ const SignIn = () => {
         </Typography>
         <form className={classes.form} noValidate>
           {signinError ? (
-            <Grow in={true} {...{ timeout: 500 }}>
+            <Grow in={true} {...{ timeout: animationTimeout }}>
               <Button
                 startIcon={<CancelOutlinedIcon />}
                 fullWidth
@@ -145,9 +150,9 @@ const SignIn = () => {
             </Grow>
           ) : null}
           {signinResponse ? (
-            <Grow in={true} {...{ timeout: 500 }}>
+            <Grow in={true} {...{ timeout: animationTimeout }}>
               <Button
-                startIcon={<CancelOutlinedIcon />}
+                startIcon={<CheckCircleOutlineIcon />}
                 fullWidth
                 className={classes.success}
                 onClick={(e) => e.preventDefault()}

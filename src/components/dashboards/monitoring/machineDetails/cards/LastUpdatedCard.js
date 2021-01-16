@@ -2,7 +2,6 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Tooltip from "@material-ui/core/Tooltip";
 import Loader from "react-loader-spinner";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { smallCard } from "../../../../../utils/styles";
@@ -46,41 +45,39 @@ const LastUpdatedCard = (props) => {
   );
 
   return (
-    <Tooltip placement="top" title={timeSinceLastUpdate}>
-      <Grid
-        container
-        component={Paper}
-        direction="row"
-        justify="center"
-        alignItems="center"
-        elevation={2}
-        style={{ padding: 3 }}
-      >
-        <Grid item xs={2}>
-          <Paper style={smallCard.iconPaper} elevation={0}>
-            {updateIconRender}
-          </Paper>
-        </Grid>
-        <Grid item xs={10}>
-          <Paper style={smallCard.textPaper} elevation={0}>
-            <Grid
-              container
-              direction="row"
-              justify="flex-start"
-              alignItems="center"
-              spacing={2}
-            >
-              <Grid item xs="auto">
-                {updateMessegeRender}
-              </Grid>
-              <Grid item xs="auto">
-                {timeSinceLastUpdateRender}
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
+    <Grid
+      container
+      component={Paper}
+      direction="row"
+      justify="center"
+      alignItems="center"
+      elevation={2}
+      style={{ padding: 3 }}
+    >
+      <Grid item xs={2}>
+        <Paper style={smallCard.iconPaper} elevation={0}>
+          {updateIconRender}
+        </Paper>
       </Grid>
-    </Tooltip>
+      <Grid item xs={10}>
+        <Paper style={smallCard.textPaper} elevation={0}>
+          <Grid
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="center"
+            spacing={2}
+          >
+            <Grid item xs="auto">
+              {updateMessegeRender}
+            </Grid>
+            <Grid item xs="auto">
+              {timeSinceLastUpdateRender}
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 

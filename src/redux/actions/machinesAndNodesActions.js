@@ -3,13 +3,9 @@ import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
 import { httpRequestErrorAction } from "./errorActions";
-
 import { placeholderRes } from "../../data/common";
 
 const loadingTime = 2000;
-
-// TO DO: Combine machines get APIs
-// TO DO: invoke 404 on empty responses
 
 export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
   dispatch({

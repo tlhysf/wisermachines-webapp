@@ -3,7 +3,6 @@ import keys from "../../utils/keys";
 import { isNotEmpty } from "../../utils/validation";
 import axios from "axios";
 import { httpRequestErrorAction } from "./errorActions";
-
 import { placeholderRes } from "../../data/common";
 
 const loadingTime = 2000;

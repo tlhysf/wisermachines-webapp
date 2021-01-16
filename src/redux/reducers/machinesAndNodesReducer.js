@@ -36,7 +36,6 @@ export const machinesReducer = (state = initialMachinesState, action) => {
         notFound: false,
       };
 
-    // TO DO: Combine machines get APIs
     case machines.getAllMachineMappings:
       return {
         ...state,
