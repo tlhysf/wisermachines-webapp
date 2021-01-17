@@ -73,3 +73,16 @@ export const auth = {
   signinLoading: "SIGNIN_LOADING",
   signinError: "SIGNIN_ERROR",
 };
+
+export const environmentMonitoring = {
+  containersPage: {
+    populateContainersPage: "POPULATE_ENV_MONITORING_CONTAINERS_PAGE",
+    containersLoading: "LOADING_ENV_MONITORING_CONTAINERS",
+    addLoading: "ADD_ENV_MONITORING_CONTAINER_LOADING",
+    editLoading: "EDIT_ENV_MONITORING_CONTAINER_LOADING",
+    deleteLoading: "DELETE_ENV_MONITORING_CONTAINER_LOADING",
+    add: "ADD_ENV_MONITORING_CONTAINER",
+    editOrDelete: "EDIT_OR_DELETE_ENV_MONITORING_CONTAINER",
+    notFound: "ENV_MONITORING_CONTAINERS_NOT_FOUND",
+  },
+};

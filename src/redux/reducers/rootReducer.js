@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+
 import { workshopsReducer } from "./machineMonitoring/workshopsReducer";
 import { zonesReducer } from "./machineMonitoring/zonesReducer";
 import {
@@ -6,6 +7,9 @@ import {
   nodesReducer,
 } from "./machineMonitoring/machinesAndNodesReducer";
 import { machineDetailsReducer } from "./machineMonitoring/machineDetailsReducer";
+
+import { environmentMonitoringRootReducer } from "./environmentMonitoring/environmentMonitoringRootReducer";
+
 import { commonReducer } from "./commonReducer";
 import { authReducer } from "./authReducer";
 import { errorReducer } from "./errorReducer";
@@ -19,6 +23,7 @@ const rootReducer = combineReducers({
   common: commonReducer,
   auth: authReducer,
   errors: errorReducer,
+  environmentMonitoring: environmentMonitoringRootReducer,
 });
 
 export default rootReducer;

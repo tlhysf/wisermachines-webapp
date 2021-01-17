@@ -13,33 +13,35 @@ import { makeStyles } from "@material-ui/core/styles";
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import AlertCard from "../../../common/AlertCard";
 
-import WorkshopCards from "./WorkshopCardsContainer";
-import AddWorkshop from "./inputs/AddWorkshop";
-import EditWorkshop from "./inputs/EditWorkshop";
+import Cards from "./Cards";
+import Add from "./inputs/Add";
+import Edit from "./inputs/Edit";
 
 import { useSelector, useDispatch } from "react-redux";
 import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonActions";
-import { getAllWorkshopsAction } from "../../../../redux/actions/machineMonitoring/workshopsActions";
+import { populateContainersPageAction } from "../../../../redux/actions/environmentMonitoring/containersPageActions";
 
 import Loader from "../../../common/Loader";
 
 const useStyles = makeStyles((theme) => common(theme));
 
-const Workshops = (props) => {
+const Containers = (props) => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
 
-  const allWorkshops = useSelector((state) => state.workshops.allWorkshops);
+  const allContainers = useSelector(
+    (state) => state.environmentMonitoring.containersPage.allContainers
+  );
+
+  const containersLoading = useSelector(
+    (state) => state.environmentMonitoring.containersPage.containersLoading
+  );
 
   const user = useSelector((state) => state.auth.user);
 
-  const workshopsLoading = useSelector(
-    (state) => state.workshops.workshopsLoading
-  );
-
   useEffect(() => {
-    getAllWorkshopsAction(dispatch, user);
+    populateContainersPageAction(dispatch, user);
   }, [dispatch, user]);
 
   const navbar = (
@@ -78,7 +80,7 @@ const Workshops = (props) => {
   );
 
   const renderNoData =
-    !isNotEmpty(allWorkshops) && !workshopsLoading ? (
+    !isNotEmpty(allContainers) && !containersLoading ? (
       <Grid item>
         <Grid
           container
@@ -87,7 +89,7 @@ const Workshops = (props) => {
           style={{ height: "70vh" }}
           spacing={4}
         >
-          <AlertCard message={"No workshops have been added yet."} />
+          <AlertCard message={`Nothing has been added yet.`} />
         </Grid>
       </Grid>
     ) : null;
@@ -99,18 +101,14 @@ const Workshops = (props) => {
           {navbar}
         </Grid>
         <Grid item xs={12}>
-          {workshopsLoading ? (
-            <Loader />
-          ) : (
-            <WorkshopCards allWorkshops={allWorkshops} />
-          )}
+          {containersLoading ? <Loader /> : <Cards all={allContainers} />}
         </Grid>
         {renderNoData}
       </Grid>
-      <AddWorkshop url={props.match.url} params={props.match.params} />
-      <EditWorkshop url={props.match.url} params={props.match.params} />
+      <Add url={props.match.url} params={props.match.params} />
+      <Edit url={props.match.url} params={props.match.params} />
     </>
   );
 };
 
-export default Workshops;
+export default Containers;
