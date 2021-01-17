@@ -106,7 +106,11 @@ const Containers = (props) => {
         {renderNoData}
       </Grid>
       <Add url={props.match.url} params={props.match.params} />
-      <Edit url={props.match.url} params={props.match.params} />
+      <Edit
+        url={props.match.url}
+        params={props.match.params}
+        all={allContainers}
+      />
     </>
   );
 };

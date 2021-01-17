@@ -13,6 +13,7 @@ const App = (props) => {
   let thisUser = keys.users.filter((x) => x.name === user).pop();
   if (!isNotEmpty(thisUser)) {
     thisUser = keys.users[0];
+    localStorage.clear();
   }
 
   useEffect(() => {

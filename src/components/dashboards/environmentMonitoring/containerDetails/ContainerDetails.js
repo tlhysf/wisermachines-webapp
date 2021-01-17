@@ -83,28 +83,28 @@ export default function ContainerDetails(props) {
   }, [dispatch, containerID]);
 
   useEffect(() => {
-    // if (!keys.showMockData) {
-    //   client.emit("send-data-demo-machine", { _id: zoneID });
-    // }
-    // if (!keys.showMockData) {
-    //   client.on(`data-demo-machine-${zoneID}`, (msg) => {
-    //     try {
-    //       if (msg) {
-    //         setLiveData(msg);
-    //       } else {
-    //         setLiveData(null);
-    //       }
-    //     } catch (error) {
-    //       setLiveData(null);
-    //       console.log(error);
-    //     }
-    //   });
-    // } else {
-    //   // Mock live data generator
-    //   setInterval(() => {
-    //     setLiveData(liveMachineData());
-    //   }, 5000);
-    // }
+    if (!keys.showMockData) {
+      client.emit("send-data-environment", { _id: containerID });
+    }
+    if (!keys.showMockData) {
+      client.on(`data-environment-${containerID}`, (msg) => {
+        try {
+          if (msg) {
+            setLiveData(msg);
+          } else {
+            setLiveData(null);
+          }
+        } catch (error) {
+          setLiveData(null);
+          console.log(error);
+        }
+      });
+    } else {
+      // Mock live data generator
+      //   setInterval(() => {
+      //     setLiveData(liveMachineData());
+      //   }, 5000);
+    }
   }, [containerID]);
 
   const {

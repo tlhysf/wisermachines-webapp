@@ -4,6 +4,7 @@ const types = environmentMonitoring.containersPage;
 
 const initialState = {
   allContainers: [],
+  workshopID: "",
   containersLoading: false,
   addResponse: 0,
   editResponse: 0,
@@ -24,7 +25,8 @@ export const containersPageReducer = (state = initialState, action) => {
     case types.populateContainersPage:
       return {
         ...state,
-        allContainers: action.payload,
+        allContainers: action.payload.allZones,
+        workshopID: action.payload.workshopID,
         containersLoading: false,
         notFound: false,
       };

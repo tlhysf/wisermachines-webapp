@@ -39,7 +39,10 @@ export const populateContainersPageAction = (dispatch, targetUser) => {
 
             dispatch({
               type: types.populateContainersPage,
-              payload: allZonesInAWorkshop,
+              payload: {
+                allZones: allZonesInAWorkshop,
+                workshopID: thisUser.workshopID,
+              },
             });
           } else {
             console.log("error: unexpected response", allZonesInAWorkshop);
