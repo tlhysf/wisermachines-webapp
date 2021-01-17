@@ -11,7 +11,7 @@ const keys = {
       name: "default",
       password: "default",
       workshopID: "default",
-      navigationAliases: ["default"],
+      navigationAliases: ["default", "default"],
     },
     {
       name: "shifa",
