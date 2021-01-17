@@ -85,4 +85,18 @@ export const environmentMonitoring = {
     editOrDelete: "EDIT_OR_DELETE_ENV_MONITORING_CONTAINER",
     notFound: "ENV_MONITORING_CONTAINERS_NOT_FOUND",
   },
+
+  containerDetailsPage: {
+    populateContainerDetailsPage:
+      "POPULATE_ENV_MONITORING_CONTAINER_DETAILS_PAGE",
+
+    containerDetailsLoading: "LOADING_ENV_MONITORING_CONTAINER_DETAILS",
+
+    notFound: "ENV_MONITORING_CONTAINER_DETAILS_NOT_FOUND",
+
+    noStoredDataResponse:
+      "NO_STORED_ENV_MONITORING_CONTAINER_DETAILS_DATA_RESPONSE",
+
+    getContainerProfile: "GET_ENV_MONITORING_CONTAINER_PROFILE",
+  },
 };

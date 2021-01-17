@@ -13,6 +13,14 @@ export default function Card(props) {
 
   const { icon, values } = props.data;
 
+  const primaryTextColor =
+    values.colored === "primary" ? values.color : colors.BLUEGREY[500];
+
+  const secondaryTextColor =
+    values.colored === null || values.colored === "secondary"
+      ? values.colored
+      : colors.BLUEGREY[500];
+
   return (
     <Grid
       container
@@ -21,19 +29,27 @@ export default function Card(props) {
       justify="center"
       alignItems="center"
       elevation={2}
-      style={{ padding: 12, height: 64 }}
+      style={{ padding: 12 }}
       className={classes.cardHover}
     >
-      <Grid item style={{ color: values.color }} xs={2}>
+      <Grid
+        item
+        style={{
+          color: values.color,
+          padding: 5,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         {icon}
       </Grid>
-      <Grid item xs={10}>
+      <Grid item>
         <Grid container direction="row" justify="center" alignItems="center">
           <Grid item xs={12}>
             <Typography
               align="center"
               variant="body2"
-              style={{ color: colors.BLUEGREY[500] }}
+              style={{ color: primaryTextColor }}
             >
               {values.primary}
             </Typography>
@@ -42,7 +58,7 @@ export default function Card(props) {
             <Typography
               align="center"
               variant="body2"
-              style={{ color: values.color }}
+              style={{ color: secondaryTextColor }}
             >
               {values.secondary}
             </Typography>

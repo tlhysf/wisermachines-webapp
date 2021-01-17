@@ -10,7 +10,7 @@ export const environmentRoutes = (
   signin,
   home
 ) => {
-  const containersAlias = thisUser.navigationAliases[0];
+  const containersAlias = thisUser.navigationAliases[1];
 
   const navigationList = [
     environmentMonitoring,

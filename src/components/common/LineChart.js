@@ -14,9 +14,9 @@ const dateTimeLabelFormats = {
   year: "%Y",
 };
 
-const commonOptions = {
+const commonOptions = (large) => ({
   chart: {
-    height: 300,
+    height: large ? 400 : 300,
     margin: [25, 25, 25, 25],
     renderTo: "container",
     zoomType: "x",
@@ -111,10 +111,10 @@ const commonOptions = {
       width: 45,
     },
   },
-};
+});
 
 const LineChart = (props) => {
-  const [chartOptions, setChartOptions] = useState(commonOptions);
+  const [chartOptions, setChartOptions] = useState(commonOptions(props.large));
 
   useEffect(() => {
     const defaultChartData = {
@@ -125,10 +125,18 @@ const LineChart = (props) => {
       decimal: 0,
       color: "#ffffff",
     };
-    const { series, timestamps, name, step, color, yMax } = props.chartData
-      ? props.chartData
-      : defaultChartData;
+    const {
+      series,
+      timestamps,
+      name,
+      step,
+      color,
+      yMax,
+      type,
+    } = props.chartData ? props.chartData : defaultChartData;
 
+    const { series2, series2Name, series2Color } = props.chartData;
+    const { series3, series3Name, series3Color } = props.chartData;
     setChartOptions({
       yAxis: [
         {
@@ -152,7 +160,7 @@ const LineChart = (props) => {
           })(),
           step: step,
           name: name,
-          type: "areaspline",
+          type: type ? type : "areaspline",
 
           color: color,
           fillColor: {
@@ -169,6 +177,48 @@ const LineChart = (props) => {
           },
           threshold: null,
         },
+        series2
+          ? {
+              data: (function () {
+                let time = timestamps;
+                let yaxis = series2 ? series2 : [];
+                let i;
+                let data = [];
+
+                for (i = 0; i < time.length; ++i) {
+                  data.push([time[i], yaxis[i]]);
+                }
+                return data;
+              })(),
+              name: series2Name ? series2Name : "",
+              type: "line",
+
+              color: series2Color,
+
+              threshold: null,
+            }
+          : {},
+        series3
+          ? {
+              data: (function () {
+                let time = timestamps;
+                let yaxis = series3 ? series3 : [];
+                let i;
+                let data = [];
+
+                for (i = 0; i < time.length; ++i) {
+                  data.push([time[i], yaxis[i]]);
+                }
+                return data;
+              })(),
+              name: series3Name ? series3Name : "",
+              type: "line",
+
+              color: series3Color,
+
+              threshold: null,
+            }
+          : {},
       ],
     });
   }, [props]);

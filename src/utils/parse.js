@@ -1,3 +1,92 @@
+export const parseEnviromentDataFromSSN = (data) => {
+  const packets = data instanceof Array && data.length > 0 ? data : null;
+
+  // Time
+  let timestamps = [];
+  let timestampEnd = 0;
+  let timestampStart = 0;
+
+  // Temperature
+  let temperature = [];
+  let temperatureNow = 0;
+  let temperatureMax = 0;
+  let temperatureMin = 0;
+  let temperatureAlerts = [];
+  let temperatureAlertNow = 0;
+
+  // Humidity
+  let humidity = [];
+  let humidityNow = 0;
+  let humidityMax = 0;
+  let humidityMin = 0;
+  let humidityAlerts = [];
+  let humidityAlertNow = 0;
+
+  if (packets) {
+    try {
+      const latest = packets.slice(-1)[0];
+
+      // Time
+      timestamps = packets.map((packet) => Date.parse(packet.timestamp));
+      timestampStart = timestamps[0];
+      timestampEnd = timestamps.slice(-1)[0];
+
+      // Temperature
+      temperature = packets.map((packet) => {
+        return packet.temperature;
+      });
+
+      temperatureAlerts = packets.map((packet) => {
+        return packet.temperature_alert;
+      });
+
+      temperatureNow = latest.temperature;
+      temperatureAlertNow = latest.temperature_alert;
+      temperatureMax = Math.max(...temperature);
+      temperatureMin = Math.min(...temperature);
+
+      // Humidity
+      humidity = packets.map((packet) => {
+        return packet.humidity;
+      });
+
+      humidityAlerts = packets.map((packet) => {
+        return packet.humidity_alert;
+      });
+
+      humidityNow = latest.humidity;
+      humidityAlertNow = latest.humidity_alert;
+      humidityMax = Math.max(...humidity);
+      humidityMin = Math.min(...humidity);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return {
+    // Time
+    timestamps,
+    timestampEnd,
+    timestampStart,
+
+    // Temperature
+    temperature,
+    temperatureAlerts,
+    temperatureNow,
+    temperatureMax,
+    temperatureMin,
+    temperatureAlertNow,
+
+    // Humidity
+    humidity,
+    humidityAlerts,
+    humidityNow,
+    humidityMax,
+    humidityMin,
+    humidityAlertNow,
+  };
+};
+
 export const parseDataFromSSN = (data, timeFilterIndex) => {
   const numOfHours =
     timeFilterIndex === 0

@@ -22,8 +22,8 @@ const keys = {
     {
       name: "gsk",
       password: "5678",
-      workshopID: "6002ef7561c4ce272c574569",
-      navigationAliases: ["zones"],
+      workshopID: "6001954861c4ce272c5630d5",
+      navigationAliases: ["workshops", "zones"],
     },
   ],
 };
