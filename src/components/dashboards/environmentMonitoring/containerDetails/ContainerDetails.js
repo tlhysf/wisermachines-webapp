@@ -129,7 +129,7 @@ export default function ContainerDetails(props) {
     "en-US"
   );
 
-  const thresholdLineColor = colors.PURPLE[600];
+  const thresholdLineColor = colors.BLUEGREY[600];
 
   const lineCharts = {
     temperature: {
@@ -174,6 +174,7 @@ export default function ContainerDetails(props) {
       type: "line",
       step: "center",
       large: true,
+      yMax: 3,
     },
     humidityAlerts: {
       series: humidityAlerts.map((x) => x + 1),
@@ -183,6 +184,7 @@ export default function ContainerDetails(props) {
       type: "line",
       step: "center",
       large: true,
+      yMax: 3,
     },
   };
 
