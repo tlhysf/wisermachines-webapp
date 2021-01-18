@@ -129,6 +129,8 @@ export default function ContainerDetails(props) {
     "en-US"
   );
 
+  const thresholdLineColor = colors.PURPLE[600];
+
   const lineCharts = {
     temperature: {
       series: temperature,
@@ -137,15 +139,15 @@ export default function ContainerDetails(props) {
       color: chartColors.temperature,
       type: "line",
       large: true,
-      yMax: containerProfile.max_temperature,
+      // yMax: containerProfile.max_temperature,
 
       series2: temperature.map((x) => containerProfile.max_temperature),
       series2Name: "Max Threshold",
-      series2Color: colors.RED[600],
+      series2Color: thresholdLineColor,
 
       series3: temperature.map((x) => containerProfile.min_temperature),
       series3Name: "Min Threshold",
-      series3Color: colors.PURPLE[600],
+      series3Color: thresholdLineColor,
     },
     humidity: {
       series: humidity,
@@ -154,15 +156,15 @@ export default function ContainerDetails(props) {
       color: chartColors.humidity,
       type: "line",
       large: true,
-      yMax: containerProfile.max_humidity,
+      // yMax: containerProfile.max_humidity,
 
       series2: humidity.map((x) => containerProfile.max_humidity),
       series2Name: "Max Threshold",
-      series2Color: colors.RED[600],
+      series2Color: thresholdLineColor,
 
       series3: humidity.map((x) => containerProfile.min_humidity),
       series3Name: "Min Threshold",
-      series3Color: colors.PURPLE[600],
+      series3Color: thresholdLineColor,
     },
     temperatureAlerts: {
       series: temperatureAlerts.map((x) => x + 1),

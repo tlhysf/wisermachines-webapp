@@ -9,6 +9,11 @@ const types = environmentMonitoring.containersPage;
 const loadingTime = 2000;
 
 export const populateContainersPageAction = (dispatch, targetUser) => {
+  let thisUser = keys.users.map((user) =>
+    user.name === targetUser ? user : null
+  );
+  thisUser = thisUser.filter((x) => x).pop();
+
   dispatch({
     type: types.containersLoading,
   });
@@ -23,11 +28,6 @@ export const populateContainersPageAction = (dispatch, targetUser) => {
     axios(config)
       .then((res) => {
         if (isNotEmpty(res.data)) {
-          let thisUser = keys.users.map((user) =>
-            user.name === targetUser ? user : null
-          );
-          thisUser = thisUser.filter((x) => x).pop();
-
           const data = res.data.filter((x) => x);
 
           let allZonesInAWorkshop = data.map((zone) =>
@@ -56,7 +56,10 @@ export const populateContainersPageAction = (dispatch, targetUser) => {
     setTimeout(() => {
       dispatch({
         type: types.populateContainersPage,
-        payload: placeholderRes.getAllZones,
+        payload: {
+          allZones: placeholderRes.getAllZones,
+          workshopID: thisUser.workshopID,
+        },
       });
     }, loadingTime);
   }

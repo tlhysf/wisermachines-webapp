@@ -3,7 +3,7 @@ import keys from "../../../utils/keys";
 import { isNotEmpty } from "../../../utils/validation";
 import axios from "axios";
 import { httpRequestErrorAction } from "../errorActions";
-import { environmentData } from "../../../data/environmentData";
+import { environmentData, containerProfile } from "../../../data/environmentData";
 const types = environmentMonitoring.containerDetailsPage;
 
 const loadingTime = 2000;
@@ -39,7 +39,7 @@ export const getContainerProfile = (dispatch, ID) => {
     setTimeout(() => {
       dispatch({
         type: types.getContainerProfile,
-        payload: {},
+        payload: containerProfile,
       });
     }, loadingTime);
   }

@@ -13,11 +13,11 @@ const animationDuration = 500;
 
 const getColor = (alert) => {
   if (alert === -1) {
-    return colors.CYAN[600];
+    return colors.BLUE[700];
   } else if (alert === 1) {
-    return colors.ORANGE[600];
+    return colors.RED[700];
   } else {
-    return colors.GREEN[600];
+    return colors.GREEN[700];
   }
 };
 

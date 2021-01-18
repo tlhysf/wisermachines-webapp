@@ -25,8 +25,11 @@ const commonOptions = (large) => ({
   tooltip: {
     valueDecimals: 2,
     split: false,
-    distance: 30,
     padding: 10,
+    distance: 10,
+    stickOnContact: true,
+    followPointer: true,
+    followTouchMove: true,
   },
   time: {
     useUTC: false,

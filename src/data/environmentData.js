@@ -32,3 +32,13 @@ export const environmentData = () => {
 
   return response;
 };
+
+export const containerProfile = [{
+  id: "qwertyuiuytrew",
+  workshop_id: "12345678",
+  name: "zone-123",
+  min_temperature: 40,
+  max_temperature: 10,
+  min_humidity: 40,
+  max_humidity: 10,
+}];

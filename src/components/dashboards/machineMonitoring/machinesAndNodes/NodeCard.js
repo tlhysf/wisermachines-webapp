@@ -48,7 +48,7 @@ const NodeCard = (props) => {
       : sensor2
       ? 3 - sensor2.Sensor_Number
       : 1,
-    machine: sensor1 ? sensor1.name : "Not connected",
+    machine: sensor1 ? sensor1.Machine_Name : "Not connected",
   };
 
   const item2 = {
@@ -57,7 +57,7 @@ const NodeCard = (props) => {
       : sensor1
       ? 3 - sensor1.Sensor_Number
       : 2,
-    machine: sensor2 ? sensor2.name : "Not connected",
+    machine: sensor2 ? sensor2.Machine_Name : "Not connected",
   };
 
   return (
