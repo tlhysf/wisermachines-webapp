@@ -49,7 +49,7 @@ const General = (props) => {
 
           {/* Push all content after this point to the right  */}
           <div className={classes.grow}></div>
-          <AppBarMenu />
+          <AppBarMenu thisUser={props.thisUser} />
         </Toolbar>
       </AppBar>
 

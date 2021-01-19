@@ -21,6 +21,7 @@ import Grid from "@material-ui/core/Grid";
 // Custom Components
 import Cards from "./Cards";
 import Charts from "./Charts";
+import Alerts from "./Alerts";
 
 // Common Components
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
@@ -189,18 +190,20 @@ export default function ContainerDetails(props) {
   };
 
   const navbar = (
-    <Grid container justify="space-between" alignItems="center" spacing={0}>
-      <Grid item xs={12} md={6}>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-        >
-          <Grid item>
-            <BreadcrumbsNav list={props.navigationList} />
-          </Grid>
-        </Grid>
+    <Grid container justify="space-between" alignItems="center" spacing={2}>
+      <Grid item xs={12} md={"auto"}>
+        <BreadcrumbsNav list={props.navigationList} />
+      </Grid>
+      <Grid item xs={12} md={"auto"}>
+        <Alerts
+          data={{
+            humidity,
+            humidityAlerts,
+            temperature,
+            temperatureAlerts,
+            timestamps,
+          }}
+        />
       </Grid>
     </Grid>
   );

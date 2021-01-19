@@ -68,6 +68,10 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     padding: theme.spacing(2),
     marginBottom: theme.spacing(4),
+    "&:hover": {
+      backgroundColor: colors.RED[600],
+      color: "white",
+    },
   },
   success: {
     marginTop: 20,
@@ -75,6 +79,10 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     padding: theme.spacing(2),
     marginBottom: theme.spacing(4),
+    "&:hover": {
+      backgroundColor: colors.LIGHTGREEN[400],
+      color: "white",
+    },
   },
 }));
 
@@ -144,6 +152,7 @@ const SignIn = () => {
                 fullWidth
                 className={classes.failure}
                 onClick={(e) => e.preventDefault()}
+                disableRipple
               >
                 <Typography variant="caption">{signinError}</Typography>
               </Button>
@@ -156,6 +165,7 @@ const SignIn = () => {
                 fullWidth
                 className={classes.success}
                 onClick={(e) => e.preventDefault()}
+                disableRipple
               >
                 <Typography variant="caption">{signinResponse}</Typography>
               </Button>

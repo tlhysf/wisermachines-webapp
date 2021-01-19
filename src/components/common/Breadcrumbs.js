@@ -71,15 +71,11 @@ const BreadcrumbsNav = (props) => {
     ) : index === 0 ? (
       <Link
         color="inherit"
-        onClick={(event) => handleClick(event, path)}
+        onClick={(event) => handleClick(event, "/")}
         key={index}
         style={style.link}
       >
-        <ToolTip
-          key={index}
-          title={"Go to " + breadcrumbsNames[index].toLowerCase()}
-          placement="top"
-        >
+        <ToolTip key={index} title={"Home"} placement="top">
           <ButtonBase>
             <HomeRoundedIcon style={style.icon} />
           </ButtonBase>

@@ -11,6 +11,15 @@ import UnderConstruction from "../components/errorScreens/UnderConstruction";
 import Signin from "../components/auth/Signin";
 import Home from "../components/home/Home";
 
+import {
+  home,
+  signin,
+  pageNotFound,
+  underConstruction,
+  machineMonitoring,
+  environmentMonitoring,
+} from "./modules";
+
 import { machineRoutes } from "./machineRoutes";
 import { environmentRoutes } from "./environmentRoutes";
 
@@ -32,16 +41,6 @@ export const makePath = (currentPath, ID, name) => {
     nameWithoutSpaces
   );
 };
-
-// *** Paths ***
-export const home = "/";
-export const signin = "/signin";
-export const pageNotFound = "/pagenotfound";
-export const underConstruction = "/comingsoon";
-
-// Modules:
-export const machineMonitoring = "Machine-Monitoring";
-export const environmentMonitoring = "Environment-Monitoring";
 
 const Routes = (props) => {
   const { signedin, thisUser } = props;

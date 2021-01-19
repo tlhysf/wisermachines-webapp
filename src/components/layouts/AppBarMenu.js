@@ -7,7 +7,7 @@ import Menu from "@material-ui/core/Menu";
 import Typography from "@material-ui/core/Typography";
 
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
+// import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
@@ -38,6 +38,12 @@ const AppBarMenu = (props) => {
     setAnchorEl(null);
   };
 
+  const userName = props.thisUser
+    ? props.thisUser.name
+      ? props.thisUser.name
+      : "Account"
+    : "Account";
+
   const renderMenu = (
     <Menu
       keepMounted
@@ -49,11 +55,15 @@ const AppBarMenu = (props) => {
     >
       <MenuItem>
         <AccountCircleOutlinedIcon className={classes.menuItemIcon} />
-        <Typography color="textSecondary">Account</Typography>
+        <Typography color="textSecondary" variant="overline">
+          {userName}
+        </Typography>
       </MenuItem>
       <MenuItem onClick={(e) => handleSignout()}>
         <ExitToAppIcon className={classes.menuItemIcon} />
-        <Typography color="textSecondary">Signout</Typography>
+        <Typography color="textSecondary" variant="overline">
+          Signout
+        </Typography>
       </MenuItem>
     </Menu>
   );
@@ -80,17 +90,22 @@ const AppBarMenu = (props) => {
       open={isMenuOpenMobile}
       onClose={(e) => handleMenuCloseMobile(e)}
     >
-      <MenuItem>
+      {/* <MenuItem>
         <NotificationsNoneOutlinedIcon className={classes.menuItemIcon} />
         <Typography color="textSecondary">Notifications</Typography>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem>
         <AccountCircleOutlinedIcon className={classes.menuItemIcon} />
-        <Typography color="textSecondary">Account</Typography>
+        <Typography color="textSecondary" variant="overline">
+          {" "}
+          {userName}
+        </Typography>
       </MenuItem>
       <MenuItem onClick={(e) => handleSignout()}>
         <ExitToAppIcon className={classes.menuItemIcon} />
-        <Typography color="textSecondary">Signout</Typography>
+        <Typography color="textSecondary" variant="overline">
+          Signout
+        </Typography>
       </MenuItem>
     </Menu>
   );
@@ -98,9 +113,9 @@ const AppBarMenu = (props) => {
   return (
     <>
       <div className={classes.sectionDesktop}>
-        <IconButton color="inherit">
+        {/* <IconButton color="inherit">
           <NotificationsNoneOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton
           edge="end"
           onClick={(e) => handleProfileMenuOpen(e)}

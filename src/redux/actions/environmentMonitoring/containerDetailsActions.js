@@ -3,7 +3,10 @@ import keys from "../../../utils/keys";
 import { isNotEmpty } from "../../../utils/validation";
 import axios from "axios";
 import { httpRequestErrorAction } from "../errorActions";
-import { environmentData, containerProfile } from "../../../data/environmentData";
+import {
+  environmentData,
+  containerProfile,
+} from "../../../data/environmentData";
 const types = environmentMonitoring.containerDetailsPage;
 
 const loadingTime = 2000;

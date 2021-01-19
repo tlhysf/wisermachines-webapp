@@ -5,13 +5,11 @@ import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import CloseIcon from "@material-ui/icons/Close";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import ComputerIcon from "@material-ui/icons/Computer";
-import AssessmentOutlinedIcon from "@material-ui/icons/AssessmentOutlined";
-import EventOutlinedIcon from "@material-ui/icons/EventOutlined";
-import SupervisedUserCircleOutlinedIcon from "@material-ui/icons/SupervisedUserCircleOutlined";
-import BuildOutlinedIcon from "@material-ui/icons/BuildOutlined";
+import { modules as sideBarListItems } from "../../routes/modules";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { layoutStyle } from "../../utils/styles";
@@ -31,43 +29,9 @@ const SideBar = (props) => {
     window.location.href = url;
   };
 
-  const underConstruction = "/comingsoon";
-
-  const sideBarListItems = [
-    {
-      title: "Monitoring",
-      url: underConstruction,
-      icon: <ComputerIcon className={classes.listItemIcon} />,
-    },
-    {
-      title: "Analytics",
-      url: underConstruction,
-
-      icon: <AssessmentOutlinedIcon className={classes.listItemIcon} />,
-    },
-    {
-      title: "HR",
-      url: underConstruction,
-      icon: (
-        <SupervisedUserCircleOutlinedIcon className={classes.listItemIcon} />
-      ),
-    },
-    {
-      title: "Schedule",
-      url: underConstruction,
-
-      icon: <EventOutlinedIcon className={classes.listItemIcon} />,
-    },
-    {
-      title: "Management",
-      url: underConstruction,
-      icon: <BuildOutlinedIcon className={classes.listItemIcon} />,
-    },
-  ];
-
   const drawerList = (
     <List className={classes.list}>
-      {sideBarListItems.map((obj, index) => (
+      {sideBarListItems().map((obj, index) => (
         <Tooltip
           key={index}
           title={obj.title}
@@ -89,11 +53,10 @@ const SideBar = (props) => {
     </List>
   );
 
-  const mobileSideBar = (
+  const openedSideBar = (
     <Drawer
       anchor={"left"}
       open={sideBarOpen}
-      onClose={(e) => toggleSideBarAction(dispatch)}
       classes={{
         paper: classes.drawer,
       }}
@@ -101,12 +64,24 @@ const SideBar = (props) => {
         keepMounted: true, // Better open performance on mobile.
       }}
     >
-      <div className={classes.drawerHeader}></div>
+      <div className={classes.drawerHeader}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            fullWidth
+            onClick={(e) => toggleSideBarAction(dispatch)}
+            style={{
+              padding: 15,
+            }}
+          >
+            <CloseIcon className={classes.listItemIcon} />
+          </Button>
+        </div>
+      </div>
       {drawerList}
     </Drawer>
   );
 
-  const desktopSideBar = (
+  const closedSideBar = (
     <Drawer
       variant="permanent"
       className={classes.drawerClose}
@@ -123,8 +98,8 @@ const SideBar = (props) => {
 
   return (
     <>
-      {desktopSideBar}
-      {mobileSideBar}
+      {closedSideBar}
+      {openedSideBar}
     </>
   );
 };
