@@ -5,7 +5,7 @@ import axios from "axios";
 import { placeholderRes } from "../../../data/common";
 import { httpRequestErrorAction } from "../errorActions";
 
-const loadingTime = 2000;
+const loadingTime = 1000;
 
 export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
   dispatch({

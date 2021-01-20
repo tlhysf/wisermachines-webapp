@@ -2,10 +2,10 @@ const randomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const getAlert = (value) => {
-  const max = 60;
-  const min = 20;
+const max = 60;
+const min = 20;
 
+const getAlert = (value) => {
   if (value >= max) {
     return 1;
   } else if (value >= min) {
@@ -30,8 +30,8 @@ export const environmentData = () => {
     const now = Date.now() + UTCPlus5;
     const timestampOfLatestUpdate = now - millisecondsInInterval * i;
     const timestamp = String(new Date(timestampOfLatestUpdate));
-    const temperature = randomIntFromInterval(0, 65);
-    const humidity = randomIntFromInterval(0, 65);
+    const temperature = randomIntFromInterval(min - 10, max + 10);
+    const humidity = randomIntFromInterval(min - 10, max + 10);
     const temperature_alert = getAlert(temperature);
     const humidity_alert = getAlert(humidity);
     response.push({
@@ -51,9 +51,31 @@ export const containerProfile = [
     id: "qwertyuiuytrew",
     workshop_id: "12345678",
     name: "zone-123",
-    min_temperature: 40,
-    max_temperature: 10,
-    min_humidity: 40,
-    max_humidity: 10,
+    min_temperature: max,
+    max_temperature: min,
+    min_humidity: max,
+    max_humidity: min,
   },
 ];
+
+export const liveEnvData = () => {
+  const send = true;
+
+  const timestamp = String(new Date());
+  const temperature = randomIntFromInterval(min - 10, max + 10);
+  const humidity = randomIntFromInterval(min - 10, max + 10);
+  const temperature_alert = getAlert(temperature);
+  const humidity_alert = getAlert(humidity);
+
+  if (send) {
+    return {
+      temperature_alert,
+      humidity_alert,
+      temperature,
+      humidity,
+      timestamp,
+    };
+  } else {
+    return null;
+  }
+};

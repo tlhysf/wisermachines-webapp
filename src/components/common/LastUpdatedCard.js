@@ -7,8 +7,9 @@ import Grid from "@material-ui/core/Grid";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { common, smallCard } from "../../../../../utils/styles";
-import colors from "../../../../../utils/colors";
+import { common, smallCard } from "../../utils/styles";
+import colors from "../../utils/colors";
+import { isNotEmpty } from "../../utils/validation";
 
 const useStyles = makeStyles((theme) => common(theme));
 
@@ -17,17 +18,20 @@ const LastUpdatedCard = (props) => {
 
   const { lastUpdateTimestamp, liveData } = props.data;
 
-  const updateIconRender =
-    liveData !== null ? (
-      <Loader type="Bars" height={20} color={colors.TEAL[700]} />
-    ) : (
-      <CheckCircleIcon
-        style={{
-          width: 20,
-          color: colors.TEAL[700],
-        }}
-      />
-    );
+  const isLiveData = isNotEmpty(liveData);
+
+  // console.log(isLiveData, lastUpdateTimestamp);
+
+  const updateIconRender = isLiveData ? (
+    <Loader type="Bars" height={20} color={colors.TEAL[700]} />
+  ) : (
+    <CheckCircleIcon
+      style={{
+        width: 20,
+        color: colors.TEAL[700],
+      }}
+    />
+  );
 
   const updateMessegeRender = (
     <Typography
@@ -35,7 +39,7 @@ const LastUpdatedCard = (props) => {
       variant="body2"
       style={{ color: colors.BLUEGREY[600] }}
     >
-      {liveData !== null ? "Receiving Real-time Updates..." : "Last Updated: "}
+      {isLiveData ? "Receiving Real-time Updates..." : "Last Updated: "}
     </Typography>
   );
 
@@ -45,7 +49,7 @@ const LastUpdatedCard = (props) => {
       variant="body2"
       style={{ color: colors.BLUEGREY[800] }}
     >
-      {liveData !== null ? null : lastUpdateTimestamp}
+      {isLiveData ? null : lastUpdateTimestamp}
     </Typography>
   );
 
@@ -57,7 +61,7 @@ const LastUpdatedCard = (props) => {
       justify="center"
       alignItems="center"
       elevation={2}
-      style={{ padding: 3 }}
+      style={{ padding: 12, height: "100%" }}
       className={classes.cardHover}
     >
       <Grid item xs={2}>

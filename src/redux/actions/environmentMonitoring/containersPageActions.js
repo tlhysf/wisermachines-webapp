@@ -6,7 +6,7 @@ import { isNotEmpty } from "../../../utils/validation";
 import { placeholderRes } from "../../../data/common";
 
 const types = environmentMonitoring.containersPage;
-const loadingTime = 2000;
+const loadingTime = 1000;
 
 export const populateContainersPageAction = (dispatch, targetUser) => {
   let thisUser = keys.users.map((user) =>

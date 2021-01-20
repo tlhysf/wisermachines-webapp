@@ -3,8 +3,11 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import Grid from "@material-ui/core/Grid";
-import Grow from "@material-ui/core/Grow";
+import Slide from "@material-ui/core/Slide";
 import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 import Typography from "@material-ui/core/Typography";
 
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
@@ -16,6 +19,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../../utils/colors";
 
 const useStyles = makeStyles((theme) => common(theme));
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="right" ref={ref} {...props} />;
+});
 
 const styles = {
   selectedButton: {
@@ -30,30 +37,14 @@ const styles = {
   },
   dialogBoxContainer: {
     backgroundColor: colors.BLUEGREY[100],
-    overflowY: "auto",
-    overflowX: "auto",
-    margin: 0,
     padding: 20,
-    listStyle: "none",
-    height: "100%",
-    "&::-webkit-scrollbar": {
-      width: "0.4em",
-    },
-    "&::-webkit-scrollbar-track": {
-      boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-      webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "rgba(0,0,0,.1)",
-      outline: "1px solid slategrey",
-    },
   },
   dialogBox: {
     backgroundColor: "rgb(0,0,0,0)",
   },
   cardsContainer: {
     width: 300,
-    paddingTop: 20,
+    paddingTop: 10,
   },
   card: { paddingBottom: 10 },
   cardContentContainer: {
@@ -167,10 +158,10 @@ export default function AlertsPopover(props) {
       <Grid item xs={12} md={6}>
         <Button
           id="temperature"
-          variant="contained"
+          variant="text"
           fullWidth
           onClick={(e) => handleButtonGroup(e)}
-          disableRipple
+          // disableRipple
           style={
             selectedOption.temperature
               ? styles.selectedButton
@@ -182,11 +173,11 @@ export default function AlertsPopover(props) {
       </Grid>
       <Grid item xs={12} md={6}>
         <Button
-          variant="contained"
+          variant="text"
           id="humidity"
           fullWidth
           onClick={(e) => handleButtonGroup(e)}
-          disableRipple
+          // disableRipple
           style={
             selectedOption.humidity
               ? styles.selectedButton
@@ -276,24 +267,22 @@ export default function AlertsPopover(props) {
         open={openDialog}
         onBackdropClick={(e) => setOpenDialog(false)}
         style={styles.dialogBox}
+        scroll="paper"
+        TransitionComponent={Transition}
       >
-        <Grow in={true} timeout={500}>
-          <div style={styles.dialogBoxContainer}>
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-            >
-              <Grid item xs={12}>
-                {renderButtonGroup}
-              </Grid>
-              <Grid item xs={12} style={styles.cardsContainer}>
-                {renderAllCards}
-              </Grid>
-            </Grid>
-          </div>
-        </Grow>
+        <DialogTitle>{renderButtonGroup}</DialogTitle>
+        <DialogContent dividers={true} style={styles.dialogBoxContainer}>
+          <div style={styles.cardsContainer}>{renderAllCards}</div>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            fullWidth
+            variant="text"
+            onClick={(e) => handleDialogButton(e)}
+          >
+            <Typography variant="body2">Close</Typography>
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );

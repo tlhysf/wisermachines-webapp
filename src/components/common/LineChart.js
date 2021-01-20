@@ -16,7 +16,7 @@ const dateTimeLabelFormats = {
 
 const commonOptions = (large) => ({
   chart: {
-    height: large ? 400 : 300,
+    height: large ? 500 : 300,
     margin: [25, 25, 25, 25],
     renderTo: "container",
     zoomType: "x",

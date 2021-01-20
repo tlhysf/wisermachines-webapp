@@ -6,7 +6,7 @@ import { httpRequestErrorAction } from "../errorActions";
 
 import { machineData } from "../../../data/machineData";
 
-const loadingTime = 2000;
+const loadingTime = 1000;
 
 export const getMachineDataByIDAction = (dispatch, ID) => {
   dispatch({

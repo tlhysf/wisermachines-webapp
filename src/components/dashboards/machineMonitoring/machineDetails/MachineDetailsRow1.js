@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Grow from "@material-ui/core/Grow";
 
 import Card from "./cards/Card";
-import LastUpdatedCard from "./cards/LastUpdatedCard";
+import LastUpdatedCard from "../../../common/LastUpdatedCard";
 
 import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";

@@ -2,9 +2,9 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import colors from "../../utils/colors";
+import colors from "../../../../utils/colors";
 import { makeStyles } from "@material-ui/core/styles";
-import { common as styles } from "../../utils/styles";
+import { common as styles } from "../../../../utils/styles";
 
 const useStyles = makeStyles((theme) => styles(theme));
 
@@ -36,7 +36,7 @@ export default function Card(props) {
         item
         style={{
           color: values.color,
-          padding: 5,
+          padding: 10,
           display: "flex",
           justifyContent: "center",
         }}
@@ -48,8 +48,8 @@ export default function Card(props) {
           <Grid item xs={12}>
             <Typography
               align="center"
-              variant="body2"
-              style={{ color: primaryTextColor }}
+              variant="h6"
+              style={{ color: primaryTextColor, paddingLeft: 10 }}
             >
               {values.primary}
             </Typography>

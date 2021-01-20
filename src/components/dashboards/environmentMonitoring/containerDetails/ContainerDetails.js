@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSnackbar } from "notistack";
 
 // Utils
 import keys from "../../../../utils/keys";
@@ -27,9 +28,10 @@ import Alerts from "./Alerts";
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import AlertCard from "../../../common/AlertCard";
 import Loader from "../../../common/Loader";
+import { SnackbarProvider } from "notistack";
 
 // Placeholder Data
-// import { liveMachineData } from "../../../../data/machineData";
+import { liveEnvData } from "../../../../data/environmentData";
 
 // Web-socket
 import io from "socket.io-client";
@@ -46,6 +48,8 @@ const chartColors = {
 
 export default function ContainerDetails(props) {
   const dispatch = useDispatch();
+
+  const { enqueueAlertSnackbar, closeAlertSnackbar } = useSnackbar();
 
   const { containerID } = props.match.params;
 
@@ -102,11 +106,19 @@ export default function ContainerDetails(props) {
       });
     } else {
       // Mock live data generator
-      //   setInterval(() => {
-      //     setLiveData(liveMachineData());
-      //   }, 5000);
+      setInterval(() => {
+        setLiveData(liveEnvData());
+      }, 5000);
     }
   }, [containerID]);
+
+  // console.log(liveData);
+
+  const handleClick = () => {};
+
+  useEffect(() => {
+    enqueueAlertSnackbar("Test");
+  }, [liveData]);
 
   const {
     // Time
@@ -140,7 +152,7 @@ export default function ContainerDetails(props) {
       color: chartColors.temperature,
       type: "line",
       large: true,
-      // yMax: containerProfile.max_temperature,
+      yMax: 70,
 
       series2: temperature.map((x) => containerProfile.max_temperature),
       series2Name: "Max Threshold",
@@ -157,7 +169,7 @@ export default function ContainerDetails(props) {
       color: chartColors.humidity,
       type: "line",
       large: true,
-      // yMax: containerProfile.max_humidity,
+      yMax: 70,
 
       series2: humidity.map((x) => containerProfile.max_humidity),
       series2Name: "Max Threshold",
@@ -232,6 +244,7 @@ export default function ContainerDetails(props) {
             temperatureAlertNow,
             humidityNow,
             humidityAlertNow,
+            liveData,
           }}
         />
       </Grid>
@@ -262,5 +275,9 @@ export default function ContainerDetails(props) {
     </Grid>
   );
 
-  return loading ? renderLoading : noData ? renderNoData : renderLoaded;
+  return (
+    <SnackbarProvider maxSnack={10}>
+      {loading ? renderLoading : noData ? renderNoData : renderLoaded}
+    </SnackbarProvider>
+  );
 }

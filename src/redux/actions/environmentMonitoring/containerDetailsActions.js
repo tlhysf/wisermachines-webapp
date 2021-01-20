@@ -9,7 +9,7 @@ import {
 } from "../../../data/environmentData";
 const types = environmentMonitoring.containerDetailsPage;
 
-const loadingTime = 2000;
+const loadingTime = 1000;
 
 export const getContainerProfile = (dispatch, ID) => {
   const config = {

@@ -5,7 +5,7 @@ import axios from "axios";
 import { httpRequestErrorAction } from "../errorActions";
 import { placeholderRes } from "../../../data/common";
 
-const loadingTime = 2000;
+const loadingTime = 1000;
 
 export const getAllWorkshopsAction = (dispatch, targetUser) => {
   dispatch({

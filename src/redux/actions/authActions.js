@@ -1,7 +1,7 @@
 import { auth } from "./actionTypes";
 import keys from "../../utils/keys";
 
-const loadingTime = 2000;
+const loadingTime = 1000;
 
 export const signinAction = (dispatch, user) => {
   dispatch({

@@ -2,7 +2,8 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Grow from "@material-ui/core/Grow";
 
-import Card from "../../../common/Card";
+import Card from "./Card";
+import LastUpdatedCard from "../../../common/LastUpdatedCard";
 
 import SpeedIcon from "@material-ui/icons/Speed";
 import OpacityIcon from "@material-ui/icons/Opacity";
@@ -21,6 +22,16 @@ const getColor = (alert) => {
   }
 };
 
+const getStatus = (alert) => {
+  if (alert === -1) {
+    return "Low";
+  } else if (alert === 1) {
+    return "High";
+  } else {
+    return "Normal";
+  }
+};
+
 export default function Cards(props) {
   const {
     lastUpdateTimestamp,
@@ -28,18 +39,26 @@ export default function Cards(props) {
     temperatureAlertNow,
     humidityNow,
     humidityAlertNow,
+    liveData,
   } = props.data;
+
+  const lastUpdatedCard = {
+    lastUpdateTimestamp,
+    liveData,
+  };
+
+  const iconHeight = 60;
 
   const temperatureNowCard = {
     icon: (
       <SpeedIcon
         size="small"
-        style={{ color: getColor(temperatureAlertNow), height: 40 }}
+        style={{ color: getColor(temperatureAlertNow), iconHeight }}
       />
     ),
     values: {
       primary: temperatureNow + "\u00B0C",
-      secondary: lastUpdateTimestamp,
+      secondary: getStatus(temperatureAlertNow),
       color: getColor(temperatureAlertNow),
       colored: "primary",
     },
@@ -49,12 +68,12 @@ export default function Cards(props) {
     icon: (
       <OpacityIcon
         size="small"
-        style={{ color: getColor(humidityAlertNow), height: 40 }}
+        style={{ color: getColor(humidityAlertNow), iconHeight }}
       />
     ),
     values: {
       primary: humidityNow + " %RH",
-      secondary: lastUpdateTimestamp,
+      secondary: getStatus(humidityAlertNow),
       color: getColor(humidityAlertNow),
       colored: "primary",
     },
@@ -72,15 +91,24 @@ export default function Cards(props) {
         in={true}
         {...{ timeout: animationDuration + 0 * animationDuration }}
       >
-        <Grid item md={6} xs={12}>
+        <Grid item md={4} xs={12}>
+          <LastUpdatedCard data={lastUpdatedCard} />
+        </Grid>
+      </Grow>
+
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 1 * animationDuration }}
+      >
+        <Grid item md={4} xs={12}>
           <Card data={temperatureNowCard} />
         </Grid>
       </Grow>
       <Grow
         in={true}
-        {...{ timeout: animationDuration + 1 * animationDuration }}
+        {...{ timeout: animationDuration + 2 * animationDuration }}
       >
-        <Grid item md={6} xs={12}>
+        <Grid item md={4} xs={12}>
           <Card data={humidityNowCard} />
         </Grid>
       </Grow>
