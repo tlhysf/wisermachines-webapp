@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 
+// Toasts
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // Utils
 import keys from "../../../../utils/keys";
 import { isNotEmpty } from "../../../../utils/validation";
@@ -17,6 +21,8 @@ import colors from "../../../../utils/colors";
 
 // MUI
 import Grid from "@material-ui/core/Grid";
+import Fab from "@material-ui/core/Fab";
+import Typography from "@material-ui/core/Typography";
 
 // Custom Components
 import Cards from "./Cards";
@@ -110,6 +116,129 @@ export default function ContainerDetails(props) {
 
   // console.log(liveData);
 
+  // ******* TOASTS *******
+
+  const toastsContainer = (
+    <ToastContainer
+      autoClose={false}
+      newestOnTop
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss={false}
+      draggable={false}
+      enableMultiContainer
+      containerId={"ContainerDetails"}
+      position={toast.POSITION.TOP_RIGHT}
+    />
+  );
+
+  const [toastsCount, setToastsCount] = useState(0);
+
+  const notifyLow = (msg) => {
+    const notify = (value) =>
+      toast.info(value, { containerId: "ContainerDetails" });
+
+    notify(msg, {
+      position: "top-right",
+      autoClose: false,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+
+    setToastsCount(toastsCount + 1);
+  };
+
+  const notifyHigh = (msg) => {
+    const notify = (value) =>
+      toast.error(value, { containerId: "ContainerDetails" });
+
+    notify(msg, {
+      position: "top-right",
+      autoClose: false,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+
+    setToastsCount(toastsCount + 1);
+  };
+
+  const humidityUnit = " %RH";
+  const temperatureUnit = " \u00B0C";
+
+  const toastContent = (data, type, unit) => {
+    const lastUpdateTimestamp = new Date(data.timestamp).toLocaleTimeString(
+      "en-US"
+    );
+
+    return (
+      <div>
+        <div>
+          <Typography align="left" variant="button">
+            {data.humidity}
+            {unit}
+          </Typography>
+        </div>
+
+        <div>
+          <Typography variant="caption" align="left">
+            {lastUpdateTimestamp}
+          </Typography>
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    if (isNotEmpty(liveData)) {
+      if (liveData.humidity_alert === -1) {
+        const type = "Low Humidity";
+        notifyLow(toastContent(liveData, type, humidityUnit));
+      }
+      if (liveData.humidity_alert === 1) {
+        const type = "High Humidity";
+        notifyHigh(toastContent(liveData, type, humidityUnit));
+      }
+      if (liveData.temperature_alert === -1) {
+        const type = "Low Temperature";
+        notifyLow(toastContent(liveData, type, temperatureUnit));
+      }
+      if (liveData.temperature_alert === 1) {
+        const type = "High Temperature";
+        notifyLow(toastContent(liveData, type, temperatureUnit));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [liveData]);
+
+  const dismissAll = () => {
+    toast.dismiss();
+    setToastsCount(0);
+  };
+
+  const dismissAllButton =
+    toastsCount > 2 ? (
+      <div style={{ padding: 10 }}>
+        <Fab
+          variant="extended"
+          style={{ backgroundColor: colors.BLUEGREY[700] }}
+          size="medium"
+          onClick={(e) => dismissAll()}
+        >
+          <Typography variant="caption" style={{ color: "white" }}>
+            Dismiss All
+          </Typography>
+        </Fab>
+      </div>
+    ) : null;
+
+  // ******* ******* *******
+
   const {
     // Time
     timestamps,
@@ -178,6 +307,7 @@ export default function ContainerDetails(props) {
       step: "center",
       large: true,
       yMax: 3,
+      yLabels: ["LOW", "NORMAL", "HIGH"],
     },
     humidityAlerts: {
       series: humidityAlerts.map((x) => x + 1),
@@ -188,6 +318,7 @@ export default function ContainerDetails(props) {
       step: "center",
       large: true,
       yMax: 3,
+      yLabels: ["LOW", "NORMAL", "HIGH"],
     },
   };
 
@@ -242,6 +373,9 @@ export default function ContainerDetails(props) {
       <Grid item xs={12}>
         <Charts lineCharts={lineCharts} />
       </Grid>
+
+      {toastsContainer}
+      {dismissAllButton}
     </Grid>
   );
 

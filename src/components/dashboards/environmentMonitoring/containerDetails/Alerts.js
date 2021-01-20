@@ -68,6 +68,42 @@ export default function AlertsPopover(props) {
     timestamps,
   } = props.data;
 
+  // const [data, setData] = React.useState({
+  //   humidity: [],
+  //   humidityAlerts: [],
+  //   temperature: [],
+  //   temperatureAlerts: [],
+  //   timestamps: [],
+  // });
+
+  // const {
+  //   humidity,
+  //   humidityAlerts,
+  //   temperature,
+  //   temperatureAlerts,
+  //   timestamps,
+  // } = data;
+
+  // console.log(data);
+
+  // React.useEffect(() => {
+  //   const {
+  //     humidity,
+  //     humidityAlerts,
+  //     temperature,
+  //     temperatureAlerts,
+  //     timestamps,
+  //   } = props.data;
+
+  //   setData({
+  //     humidity,
+  //     humidityAlerts,
+  //     temperature,
+  //     temperatureAlerts,
+  //     timestamps,
+  //   });
+  // }, [props.data]);
+
   const [selectedOption, setSelectedOption] = React.useState({
     temperature: true,
     humidity: false,

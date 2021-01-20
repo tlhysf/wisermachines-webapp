@@ -2,8 +2,8 @@ const keys = {
   server: "http://115.186.183.129:37000",
 
   showMockData: true,
-  showDashboardSummaryCards: false,
-  showDashboardSummaryHeaders: false,
+  showDashboardSummaryCards: true,
+  showDashboardSummaryHeaders: true,
   featureTemporarilyUnavailable: false,
 
   users: [

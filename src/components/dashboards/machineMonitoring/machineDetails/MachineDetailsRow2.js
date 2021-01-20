@@ -7,6 +7,7 @@ const animationDuration = 500;
 
 export default function MachineDetailsRow2(props) {
   const {
+    operationCount,
     utilization,
     uptime,
     downtime,
@@ -21,7 +22,7 @@ export default function MachineDetailsRow2(props) {
   const utilizationCard = {
     title: "Utilization",
     gaugeValue: utilization,
-    gaugeUnit: "Percent",
+    gaugeUnit: " %",
     maxTitle: "Uptime",
     minTitle: "Downtime",
     maxValue: uptime,
@@ -33,13 +34,13 @@ export default function MachineDetailsRow2(props) {
   };
 
   const oeeCard = {
-    title: "OEE",
-    gaugeValue: utilization,
-    gaugeUnit: "Percent",
+    title: "Operation Count",
+    gaugeValue: operationCount,
+    gaugeUnit: "",
     maxTitle: "Maximum",
     minTitle: "Minimum",
-    maxValue: utilization,
-    minValue: utilization,
+    maxValue: 100,
+    minValue: 0,
     thresholds: {
       high: 66,
       low: 33,
@@ -49,7 +50,7 @@ export default function MachineDetailsRow2(props) {
   const temperatureCard = {
     title: "Temperature",
     gaugeValue: temperatureNow,
-    gaugeUnit: "\u00B0C",
+    gaugeUnit: " \u00B0C",
     maxTitle: "Maximum",
     minTitle: "Minimum",
     maxValue: temperatureMax,
@@ -63,7 +64,7 @@ export default function MachineDetailsRow2(props) {
   const humidityCard = {
     title: "Humidity",
     gaugeValue: humidityNow,
-    gaugeUnit: "%RH",
+    gaugeUnit: " %RH",
     maxTitle: "Maximum",
     minTitle: "Minimum",
     maxValue: humidityMax,

@@ -3,14 +3,14 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import store from "./redux/store";
 import { Provider } from "react-redux";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <Provider store={store}>
     <App />
-    <ToastContainer />
+    {/* <ToastContainer /> */}
   </Provider>,
   document.getElementById("root")
 );

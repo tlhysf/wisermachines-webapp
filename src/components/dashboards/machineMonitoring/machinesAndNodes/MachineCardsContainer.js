@@ -1,10 +1,16 @@
 import React from "react";
+
+// import { useSelector } from "react-redux";
+
 import Grid from "@material-ui/core/Grid";
-import DashboardSummaryCard, {
-  DashboardSummaryCardMinimalVersion,
-} from "../../../common/DashboardSummaryCard";
+import DashboardSummaryCard from "../../../common/DashboardSummaryCard";
 import Card from "../../../common/Card";
 import Grow from "@material-ui/core/Grow";
+
+import {
+  parseZoneDetailsData,
+  // parseZoneSummaryData,
+} from "../../../../utils/parse";
 
 import {
   status,
@@ -20,29 +26,52 @@ import keys from "../../../../utils/keys";
 const animationDuration = 500;
 
 export default function MachineCards(props) {
+  // const zoneSummary = useSelector((state) => state.machines.zoneSummary);
+
   return (
     <Grid container spacing={2}>
-      {keys.showDashboardSummaryHeaders ? (
-        <Grid item xs={12}>
-          <Grid container spacing={2}>
-            {summaryHeader().map((item, index) => {
-              return (
-                <Grow
-                  key={index}
-                  in={true}
-                  {...{
-                    timeout: animationDuration + index * animationDuration,
-                  }}
-                >
-                  <Grid item key={index} lg={2} md={4} sm={6} xs={12}>
-                    <Card data={item} />
-                  </Grid>
-                </Grow>
-              );
-            })}
+      {
+        keys.showMockData ? (
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              {summaryHeader().map((item, index) => {
+                return (
+                  <Grow
+                    key={index}
+                    in={true}
+                    {...{
+                      timeout: animationDuration + index * animationDuration,
+                    }}
+                  >
+                    <Grid item key={index} lg={2} md={4} sm={6} xs={12}>
+                      <Card data={item} />
+                    </Grid>
+                  </Grow>
+                );
+              })}
+            </Grid>
           </Grid>
-        </Grid>
-      ) : null}
+        ) : null
+        // <Grid item xs={12}>
+        //   <Grid container spacing={2}>
+        //     {parseZoneSummaryData(zoneSummary).map((item, index) => {
+        //       return (
+        //         <Grow
+        //           key={index}
+        //           in={true}
+        //           {...{
+        //             timeout: animationDuration + index * animationDuration,
+        //           }}
+        //         >
+        //           <Grid item key={index} lg={2} md={4} sm={6} xs={12}>
+        //             <Card data={item} />
+        //           </Grid>
+        //         </Grow>
+        //       );
+        //     })}
+        //   </Grid>
+        // </Grid>
+      }
       <Grid item xs={12}>
         <Grid
           container
@@ -58,7 +87,7 @@ export default function MachineCards(props) {
               {...{ timeout: animationDuration + index * animationDuration }}
             >
               <Grid key={index} item lg={3} md={4} sm={12}>
-                {keys.showDashboardSummaryCards ? (
+                {keys.showMockData ? (
                   <DashboardSummaryCard
                     compact={props.compact}
                     data={{
@@ -73,12 +102,9 @@ export default function MachineCards(props) {
                     }}
                   />
                 ) : (
-                  <DashboardSummaryCardMinimalVersion
-                    data={{
-                      name: item.name,
-                      ID: item._id,
-                      mapping: false,
-                    }}
+                  <DashboardSummaryCard
+                    compact={props.compact}
+                    data={parseZoneDetailsData(item)}
                   />
                 )}
               </Grid>

@@ -57,7 +57,7 @@ export default function Cards(props) {
       />
     ),
     values: {
-      primary: temperatureNow + "\u00B0C",
+      primary: temperatureNow + " \u00B0C",
       secondary: getStatus(temperatureAlertNow),
       color: getColor(temperatureAlertNow),
       colored: "primary",

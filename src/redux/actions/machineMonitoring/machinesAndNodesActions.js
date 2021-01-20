@@ -14,7 +14,7 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
 
   const config = {
     method: "get",
-    url: keys.server + "/machines",
+    url: keys.server + "/zone/Summary/" + zoneID,
     headers: {
       "Content-Type": "application/json",
     },
@@ -25,11 +25,12 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
       .then((res) => {
         const { data } = res;
         if (isNotEmpty(data)) {
-          // Need to filter all machines in the zone by zone ID
-          const allMachinesInAZone = data.filter((x) => x);
+          // console.log(data);
+          const allMachinesInAZone = data.machines_data;
+          const zoneSummary = data.zone_summary;
           dispatch({
             type: machines.getAllMachinesInAZone,
-            payload: { allMachinesInAZone, zoneID },
+            payload: { allMachinesInAZone, zoneID, zoneSummary },
           });
         } else {
           console.log("error: unexpected response", data);

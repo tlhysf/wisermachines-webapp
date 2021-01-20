@@ -4,6 +4,8 @@ const initialMachinesState = {
   zoneID: "",
 
   allMachinesInAZone: [],
+  zoneSummary: {},
+
   machineMappings: [],
   machinesLoading: false,
 
@@ -31,6 +33,7 @@ export const machinesReducer = (state = initialMachinesState, action) => {
       return {
         ...state,
         allMachinesInAZone: action.payload.allMachinesInAZone,
+        zoneSummary: action.payload.zoneSummary,
         zoneID: action.payload.zoneID,
         machinesLoading: false,
         notFound: false,

@@ -1,3 +1,285 @@
+import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
+import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import CancelIcon from "@material-ui/icons/Cancel";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+import PowerOutlinedIcon from "@material-ui/icons/PowerOutlined";
+import CheckCircleOutlineRoundedIcon from "@material-ui/icons/CheckCircleOutlineRounded";
+import SpeedIcon from "@material-ui/icons/Speed";
+import OpacityIcon from "@material-ui/icons/Opacity";
+import UpdateIcon from "@material-ui/icons/Update";
+import colors from "../utils/colors";
+
+const getStatusNumber = (value) => {
+  switch (value) {
+    case "OFF":
+      return 0;
+    case "IDLE":
+      return 1;
+    case "ON":
+      return 2;
+    default:
+      return 0;
+  }
+};
+
+export const parseZoneSummaryData = (data) => {
+  console.log(data);
+  const iconStyle = {
+    width: 30,
+  };
+
+  // const example = {
+  //   zoneSummary: {
+  //     humidity: 0,
+  //     temperature: 0,
+  //     min_humidity: 0,
+  //     max_humidity: 0,
+  //     min_temperature: 0,
+  //     max_temperature: 0,
+  //     total_machines: 0,
+  //     // Additions
+  //     currently_active_machines: 0,
+  //     avg_utilization: 0,
+  //     total_units: 0,
+  //   },
+  // };
+
+  const dateTime = new Date();
+  const dateTimeString =
+    dateTime.toLocaleDateString() + " " + dateTime.toLocaleTimeString();
+
+  const lastUpdated = {
+    icon: <UpdateIcon style={iconStyle} />,
+    values: {
+      primary: "Last Updated",
+      secondary: dateTimeString,
+      color: colors.CYAN[700],
+    },
+  };
+
+  const CurrentlyActiveTotal = 0;
+  const CurrentlyActive = 0;
+  const statusTotal = {
+    icon: <CheckCircleOutlineRoundedIcon style={iconStyle} />,
+    values: {
+      primary: "Currently Active",
+      secondary: CurrentlyActive + "/" + CurrentlyActiveTotal,
+      color: colors.BLUE[700],
+    },
+  };
+
+  const utilization = 0;
+  const utilizationAverage = {
+    icon: <TrendingUpIcon style={iconStyle} />,
+    values: {
+      primary: "Average Utilization",
+      secondary: utilization + " %",
+      color: colors.GREEN[700],
+    },
+  };
+
+  const units = 0;
+  const unitsTotal = {
+    icon: <PowerOutlinedIcon style={iconStyle} />,
+    values: {
+      primary: "Unit Consumption",
+      secondary: units + " kWh",
+      color: colors.INDIGO[700],
+    },
+  };
+
+  const temperature = 0;
+  const TemperatureAverage = {
+    icon: <SpeedIcon style={iconStyle} />,
+    values: {
+      primary: "Average Temperature",
+      secondary: temperature + " \u00B0C",
+      color: colors.ORANGE[700],
+    },
+  };
+
+  const humidity = 0;
+  const HumidityAvarage = {
+    icon: <OpacityIcon style={iconStyle} />,
+    values: {
+      primary: "Average Humidity",
+      secondary: humidity + " %RH",
+      color: colors.PURPLE[700],
+    },
+  };
+
+  return [
+    lastUpdated,
+    statusTotal,
+    utilizationAverage,
+    unitsTotal,
+    TemperatureAverage,
+    HumidityAvarage,
+  ];
+};
+
+const iconStyle = {
+  width: 15,
+  paddingRight: 3,
+};
+
+const getStatusIcon = (valueInt) => {
+  switch (valueInt) {
+    case 0:
+      return <CancelIcon style={iconStyle} />;
+    case 1:
+      return <PauseCircleFilledIcon style={iconStyle} />;
+    case 2:
+      return <PlayCircleFilledIcon style={iconStyle} />;
+    default:
+      return <CancelIcon style={iconStyle} />;
+  }
+};
+
+export const parseZoneDetailsData = (data) => {
+  let defaultData = {
+    _id: "",
+    machine_name: "",
+    state_instant: "",
+    state_instant_duration: 0,
+    uptime: 0,
+    downtime: 0,
+    utilization_percent: 0,
+    units: 0,
+  };
+
+  Object.keys(defaultData).map((key) => {
+    if (data[key] !== null || data[key] !== undefined) {
+      defaultData = { ...defaultData, [key]: data[key] };
+    }
+    return key;
+  });
+
+  const {
+    machine_name,
+    _id,
+    state_instant,
+    state_instant_duration,
+    uptime,
+    downtime,
+    utilization_percent,
+    units,
+  } = defaultData;
+
+  const name = machine_name;
+  const ID = _id;
+
+  const status = () => {
+    const statusName = state_instant;
+    const statusChange = getStatusNumber(statusName);
+
+    const statusValueMilliSeconds = state_instant_duration * 1000;
+    const statusValue = timeDifference(statusValueMilliSeconds, 0);
+
+    const statusIcon = getStatusIcon(statusChange);
+
+    const statusThresholds = {
+      high: 1.5,
+      low: 1,
+    };
+
+    return {
+      name: statusName,
+      change: statusChange,
+      value: statusValue,
+      icon: statusIcon,
+      thresholds: statusThresholds,
+    };
+  };
+
+  const maximumTime = 60; // minutes
+
+  const info1 = () => {
+    const info1Name = "Uptime";
+    const info1Change = uptime / 60; //seconds into minutes
+    const info1Value = timeDifference(uptime * 1000, 0);
+    const info1Icon = <ArrowUpwardIcon style={iconStyle} />;
+
+    const info1Thresholds = {
+      high: maximumTime * 66,
+      low: maximumTime * 33,
+    };
+
+    return {
+      name: info1Name,
+      change: info1Change,
+      value: info1Value,
+      icon: info1Icon,
+      thresholds: info1Thresholds,
+    };
+  };
+
+  const info2 = () => {
+    const info2Name = "Downtime";
+    const info2Change = downtime / 60;
+    const info2Value = timeDifference(downtime * 1000, 0);
+    const info2Icon = <ArrowDownwardIcon style={iconStyle} />;
+
+    const info2Thresholds = {
+      high: maximumTime * 66,
+      low: maximumTime * 33,
+    };
+
+    return {
+      name: info2Name,
+      change: info2Change,
+      value: info2Value,
+      icon: info2Icon,
+      thresholds: info2Thresholds,
+    };
+  };
+
+  const gaugeItem1 = () => {
+    const gaugeItem1Name = "Utilization";
+    const gaugeItem1Value = utilization_percent;
+    const gaugeItem1Suffix = "%";
+    const gaugeItem1Icon = <TrendingUpIcon style={iconStyle} />;
+    const gaugeItem1Thresholds = { high: 66, low: 33 };
+
+    return {
+      name: gaugeItem1Name,
+      value: gaugeItem1Value,
+      suffix: gaugeItem1Suffix,
+      thresholds: gaugeItem1Thresholds,
+      icon: gaugeItem1Icon,
+    };
+  };
+
+  const gaugeItem2 = () => {
+    const gaugeItem2Name = "Units";
+    const gaugeItem2Value = units;
+    const gaugeItem2Suffix = "KWh";
+    const gaugeItem2Icon = <PowerOutlinedIcon style={iconStyle} />;
+    const gaugeItem2Thresholds = { high: 66, low: 33 };
+
+    return {
+      name: gaugeItem2Name,
+      value: gaugeItem2Value,
+      suffix: gaugeItem2Suffix,
+      thresholds: gaugeItem2Thresholds,
+      icon: gaugeItem2Icon,
+    };
+  };
+
+  return {
+    name,
+    ID,
+    mapping: true,
+    status: status(),
+    info1: info1(),
+    info2: info2(),
+    gaugeItem1: gaugeItem1(),
+    gaugeItem2: gaugeItem2(),
+  };
+};
+
 export const parseEnviromentDataFromSSN = (data) => {
   const packets = data instanceof Array && data.length > 0 ? data : null;
 
@@ -133,6 +415,7 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
   let utilization = 0;
   let uptime = "Unknown";
   let downtime = "Unknown";
+  let operationCount = 0; // no of times state went from ON to OFF/IDLE
 
   if (packets) {
     try {
@@ -209,11 +492,18 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
       const interval = 5;
       let upCount = 0;
       let downCount = 0;
-      statesInGivenInterval.map((state, index) => {
+      statesInGivenInterval.map((state, i) => {
         if (state === 2) {
+          if (
+            statesInGivenInterval[i + 1] === 1 ||
+            statesInGivenInterval[i + 1] === 0
+          )
+            operationCount++;
+
           upCount++;
         } else downCount++;
-        return index;
+
+        return i;
       });
       utilization = Math.round((upCount / statesInGivenInterval.length) * 100);
       const forCovertingToMinutes = 60 / interval;
@@ -258,6 +548,7 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
     utilization,
     uptime,
     downtime,
+    operationCount,
   };
 };
 
@@ -306,7 +597,13 @@ export const timeDifference = (date1, date2) => {
   let minutes = minutesDifference > 0 ? minutesDifference + "M " : "";
   let seconds = secondsDifference > 0 ? secondsDifference + "S" : "";
 
-  return days + hours + minutes + seconds;
+  let result = String(days + hours + minutes + seconds);
+
+  if (result.length === 0) {
+    result = "0 S";
+  }
+
+  return result;
 };
 
 const subtractHours = (h, reference) => {

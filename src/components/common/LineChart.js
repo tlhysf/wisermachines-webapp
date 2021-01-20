@@ -24,12 +24,6 @@ const commonOptions = (large) => ({
   },
   tooltip: {
     valueDecimals: 2,
-    split: false,
-    padding: 10,
-    distance: 10,
-    stickOnContact: true,
-    followPointer: true,
-    followTouchMove: true,
   },
   time: {
     useUTC: false,
@@ -135,7 +129,9 @@ const LineChart = (props) => {
       step,
       color,
       yMax,
+      yMin,
       type,
+      yLabels,
     } = props.chartData ? props.chartData : defaultChartData;
 
     const { series2, series2Name, series2Color } = props.chartData;
@@ -144,8 +140,9 @@ const LineChart = (props) => {
       yAxis: [
         {
           // offset: -20,
-          min: 0,
+          min: yMin ? yMin : 0,
           max: yMax ? yMax : Math.max(...series),
+          categories: yLabels,
         },
       ],
       series: [

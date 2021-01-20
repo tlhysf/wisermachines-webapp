@@ -4,6 +4,7 @@ const randomIntFromInterval = (min, max) => {
 
 const max = 60;
 const min = 20;
+const difference = 1;
 
 const getAlert = (value) => {
   if (value >= max) {
@@ -30,8 +31,11 @@ export const environmentData = () => {
     const now = Date.now() + UTCPlus5;
     const timestampOfLatestUpdate = now - millisecondsInInterval * i;
     const timestamp = String(new Date(timestampOfLatestUpdate));
-    const temperature = randomIntFromInterval(min - 10, max + 10);
-    const humidity = randomIntFromInterval(min - 10, max + 10);
+    const temperature = randomIntFromInterval(
+      min - difference,
+      max + difference
+    );
+    const humidity = randomIntFromInterval(min - difference, max + difference);
     const temperature_alert = getAlert(temperature);
     const humidity_alert = getAlert(humidity);
     response.push({
@@ -62,8 +66,8 @@ export const liveEnvData = () => {
   const send = true;
 
   const timestamp = String(new Date());
-  const temperature = randomIntFromInterval(min - 10, max + 10);
-  const humidity = randomIntFromInterval(min - 10, max + 10);
+  const temperature = randomIntFromInterval(min - difference, max + difference);
+  const humidity = randomIntFromInterval(min - difference, max + difference);
   const temperature_alert = getAlert(temperature);
   const humidity_alert = getAlert(humidity);
 

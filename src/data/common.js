@@ -195,64 +195,64 @@ export const placeholderRes = {
     "70:B3:D5:FE:4C:00": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:01": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:02": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:03": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
     ],
     "70:B3:D5:FE:4C:04": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:05": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 2,
       },
     ],
     "70:B3:D5:FE:4C:06": [
       {
         _id: "5fdb23ee3edf4e2a3889fe48",
-        name: machineNamePrefix + randomIntFromInterval(0, 100),
+        Machine_Name: machineNamePrefix + randomIntFromInterval(0, 100),
         Sensor_Number: 1,
       },
     ],

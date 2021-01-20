@@ -147,6 +147,7 @@ export default function MachineDetails(props) {
     utilization,
     uptime,
     downtime,
+    operationCount,
   } = parsedMachineData;
 
   const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
@@ -254,6 +255,7 @@ export default function MachineDetails(props) {
       <Grid item xs={12}>
         <MachineDetailsRow2
           data={{
+            operationCount,
             utilization,
             uptime,
             downtime,
