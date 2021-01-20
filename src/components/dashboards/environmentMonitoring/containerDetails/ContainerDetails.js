@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSnackbar } from "notistack";
 
 // Utils
 import keys from "../../../../utils/keys";
@@ -28,7 +27,6 @@ import Alerts from "./Alerts";
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import AlertCard from "../../../common/AlertCard";
 import Loader from "../../../common/Loader";
-import { SnackbarProvider } from "notistack";
 
 // Placeholder Data
 import { liveEnvData } from "../../../../data/environmentData";
@@ -48,8 +46,6 @@ const chartColors = {
 
 export default function ContainerDetails(props) {
   const dispatch = useDispatch();
-
-  const { enqueueAlertSnackbar, closeAlertSnackbar } = useSnackbar();
 
   const { containerID } = props.match.params;
 
@@ -113,12 +109,6 @@ export default function ContainerDetails(props) {
   }, [containerID]);
 
   // console.log(liveData);
-
-  const handleClick = () => {};
-
-  useEffect(() => {
-    enqueueAlertSnackbar("Test");
-  }, [liveData]);
 
   const {
     // Time
@@ -275,9 +265,5 @@ export default function ContainerDetails(props) {
     </Grid>
   );
 
-  return (
-    <SnackbarProvider maxSnack={10}>
-      {loading ? renderLoading : noData ? renderNoData : renderLoaded}
-    </SnackbarProvider>
-  );
+  return loading ? renderLoading : noData ? renderNoData : renderLoaded;
 }
