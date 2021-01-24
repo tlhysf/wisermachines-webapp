@@ -22,7 +22,7 @@ export default function Cards(props) {
               in={true}
               {...{ timeout: animationDuration + index * animationDuration }}
             >
-              <Grid key={index} item lg={3} md={4} sm={12}>
+              <Grid key={index} item lg={3} md={4} sm={6} xs={12}>
                 <DashboardSummaryCardMinimalVersion
                   data={{
                     name: item.name,

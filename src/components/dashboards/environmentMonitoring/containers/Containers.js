@@ -45,21 +45,12 @@ const Containers = (props) => {
   }, [dispatch, user]);
 
   const navbar = (
-    <Grid container justify="center" alignItems="center" spacing={0}>
-      <Grid item xs={12} md={6}>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-        >
-          <Grid item>
-            <BreadcrumbsNav list={props.navigationList} />
-          </Grid>
-        </Grid>
+    <Grid container justify="space-between" alignItems="center" spacing={2}>
+      <Grid item xs={12} md={"auto"}>
+        <BreadcrumbsNav list={props.navigationList} />
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Grid container direction="row" justify="flex-end" alignItems="center">
+      <Grid item xs={12} md={"auto"}>
+        <Grid container spacing={1} justify="flex-start" alignItems="center">
           <Grid item>
             <Tooltip placement="top" title="Add">
               <Button

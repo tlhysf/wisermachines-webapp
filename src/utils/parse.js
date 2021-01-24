@@ -64,7 +64,7 @@ export const parseZoneSummaryData = (data) => {
   const statusTotal = {
     icon: <CheckCircleOutlineRoundedIcon style={iconStyle} />,
     values: {
-      primary: "Currently Active",
+      primary: "Active",
       secondary: CurrentlyActive + "/" + CurrentlyActiveTotal,
       color: colors.BLUE[700],
     },
@@ -74,7 +74,7 @@ export const parseZoneSummaryData = (data) => {
   const utilizationAverage = {
     icon: <TrendingUpIcon style={iconStyle} />,
     values: {
-      primary: "Average Utilization",
+      primary: "Utilization",
       secondary: utilization + " %",
       color: colors.GREEN[700],
     },
@@ -84,7 +84,7 @@ export const parseZoneSummaryData = (data) => {
   const unitsTotal = {
     icon: <PowerOutlinedIcon style={iconStyle} />,
     values: {
-      primary: "Unit Consumption",
+      primary: "Units",
       secondary: units + " kWh",
       color: colors.INDIGO[700],
     },
@@ -94,7 +94,7 @@ export const parseZoneSummaryData = (data) => {
   const TemperatureAverage = {
     icon: <SpeedIcon style={iconStyle} />,
     values: {
-      primary: "Average Temperature",
+      primary: "Temperature",
       secondary: temperature + " \u00B0C",
       color: colors.ORANGE[700],
     },
@@ -104,7 +104,7 @@ export const parseZoneSummaryData = (data) => {
   const HumidityAvarage = {
     icon: <OpacityIcon style={iconStyle} />,
     values: {
-      primary: "Average Humidity",
+      primary: "Humidity",
       secondary: humidity + " %RH",
       color: colors.PURPLE[700],
     },
@@ -249,6 +249,7 @@ export const parseZoneDetailsData = (data) => {
       suffix: gaugeItem1Suffix,
       thresholds: gaugeItem1Thresholds,
       icon: gaugeItem1Icon,
+      yMax: 100,
     };
   };
 
@@ -265,6 +266,7 @@ export const parseZoneDetailsData = (data) => {
       suffix: gaugeItem2Suffix,
       thresholds: gaugeItem2Thresholds,
       icon: gaugeItem2Icon,
+      yMax: 100,
     };
   };
 
@@ -592,15 +594,15 @@ export const timeDifference = (date1, date2) => {
 
   let secondsDifference = Math.floor(difference / 1000);
 
-  let days = daysDifference > 0 ? daysDifference + "D " : "";
-  let hours = hoursDifference > 0 ? hoursDifference + "H " : "";
-  let minutes = minutesDifference > 0 ? minutesDifference + "M " : "";
-  let seconds = secondsDifference > 0 ? secondsDifference + "S" : "";
+  let days = daysDifference > 0 ? daysDifference + "d " : "";
+  let hours = hoursDifference > 0 ? hoursDifference + "h " : "";
+  let minutes = minutesDifference > 0 ? minutesDifference + "m " : "";
+  let seconds = secondsDifference > 0 ? secondsDifference + "s" : "";
 
   let result = String(days + hours + minutes + seconds);
 
   if (result.length === 0) {
-    result = "0 S";
+    result = "0s";
   }
 
   return result;

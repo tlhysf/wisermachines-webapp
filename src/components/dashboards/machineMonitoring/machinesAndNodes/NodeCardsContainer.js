@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import NodeCard from "./NodeCard";
 import Grow from "@material-ui/core/Grow";
 
-const animationDuration = 500;
+const animationDuration = 200;
 
 export default function NodeCards(props) {
   const { allNodesInAZone } = props;

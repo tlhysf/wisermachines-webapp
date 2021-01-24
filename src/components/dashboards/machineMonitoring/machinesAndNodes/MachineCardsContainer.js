@@ -23,7 +23,7 @@ import { summaryHeader } from "../../../../data/summaryHeader";
 
 import keys from "../../../../utils/keys";
 
-const animationDuration = 500;
+const animationDuration = 200;
 
 export default function MachineCards(props) {
   // const zoneSummary = useSelector((state) => state.machines.zoneSummary);
@@ -86,7 +86,7 @@ export default function MachineCards(props) {
               in={true}
               {...{ timeout: animationDuration + index * animationDuration }}
             >
-              <Grid key={index} item lg={3} md={4} sm={12}>
+              <Grid key={index} item xl={3} md={4} xs={12}>
                 {keys.showMockData ? (
                   <DashboardSummaryCard
                     compact={props.compact}

@@ -83,15 +83,9 @@ const MachinesAndNodes = (props) => {
   }, [dispatch, props]);
 
   const navbar = (
-    <Grid container justify="center" alignItems="center" spacing={2}>
-      <Grid item xs={12} md={6}>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-          spacing={2}
-        >
+    <Grid container justify="space-between" alignItems="center" spacing={2}>
+      <Grid item xs={12} md={"auto"}>
+        <Grid container spacing={1} justify="flex-start" alignItems="center">
           <Grid item>
             <BreadcrumbsNav list={props.navigationList} />
           </Grid>
@@ -110,14 +104,8 @@ const MachinesAndNodes = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Grid
-          container
-          direction="row"
-          justify="flex-end"
-          alignItems="center"
-          spacing={1}
-        >
+      <Grid item xs={12} md={"auto"}>
+        <Grid container spacing={1} justify="flex-start" alignItems="center">
           {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? null : (
             <Grid item>
               <Tooltip title="Compact View" placement="top">

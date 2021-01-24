@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../../utils/colors";
 import { common } from "../../../../utils/styles";
 
-const animationDuration = 500;
+const animationDuration = 200;
 
 const useStyles = makeStyles((theme) => common(theme));
 

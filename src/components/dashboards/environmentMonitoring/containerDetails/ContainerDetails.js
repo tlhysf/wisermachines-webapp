@@ -18,16 +18,22 @@ import {
 
 // Styling
 import colors from "../../../../utils/colors";
+// import { common } from "../../../../utils/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 
 // MUI
 import Grid from "@material-ui/core/Grid";
-import Fab from "@material-ui/core/Fab";
+// import Fab from "@material-ui/core/Fab";
 import Typography from "@material-ui/core/Typography";
+// import Button from "@material-ui/core/Button";
+// import AssessmentIcon from "@material-ui/icons/Assessment";
+// import Tooltip from "@material-ui/core/Tooltip";
 
 // Custom Components
 import Cards from "./Cards";
 import Charts from "./Charts";
 import Alerts from "./Alerts";
+import Report from "./Report";
 
 // Common Components
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
@@ -50,7 +56,11 @@ const chartColors = {
   humidityAlerts: colors.CYAN[700],
 };
 
+// const useStyles = makeStyles((theme) => common(theme));
+
 export default function ContainerDetails(props) {
+  // const classes = useStyles();
+
   const dispatch = useDispatch();
 
   const { containerID } = props.match.params;
@@ -120,15 +130,17 @@ export default function ContainerDetails(props) {
 
   const toastsContainer = (
     <ToastContainer
-      autoClose={false}
-      newestOnTop
-      closeOnClick={false}
+      position="top-right"
+      autoClose={10000}
+      hideProgressBar={false}
+      newestOnTop={true}
+      closeOnClick
       rtl={false}
-      pauseOnFocusLoss={false}
-      draggable={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
       enableMultiContainer
       containerId={"ContainerDetails"}
-      position={toast.POSITION.TOP_RIGHT}
     />
   );
 
@@ -140,11 +152,11 @@ export default function ContainerDetails(props) {
 
     notify(msg, {
       position: "top-right",
-      autoClose: false,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
       progress: undefined,
     });
 
@@ -157,11 +169,11 @@ export default function ContainerDetails(props) {
 
     notify(msg, {
       position: "top-right",
-      autoClose: false,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: false,
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
       progress: undefined,
     });
 
@@ -216,26 +228,26 @@ export default function ContainerDetails(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveData]);
 
-  const dismissAll = () => {
-    toast.dismiss();
-    setToastsCount(0);
-  };
+  // const dismissAll = () => {
+  //   toast.dismiss();
+  //   setToastsCount(0);
+  // };
 
-  const dismissAllButton =
-    toastsCount > 2 ? (
-      <div style={{ padding: 10 }}>
-        <Fab
-          variant="extended"
-          style={{ backgroundColor: colors.BLUEGREY[700] }}
-          size="medium"
-          onClick={(e) => dismissAll()}
-        >
-          <Typography variant="caption" style={{ color: "white" }}>
-            Dismiss All
-          </Typography>
-        </Fab>
-      </div>
-    ) : null;
+  // const dismissAllButton =
+  //   toastsCount > 2 ? (
+  //     <div style={{ padding: 10 }}>
+  //       <Fab
+  //         variant="extended"
+  //         style={{ backgroundColor: colors.BLUEGREY[700] }}
+  //         size="medium"
+  //         onClick={(e) => dismissAll()}
+  //       >
+  //         <Typography variant="caption" style={{ color: "white" }}>
+  //           Dismiss All
+  //         </Typography>
+  //       </Fab>
+  //     </div>
+  //   ) : null;
 
   // ******* ******* *******
 
@@ -322,21 +334,44 @@ export default function ContainerDetails(props) {
     },
   };
 
+  // const [showReport, setShowReport] = React.useState(false);
+  // const handleReportButton = (e) => {
+  //   setShowReport(!showReport);
+  // };
+
   const navbar = (
     <Grid container justify="space-between" alignItems="center" spacing={2}>
       <Grid item xs={12} md={"auto"}>
         <BreadcrumbsNav list={props.navigationList} />
       </Grid>
       <Grid item xs={12} md={"auto"}>
-        <Alerts
-          data={{
-            humidity,
-            humidityAlerts,
-            temperature,
-            temperatureAlerts,
-            timestamps,
-          }}
-        />
+        <Grid container spacing={1} justify="flex-start" alignItems="center">
+          {/* <Grid item>
+            <Tooltip placement="top" title="Report">
+              <Button
+                className={classes.button}
+                variant="contained"
+                onClick={(e) => handleReportButton(e)}
+              >
+                <AssessmentIcon
+                  className={classes.iconInsideButton}
+                  style={{ color: colors.TEAL[700] }}
+                />
+              </Button>
+            </Tooltip>
+          </Grid> */}
+          <Grid item>
+            <Alerts
+              data={{
+                humidity,
+                humidityAlerts,
+                temperature,
+                temperatureAlerts,
+                timestamps,
+              }}
+            />
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
@@ -374,8 +409,20 @@ export default function ContainerDetails(props) {
         <Charts lineCharts={lineCharts} />
       </Grid>
 
+      <Grid item xs={12}>
+        <Report
+          data={{
+            humidity,
+            humidityAlerts,
+            temperature,
+            temperatureAlerts,
+            timestamps,
+          }}
+        />
+      </Grid>
+
       {toastsContainer}
-      {dismissAllButton}
+      {/* {dismissAllButton} */}
     </Grid>
   );
 

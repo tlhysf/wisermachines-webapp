@@ -43,7 +43,7 @@ const styles = {
     backgroundColor: "rgb(0,0,0,0)",
   },
   cardsContainer: {
-    width: 300,
+    // width: 300,
     paddingTop: 10,
   },
   card: { paddingBottom: 10 },

@@ -15,7 +15,8 @@ const errorScreenStyles = {
     paddingRight: 80,
   },
   image: {
-    height: "50vh",
+    // height: "50vh",
+    width: "40vw",
     padding: 10,
   },
   heading: {

@@ -30,7 +30,7 @@ export const summaryHeader = () => {
   const statusTotal = {
     icon: <CheckCircleOutlineRoundedIcon style={iconStyle} />,
     values: {
-      primary: "Currently Active",
+      primary: "Active",
       secondary:
         String(randomIntFromInterval(0, CurrentlyActiveTotal)) +
         "/" +
@@ -42,7 +42,7 @@ export const summaryHeader = () => {
   const utilizationAverage = {
     icon: <TrendingUpIcon style={iconStyle} />,
     values: {
-      primary: "Average Utilization",
+      primary: "Utilization",
       secondary: String(randomIntFromInterval(0, 100)) + " %",
       color: colors.GREEN[700],
     },
@@ -51,7 +51,7 @@ export const summaryHeader = () => {
   const unitsTotal = {
     icon: <PowerOutlinedIcon style={iconStyle} />,
     values: {
-      primary: "Unit Consumption",
+      primary: "Units",
       secondary: String(randomIntFromInterval(0, 100)) + " kWh",
       color: colors.INDIGO[700],
     },
@@ -60,7 +60,7 @@ export const summaryHeader = () => {
   const TemperatureAverage = {
     icon: <SpeedIcon style={iconStyle} />,
     values: {
-      primary: "Average Temperature",
+      primary: "Temperature",
       secondary: String(randomIntFromInterval(0, 100)) + " \u00B0C",
       color: colors.ORANGE[700],
     },
@@ -69,7 +69,7 @@ export const summaryHeader = () => {
   const HumidityAvarage = {
     icon: <OpacityIcon style={iconStyle} />,
     values: {
-      primary: "Average Humidity",
+      primary: "Humidity",
       secondary: String(randomIntFromInterval(0, 100)) + " %RH",
       color: colors.PURPLE[700],
     },

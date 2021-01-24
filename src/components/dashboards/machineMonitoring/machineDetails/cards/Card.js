@@ -22,7 +22,7 @@ export default function Card(props) {
       justify="center"
       alignItems="center"
       elevation={2}
-      style={{ padding: 3 }}
+      style={{ padding: 12, height: "100%" }}
       className={classes.cardHover}
     >
       <Grid item xs={2}>
@@ -39,14 +39,14 @@ export default function Card(props) {
             alignItems="center"
           >
             <Grid item xs={"auto"}>
-              <Typography align="center" variant="button">
+              <Typography align="center" variant="h6">
                 {values.primary}
               </Typography>
             </Grid>
             <Grid item xs={"auto"}>
               <Typography
                 align="center"
-                variant="body2"
+                variant="body1"
                 style={{ color: colors.BLUEGREY[600] }}
               >
                 {values.secondary}

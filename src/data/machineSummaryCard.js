@@ -117,6 +117,7 @@ export const gaugeItem1 = () => {
     suffix: gaugeItem1Suffix,
     thresholds: gaugeItem1Thresholds,
     icon: gaugeItem1Icon,
+    yMax: 100,
   };
 };
 
@@ -133,5 +134,6 @@ export const gaugeItem2 = () => {
     suffix: gaugeItem2Suffix,
     thresholds: gaugeItem2Thresholds,
     icon: gaugeItem2Icon,
+    yMax: 100,
   };
 };

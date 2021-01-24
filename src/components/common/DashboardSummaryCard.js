@@ -108,7 +108,7 @@ const DashboardSummaryCard = (props) => {
 
   const renderStatusText = (data) => (
     <Typography
-      variant="caption"
+      variant="body2"
       style={{
         color: getColor(status.change, status.thresholds, colorSets.status),
         display: "inline-block",
@@ -121,7 +121,7 @@ const DashboardSummaryCard = (props) => {
 
   const renderInfo1Text = (data) => (
     <Typography
-      variant="caption"
+      variant="body2"
       style={{
         color: getColor(info1.change, info1.thresholds, colorSets.info1),
         display: "inline-block",
@@ -134,7 +134,7 @@ const DashboardSummaryCard = (props) => {
 
   const renderInfo2Text = (data) => (
     <Typography
-      variant="caption"
+      variant="body2"
       style={{
         color: getColor(info2.change, info2.thresholds, colorSets.info2),
         display: "inline-block",
@@ -147,7 +147,7 @@ const DashboardSummaryCard = (props) => {
 
   const renderGaugeItem1Text = (data) => (
     <Typography
-      variant="caption"
+      variant="body2"
       style={{
         color: getColor(
           gaugeItem1.value,
@@ -164,7 +164,7 @@ const DashboardSummaryCard = (props) => {
 
   const renderGaugeItem2Text = (data) => (
     <Typography
-      variant="caption"
+      variant="body2"
       style={{
         color: getColor(
           gaugeItem2.value,
@@ -332,6 +332,7 @@ const DashboardSummaryCard = (props) => {
   return (
     <Paper elevation={2} style={{ padding: 10 }} className={classes.cardHover}>
       <Grid container justify="space-around" alignItems="center">
+        {/* Buttons */}
         <Grid item xs={12}>
           <Grid
             container
@@ -391,8 +392,10 @@ const DashboardSummaryCard = (props) => {
             </Grid>
           </Grid>
         </Grid>
+
+        {/* Gauge */}
         {compact ? null : (
-          <Grid item lg={6} md={12}>
+          <Grid item>
             <DualGauge
               item1={gaugeItem1}
               item2={gaugeItem2}
@@ -400,13 +403,14 @@ const DashboardSummaryCard = (props) => {
             />
           </Grid>
         )}
+
         {compact ? null : (
-          <Grid item lg={6} md={12}>
+          <Grid item>
             <Grid
               container
               direction="column"
               justify="center"
-              alignItems="center"
+              alignItems="flex-start"
               style={{ padding: 5 }}
             >
               {renderStatus}

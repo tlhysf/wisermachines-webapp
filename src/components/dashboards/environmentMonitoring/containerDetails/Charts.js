@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../../utils/colors";
 import { common } from "../../../../utils/styles";
 
-const animationDuration = 300;
+const animationDuration = 200;
 
 const useStyles = makeStyles((theme) => common(theme));
 
@@ -69,7 +69,7 @@ export default function Charts(props) {
   ));
 
   return (
-    <Grow in={true} {...{ timeout: animationDuration + 9 * animationDuration }}>
+    <Grow in={true} {...{ timeout: animationDuration + 3 * animationDuration }}>
       <Grid
         container
         justify="center"

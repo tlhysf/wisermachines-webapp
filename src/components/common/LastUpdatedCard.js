@@ -23,7 +23,12 @@ const LastUpdatedCard = (props) => {
   // console.log(isLiveData, lastUpdateTimestamp);
 
   const updateIconRender = isLiveData ? (
-    <Loader type="Bars" height={20} color={colors.TEAL[700]} />
+    <Loader
+      type="Bars"
+      height={20}
+      color={colors.TEAL[700]}
+      style={{ marginBottom: -5, marginRight: -20, marginLeft: -20 }}
+    />
   ) : (
     <CheckCircleIcon
       style={{
@@ -64,12 +69,12 @@ const LastUpdatedCard = (props) => {
       style={{ padding: 12, height: "100%" }}
       className={classes.cardHover}
     >
-      <Grid item xs={2}>
+      <Grid item>
         <Paper style={smallCard.iconPaper} elevation={0}>
           {updateIconRender}
         </Paper>
       </Grid>
-      <Grid item xs={10}>
+      <Grid item>
         <Paper style={smallCard.textPaper} elevation={0}>
           <Grid
             container

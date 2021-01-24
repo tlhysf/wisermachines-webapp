@@ -135,7 +135,13 @@ const commonOptions = (item1) => {
 
 const Gauge = (props) => {
   const { item1 } = props;
-  const [chartOptions] = useState(commonOptions(item1));
+
+  const [chartOptions, setChartOptions] = useState(commonOptions(item1));
+
+  React.useEffect(() => {
+    const { item1 } = props;
+    setChartOptions(commonOptions(item1));
+  }, [props]);
 
   return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;
 };

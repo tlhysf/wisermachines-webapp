@@ -90,7 +90,12 @@ export default function FilterAndSortMenu(props) {
         variant="contained"
       >
         {icon ? icon : null}
-        <Typography variant="caption">{selection}</Typography>
+        <Typography
+          variant="caption"
+          style={props.width ? { width: props.width } : {}}
+        >
+          {selection}
+        </Typography>
       </Button>
       <Popper
         open={open}

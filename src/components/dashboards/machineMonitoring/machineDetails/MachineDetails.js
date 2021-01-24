@@ -160,6 +160,9 @@ export default function MachineDetails(props) {
       timestamps: timestamps,
       name: "State",
       color: chartColors.machineState,
+      yLabels: ["OFF", "IDLE", "ON"],
+      yMax: 3,
+      type: "line",
       step: "center",
     },
     machinePower: {
@@ -189,23 +192,15 @@ export default function MachineDetails(props) {
   };
 
   const navbar = (
-    <Grid container justify="center" alignItems="center" spacing={0}>
-      <Grid item xs={12} md={6}>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-        >
-          <Grid item>
-            <BreadcrumbsNav list={props.navigationList} />
-          </Grid>
-        </Grid>
+    <Grid container justify="space-between" alignItems="center" spacing={2}>
+      <Grid item xs={12} md={"auto"}>
+        <BreadcrumbsNav list={props.navigationList} />
       </Grid>
-      <Grid item xs={12} md={6}>
-        <Grid container direction="row" justify="flex-end" alignItems="center">
+      <Grid item xs={12} md={"auto"}>
+        <Grid container spacing={1} justify="flex-start" alignItems="center">
           <Grid item>
             <FilterAndSortMenu
+              width={100}
               options={timeFiltersList}
               selected={timeFilter}
               type={common.filterByTime}

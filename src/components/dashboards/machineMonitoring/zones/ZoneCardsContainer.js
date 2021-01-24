@@ -17,7 +17,7 @@ import {
 } from "../../../../data/workshopAndZoneSummaryCard";
 import { summaryHeader } from "../../../../data/summaryHeader";
 
-const animationDuration = 500;
+const animationDuration = 200;
 
 export default function ZoneCards(props) {
   return (
@@ -57,7 +57,7 @@ export default function ZoneCards(props) {
               in={true}
               {...{ timeout: animationDuration + index * animationDuration }}
             >
-              <Grid key={index} item lg={3} md={4} sm={12}>
+              <Grid key={index} item xl={3} lg={4} md={3} sm={6} xs={12}>
                 {keys.showDashboardSummaryCards ? (
                   <DashboardSummaryCard
                     data={{

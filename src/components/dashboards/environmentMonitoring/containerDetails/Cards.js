@@ -10,7 +10,7 @@ import OpacityIcon from "@material-ui/icons/Opacity";
 
 import colors from "../../../../utils/colors";
 
-const animationDuration = 500;
+const animationDuration = 200;
 
 const getColor = (alert) => {
   if (alert === -1) {

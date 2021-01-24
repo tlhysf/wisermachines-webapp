@@ -13,7 +13,9 @@ import FlashOnOutlinedIcon from "@material-ui/icons/FlashOnOutlined";
 
 import colors from "../../../../utils/colors";
 
-const animationDuration = 500;
+const animationDuration = 200;
+
+const iconHeight = 40;
 
 export default function MachineDetailsRow1(props) {
   const {
@@ -32,14 +34,14 @@ export default function MachineDetailsRow1(props) {
     icon:
       stateNow === "ON" ? (
         <PlayCircleFilledIcon
-          style={{ color: colors.GREEN[700], height: 20 }}
+          style={{ color: colors.GREEN[700], height: iconHeight }}
         />
       ) : stateNow === "IDLE" ? (
         <PauseCircleFilledIcon
-          style={{ color: colors.TEAL[700], height: 20 }}
+          style={{ color: colors.TEAL[700], height: iconHeight }}
         />
       ) : (
-        <CancelIcon style={{ color: colors.RED[700], height: 20 }} />
+        <CancelIcon style={{ color: colors.RED[700], height: iconHeight }} />
       ),
     values: {
       primary: stateNow,
@@ -51,7 +53,7 @@ export default function MachineDetailsRow1(props) {
     icon: (
       <FlashOnOutlinedIcon
         size="small"
-        style={{ color: colors.INDIGO[700], height: 20 }}
+        style={{ color: colors.INDIGO[700], height: iconHeight }}
       />
     ),
     values: {
@@ -64,7 +66,7 @@ export default function MachineDetailsRow1(props) {
     icon: (
       <PowerIcon
         size="small"
-        style={{ color: colors.PURPLE[700], height: 20 }}
+        style={{ color: colors.PURPLE[700], height: iconHeight }}
       />
     ),
     values: {
@@ -74,12 +76,18 @@ export default function MachineDetailsRow1(props) {
   };
 
   return (
-    <Grid container justify="center" alignItems="center" spacing={2}>
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="stretch"
+      spacing={2}
+    >
       <Grow
         in={true}
         {...{ timeout: animationDuration + 0 * animationDuration }}
       >
-        <Grid item md={3} xs={12}>
+        <Grid item md={3} sm={6} xs={12}>
           <LastUpdatedCard data={updateStatus} />
         </Grid>
       </Grow>
@@ -87,7 +95,7 @@ export default function MachineDetailsRow1(props) {
         in={true}
         {...{ timeout: animationDuration + 1 * animationDuration }}
       >
-        <Grid item md={3} xs={12}>
+        <Grid item md={3} sm={6} xs={12}>
           <Card data={stateRightNow} />
         </Grid>
       </Grow>
@@ -95,7 +103,7 @@ export default function MachineDetailsRow1(props) {
         in={true}
         {...{ timeout: animationDuration + 3 * animationDuration }}
       >
-        <Grid item md={3} xs={12}>
+        <Grid item md={3} sm={6} xs={12}>
           <Card data={currentRightNow} />
         </Grid>
       </Grow>
@@ -103,7 +111,7 @@ export default function MachineDetailsRow1(props) {
         in={true}
         {...{ timeout: animationDuration + 4 * animationDuration }}
       >
-        <Grid item md={3} xs={12}>
+        <Grid item md={3} sm={6} xs={12}>
           <Card data={unitsUntilNow} />
         </Grid>
       </Grow>

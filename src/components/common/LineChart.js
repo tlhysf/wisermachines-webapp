@@ -176,6 +176,7 @@ const LineChart = (props) => {
             ],
           },
           threshold: null,
+          enableMouseTracking: true,
         },
         series2
           ? {
