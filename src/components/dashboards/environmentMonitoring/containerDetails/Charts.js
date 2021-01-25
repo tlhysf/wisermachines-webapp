@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
 import Grow from "@material-ui/core/Grow";
+// import Loader from "../../../common/Loader";
 
 import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../../utils/colors";
@@ -23,11 +24,20 @@ export default function Charts(props) {
     humidity,
     temperatureAlerts,
     humidityAlerts,
+    cleanUp,
   } = props.lineCharts;
 
   const [buttonIndex, setButtonIndex] = useState(0);
 
-  const chartsList = [temperature, temperatureAlerts, humidity, humidityAlerts];
+  const chartsList = [
+    temperature,
+    temperatureAlerts,
+    humidity,
+    humidityAlerts,
+    cleanUp,
+  ];
+
+  const cleanUpIndex = 4;
 
   const chartNamesList = [
     "Temperature (\u00B0C)",
@@ -35,6 +45,14 @@ export default function Charts(props) {
     "Humidity (%RH)",
     "Humidity Alerts",
   ];
+
+  const handleChartButton = (chartIndex) => {
+    setButtonIndex(cleanUpIndex);
+
+    setTimeout(() => {
+      setButtonIndex(chartIndex);
+    }, 10);
+  };
 
   const chartButtons = chartsList.map((chart, chartIndex) => {
     const selectedBackground = chart.color;
@@ -47,13 +65,13 @@ export default function Charts(props) {
     const backgroundColor =
       chartIndex === buttonIndex ? selectedBackground : unselectedBackground;
 
-    return (
+    return chartIndex !== cleanUpIndex ? (
       <Grid item lg={2} md={4} sm={6} xs={12} key={chartIndex}>
         <Tooltip title="Switch Between Charts" placement="top">
           <Button
             fullWidth
             style={{ color, backgroundColor, padding: 0 }}
-            onClick={(e) => setButtonIndex(chartIndex)}
+            onClick={(e) => handleChartButton(chartIndex)}
           >
             <Typography variant="caption" style={{ padding: 3, color: color }}>
               {chartNamesList[chartIndex]}
@@ -61,7 +79,7 @@ export default function Charts(props) {
           </Button>
         </Tooltip>
       </Grid>
-    );
+    ) : null;
   });
 
   const chartRenders = chartsList.map((chart, chartIndex) => (

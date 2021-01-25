@@ -18,6 +18,8 @@ export const getAllWorkshopsAction = (dispatch, targetUser) => {
     headers: {},
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -70,6 +72,8 @@ export const addWorkshopAction = (dispatch, body) => {
     data: data,
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -113,6 +117,8 @@ export const editWorkshopAction = (dispatch, body) => {
     data: data,
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -155,6 +161,8 @@ export const deleteWorkshopAction = (dispatch, body) => {
     },
     data: data,
   };
+
+  console.log(config.url);
 
   if (!keys.showMockData) {
     axios(config)

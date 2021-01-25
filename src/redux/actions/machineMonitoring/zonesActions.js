@@ -18,6 +18,8 @@ export const getAllZonesInAWorkshopAction = (dispatch, workshopID) => {
     headers: {},
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -69,6 +71,8 @@ export const addZoneAction = (dispatch, body) => {
     data: data,
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -112,6 +116,8 @@ export const editZoneAction = (dispatch, body) => {
     data: data,
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -154,6 +160,8 @@ export const deleteZoneAction = (dispatch, body) => {
     },
     data: data,
   };
+
+  console.log(config.url);
 
   if (!keys.showMockData) {
     axios(config)

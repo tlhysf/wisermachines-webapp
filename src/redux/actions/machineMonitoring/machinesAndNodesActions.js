@@ -20,6 +20,8 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
     },
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -60,6 +62,8 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
     },
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -74,6 +78,8 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
               "Content-Type": "application/json",
             },
           };
+
+          console.log(allNodesConfig.url);
 
           axios(allNodesConfig)
             .then((res) => {
@@ -138,6 +144,8 @@ export const getAllMachineMappingsAction = (dispatch) => {
     },
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -180,6 +188,8 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
     data: data,
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -194,6 +204,8 @@ export const addMachineAction = (dispatch, addRequestBody, mapRequestBody) => {
             },
             data: JSON.stringify(mapRequestBody),
           };
+
+          console.log(mapRequestConfig.url);
 
           axios(mapRequestConfig)
             .then((res) => {
@@ -240,6 +252,7 @@ export const editMachineAction = (dispatch, body) => {
     },
     data: data,
   };
+  console.log(config.url);
 
   if (!keys.showMockData) {
     axios(config)
@@ -283,7 +296,7 @@ export const deleteMachineAction = (dispatch, body) => {
     },
     data: data,
   };
-
+  console.log(config.url);
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {
@@ -363,6 +376,8 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
     data: JSON.stringify(createNodeBody),
   };
 
+  console.log(createNodeConfig.url);
+
   if (!keys.showMockData) {
     axios(createNodeConfig)
       .then((res) => {
@@ -382,6 +397,8 @@ export const addNodeAction = (dispatch, createNodeBody, zoneID) => {
             },
             data: JSON.stringify(mapNodeToTheZoneBody),
           };
+
+          console.log(mapNodeToTheZoneConfig.url);
 
           axios(mapNodeToTheZoneConfig)
             .then((res) => {
@@ -426,6 +443,7 @@ export const editNodeAction = (dispatch, body) => {
     },
     data: data,
   };
+  console.log(config.url);
 
   if (!keys.showMockData) {
     axios(config)
@@ -468,6 +486,7 @@ export const deleteNodeAction = (dispatch, body) => {
     },
     data: data,
   };
+  console.log(config.url);
 
   if (!keys.showMockData) {
     axios(config)

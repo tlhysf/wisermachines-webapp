@@ -24,6 +24,8 @@ export const populateContainersPageAction = (dispatch, targetUser) => {
     headers: {},
   };
 
+  console.log(config.url);
+
   if (!keys.showMockData) {
     axios(config)
       .then((res) => {

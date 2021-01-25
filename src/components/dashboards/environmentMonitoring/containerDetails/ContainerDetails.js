@@ -276,6 +276,23 @@ export default function ContainerDetails(props) {
   const thresholdLineColor = colors.BLUEGREY[600];
 
   const lineCharts = {
+    cleanUp: {
+      series: timestamps.map((x) => 1000),
+      timestamps: timestamps,
+      name: "",
+      color: "rgb(0, 0, 0, 0)",
+      type: "line",
+      large: true,
+      yMax: 0,
+
+      series2: timestamps.map((x) => 1000),
+      series2Name: "",
+      series2Color: "rgb(0, 0, 0, 0)",
+
+      series3: timestamps.map((x) => 1000),
+      series3Name: "",
+      series3Color: "rgb(0, 0, 0, 0)",
+    },
     temperature: {
       series: temperature,
       timestamps: timestamps,

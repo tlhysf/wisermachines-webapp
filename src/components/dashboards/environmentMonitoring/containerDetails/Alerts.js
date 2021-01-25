@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import OpacityIcon from "@material-ui/icons/Opacity";
+import SpeedIcon from "@material-ui/icons/Speed";
 
 import { common } from "../../../../utils/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,6 +26,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
+const lowColor = colors.BLUE[600];
+const highColor = colors.RED[600];
+
+const temperatureUnit = " \u00B0C";
+const humidityUnit = " %RH";
+
 const styles = {
   selectedButton: {
     color: "white",
@@ -31,31 +39,38 @@ const styles = {
     // width: 130,
   },
   unSelectedButton: {
-    color: colors.TEAL[700],
-    backgroundColor: "white",
+    color: colors.BLUEGREY[500],
+    backgroundColor: colors.BLUEGREY[100],
     // width: 130,
   },
   dialogBoxContainer: {
     backgroundColor: colors.BLUEGREY[100],
     padding: 20,
+    minWidth: "30vw",
   },
   dialogBox: {
     backgroundColor: "rgb(0,0,0,0)",
   },
   cardsContainer: {
-    // width: 300,
-    paddingTop: 10,
+    // width: "100%",
+    height: "80vh",
+    margin: 5,
   },
   card: { paddingBottom: 10 },
   cardContentContainer: {
     padding: 5,
   },
+  lowStyle: { color: lowColor },
+  highStyle: { color: highColor },
+  icon: { width: 20 },
 };
 
-const timestampToDate = (timestamp) => {
-  const dateTime = new Date(timestamp);
-  return dateTime.toLocaleTimeString() + " - " + dateTime.toLocaleDateString();
-};
+const temperatureIcon = (
+  <SpeedIcon style={{ ...styles.icon, color: colors.BLUEGREY[400] }} />
+);
+const humidityIcon = (
+  <OpacityIcon style={{ ...styles.icon, color: colors.BLUEGREY[400] }} />
+);
 
 export default function AlertsPopover(props) {
   const classes = useStyles();
@@ -68,44 +83,9 @@ export default function AlertsPopover(props) {
     timestamps,
   } = props.data;
 
-  // const [data, setData] = React.useState({
-  //   humidity: [],
-  //   humidityAlerts: [],
-  //   temperature: [],
-  //   temperatureAlerts: [],
-  //   timestamps: [],
-  // });
-
-  // const {
-  //   humidity,
-  //   humidityAlerts,
-  //   temperature,
-  //   temperatureAlerts,
-  //   timestamps,
-  // } = data;
-
-  // console.log(data);
-
-  // React.useEffect(() => {
-  //   const {
-  //     humidity,
-  //     humidityAlerts,
-  //     temperature,
-  //     temperatureAlerts,
-  //     timestamps,
-  //   } = props.data;
-
-  //   setData({
-  //     humidity,
-  //     humidityAlerts,
-  //     temperature,
-  //     temperatureAlerts,
-  //     timestamps,
-  //   });
-  // }, [props.data]);
-
   const [selectedOption, setSelectedOption] = React.useState({
-    temperature: true,
+    all: true,
+    temperature: false,
     humidity: false,
   });
 
@@ -118,70 +98,140 @@ export default function AlertsPopover(props) {
   const handleButtonGroup = (e) => {
     if (e.currentTarget.id === "temperature") {
       setSelectedOption({
+        all: false,
         temperature: true,
         humidity: false,
       });
     }
     if (e.currentTarget.id === "humidity") {
       setSelectedOption({
+        all: false,
         temperature: false,
         humidity: true,
       });
     }
+    if (e.currentTarget.id === "all") {
+      setSelectedOption({
+        all: true,
+        temperature: false,
+        humidity: false,
+      });
+    }
   };
 
-  const low = (
-    <ArrowDownwardIcon style={{ width: 20, color: colors.BLUE[600] }} />
-  );
-  const high = (
-    <ArrowUpwardIcon style={{ width: 20, color: colors.RED[600] }} />
-  );
+  // Parsing
+  let alertsList = [];
+  timestamps.map((timestamp, i) => {
+    const dateTime = new Date(timestamp);
+    const date = dateTime.toLocaleDateString();
+    const time = dateTime.toLocaleTimeString();
 
-  let temperatureAlertsList = [];
-  temperatureAlerts.map((item, index) => {
-    if (item === -1) {
-      temperatureAlertsList.push({
-        alert: "Low",
-        value: temperature[index],
-        time: timestampToDate(timestamps[index]),
-        icon: low,
-        color: colors.BLUE[600],
-      });
-    } else if (item === 1) {
-      temperatureAlertsList.push({
-        alert: "High",
-        value: temperature[index],
-        time: timestampToDate(timestamps[index]),
-        icon: high,
-        color: colors.RED[600],
-      });
-    }
-    return item;
-  });
-  temperatureAlertsList.reverse();
+    const lowIcon = (
+      <ArrowDownwardIcon style={{ ...styles.icon, color: lowColor }} />
+    );
+    const highIcon = (
+      <ArrowUpwardIcon style={{ ...styles.icon, color: highColor }} />
+    );
 
-  let humidityAlertsList = [];
-  humidityAlerts.map((item, index) => {
-    if (item === -1) {
-      humidityAlertsList.push({
-        alert: "Low",
-        value: humidity[index],
-        time: timestampToDate(timestamps[index]),
-        color: colors.BLUE[600],
-        icon: low,
-      });
-    } else if (item === 1) {
-      humidityAlertsList.push({
-        alert: "High",
-        value: humidity[index],
-        time: timestampToDate(timestamps[index]),
-        color: colors.RED[600],
-        icon: high,
-      });
+    const lowHumidityMsg = "Low humidity threshold crossed";
+    const highHumidityMsg = "High humidity threshold crossed";
+    const lowTemperatureMsg = "Low temperature threshold crossed";
+    const highTemperatureMsg = "High temperature threshold crossed";
+
+    const lowHumidity = humidityAlerts[i] === -1;
+    const highHumidity = humidityAlerts[i] === 1;
+    const lowTemperature = temperatureAlerts[i] === -1;
+    const highTemperature = temperatureAlerts[i] === 1;
+
+    const isHumidityAlert = lowHumidity || highHumidity;
+    const isTemperatureALert = lowTemperature || highTemperature;
+
+    const isAlert = isHumidityAlert || isTemperatureALert;
+    const isBothAlert = isHumidityAlert && isTemperatureALert;
+
+    const lowTemperatureObj = {
+      alert: lowTemperatureMsg,
+      value: temperature[i],
+      time: time,
+      date: date,
+      icon: lowIcon,
+      color: lowColor,
+      unit: temperatureUnit,
+      type: "temperature",
+      icon2: temperatureIcon,
+    };
+
+    const highTemperatureObj = {
+      alert: highTemperatureMsg,
+      value: temperature[i],
+      time: time,
+      date: date,
+      icon: highIcon,
+      color: highColor,
+      unit: temperatureUnit,
+      type: "temperature",
+      icon2: temperatureIcon,
+    };
+
+    const lowHumidityObj = {
+      alert: lowHumidityMsg,
+      value: humidity[i],
+      time: time,
+      date: date,
+      icon: lowIcon,
+      color: lowColor,
+      unit: humidityUnit,
+      type: "humidity",
+      icon2: humidityIcon,
+    };
+
+    const highHumidityObj = {
+      alert: highHumidityMsg,
+      value: humidity[i],
+      time: time,
+      date: date,
+      icon: highIcon,
+      color: highColor,
+      unit: humidityUnit,
+      type: "humidity",
+      icon2: humidityIcon,
+    };
+
+    if (isAlert) {
+      if (isBothAlert) {
+        if (lowTemperature) {
+          alertsList.push(lowTemperatureObj);
+        }
+        if (highTemperature) {
+          alertsList.push(highTemperatureObj);
+        }
+        if (lowHumidity) {
+          alertsList.push(lowHumidityObj);
+        }
+        if (highHumidity) {
+          alertsList.push(highHumidityObj);
+        }
+      } else {
+        if (lowHumidity) {
+          alertsList.push(lowHumidityObj);
+        }
+        if (highHumidity) {
+          alertsList.push(highHumidityObj);
+        }
+        if (lowTemperature) {
+          alertsList.push(lowTemperatureObj);
+        }
+        if (highTemperature) {
+          alertsList.push(highTemperatureObj);
+        }
+      }
+    } else {
+      // no alert, do nothing
     }
-    return item;
+
+    return i;
   });
-  humidityAlertsList.reverse();
+  alertsList.reverse(); // sort by newest
 
   const renderButtonGroup = (
     <Grid
@@ -191,7 +241,21 @@ export default function AlertsPopover(props) {
       justify="center"
       alignItems="center"
     >
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={4}>
+        <Button
+          id="all"
+          variant="text"
+          fullWidth
+          onClick={(e) => handleButtonGroup(e)}
+          // disableRipple
+          style={
+            selectedOption.all ? styles.selectedButton : styles.unSelectedButton
+          }
+        >
+          <Typography variant="caption">All</Typography>
+        </Button>
+      </Grid>
+      <Grid item xs={12} md={4}>
         <Button
           id="temperature"
           variant="text"
@@ -204,10 +268,10 @@ export default function AlertsPopover(props) {
               : styles.unSelectedButton
           }
         >
-          <Typography variant="caption">Temperature</Typography>
+          <Typography variant="caption">{temperatureUnit}</Typography>
         </Button>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={4}>
         <Button
           variant="text"
           id="humidity"
@@ -220,67 +284,49 @@ export default function AlertsPopover(props) {
               : styles.unSelectedButton
           }
         >
-          <Typography variant="caption">Humidity</Typography>
+          <Typography variant="caption">{humidityUnit}</Typography>
         </Button>
       </Grid>
     </Grid>
   );
 
-  const renderCard = (item, index, unit) => (
-    <Grid item xs={12} key={index} style={styles.card}>
+  const renderNoAlerts = (
+    <Grid item xs={12} style={styles.card}>
       <Button
         variant="contained"
-        style={{ backgroundColor: "white" }}
+        style={{ backgroundColor: "white", color: colors.BLUEGREY[500] }}
         fullWidth
-        endIcon={item.icon}
       >
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          style={styles.cardContentContainer}
-        >
-          <Grid item xs={12}>
-            <Typography
-              variant="body1"
-              align="left"
-              gutterBottom
-              style={{ color: colors.BLUEGREY[600] }}
-            >
-              {item.value}
-              {unit}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography
-              variant="body2"
-              align="left"
-              style={{
-                color: colors.BLUEGREY[400],
-                // fontStretch: "ultra-condensed",
-              }}
-            >
-              {item.time}
-            </Typography>
-          </Grid>
-        </Grid>
+        <Typography variant="caption">No Alerts</Typography>
       </Button>
     </Grid>
   );
 
+  const filterBy = (array, filter) => {
+    let result = array.map((item, index) =>
+      item.type === filter ? (
+        <Card item={item} index={index} key={index} />
+      ) : null
+    );
+
+    if (result.filter((x) => x).length > 0) {
+      return result;
+    } else {
+      return renderNoAlerts;
+    }
+  };
+
   const renderAllCards = (
     <Grid container direction="column" justify="center" alignItems="stretch">
-      {selectedOption.temperature
-        ? temperatureAlertsList.map((item, index) =>
-            renderCard(item, index, " \u00B0C")
-          )
+      {selectedOption.all
+        ? alertsList.map((item, index) => (
+            <Card item={item} index={index} key={index} />
+          ))
         : null}
-      {selectedOption.humidity
-        ? humidityAlertsList.map((item, index) =>
-            renderCard(item, index, " %RH")
-          )
-        : null}
+
+      {selectedOption.humidity ? filterBy(alertsList, "humidity") : null}
+
+      {selectedOption.temperature ? filterBy(alertsList, "temperature") : null}
     </Grid>
   );
 
@@ -323,3 +369,78 @@ export default function AlertsPopover(props) {
     </>
   );
 }
+
+const Card = (props) => {
+  const { item, index } = props;
+
+  const [showDetails, setShowDetails] = React.useState(false);
+
+  return (
+    <Grid item xs={12} key={index} style={styles.card}>
+      <Button
+        variant="contained"
+        style={{ backgroundColor: "white", textTransform: "none" }}
+        fullWidth
+        startIcon={item.icon2}
+        endIcon={item.icon}
+        onClick={(e) => setShowDetails(!showDetails)}
+      >
+        {showDetails ? (
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            style={styles.cardContentContainer}
+          >
+            <Grid item xs={12}>
+              <Typography
+                variant="body1"
+                align="left"
+                gutterBottom
+                style={{ color: colors.BLUEGREY[600] }}
+              >
+                {item.value}
+                {item.unit}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography
+                variant="body2"
+                align="left"
+                style={{
+                  color: colors.BLUEGREY[400],
+                  // fontStretch: "ultra-condensed",
+                }}
+              >
+                {item.time}
+                {" - "}
+                {item.date}
+              </Typography>
+            </Grid>
+          </Grid>
+        ) : (
+          <Tooltip placement="top" title={"Click to expand"}>
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+              style={styles.cardContentContainer}
+            >
+              <Grid item xs={12}>
+                <Typography
+                  variant="body2"
+                  align="left"
+                  style={{ color: colors.BLUEGREY[600] }}
+                >
+                  {item.alert}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Tooltip>
+        )}
+      </Button>
+    </Grid>
+  );
+};
