@@ -8,7 +8,7 @@ import colors from "../../utils/colors";
 
 const errorScreenStyles = {
   root: {
-    padding: 30,
+    padding: 20,
   },
   textContainer: {
     paddingLeft: 80,
@@ -16,7 +16,7 @@ const errorScreenStyles = {
   },
   image: {
     // height: "50vh",
-    width: "40vw",
+    width: "35vw",
     padding: 10,
   },
   heading: {

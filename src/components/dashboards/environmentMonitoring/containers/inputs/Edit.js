@@ -39,6 +39,8 @@ const Edit = (props) => {
   let thisZone = props.all.filter((x) => x._id === openForm.ID).pop();
   thisZone = thisZone ? thisZone : {};
 
+  // console.log(thisZone);
+
   const [formData, setFormData] = useState(thisZone);
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);

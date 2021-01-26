@@ -10,6 +10,7 @@ const loadingTime = 1000;
 export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
   dispatch({
     type: machines.machinesLoading,
+    payload: zoneID,
   });
 
   const config = {
@@ -38,7 +39,9 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
           console.log("error: unexpected response", data);
         }
       })
-      .catch((error) => httpRequestErrorAction(error, dispatch, machines));
+      .catch((error) => {
+        // httpRequestErrorAction(error, dispatch, machines)
+      });
   } else {
     setTimeout(() => {
       dispatch({

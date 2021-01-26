@@ -331,7 +331,7 @@ const DashboardSummaryCard = (props) => {
 
   return (
     <Paper elevation={2} style={{ padding: 10 }} className={classes.cardHover}>
-      <Grid container justify="space-around" alignItems="center">
+      <Grid container justify="center" alignItems="center">
         {/* Buttons */}
         <Grid item xs={12}>
           <Grid
@@ -411,7 +411,7 @@ const DashboardSummaryCard = (props) => {
               direction="column"
               justify="center"
               alignItems="flex-start"
-              style={{ padding: 5 }}
+              style={{ padding: 0 }}
             >
               {renderStatus}
               {renderInfo1}

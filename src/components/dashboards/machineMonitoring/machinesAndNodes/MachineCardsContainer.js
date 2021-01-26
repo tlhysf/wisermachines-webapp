@@ -86,7 +86,7 @@ export default function MachineCards(props) {
               in={true}
               {...{ timeout: animationDuration + index * animationDuration }}
             >
-              <Grid key={index} item xl={3} md={4} xs={12}>
+              <Grid key={index} item md={3} sm={6} xs={12}>
                 {keys.showMockData ? (
                   <DashboardSummaryCard
                     compact={props.compact}

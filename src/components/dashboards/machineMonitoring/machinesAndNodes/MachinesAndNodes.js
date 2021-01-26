@@ -94,6 +94,7 @@ const MachinesAndNodes = (props) => {
               options={machinesOrNodesFiltersList}
               selected={machinesOrNodesFilter}
               type={commonActionTypes.filterByNodesOrMachines}
+              width={60}
               icon={
                 <ExpandMoreIcon
                   style={{ color: colors.TEAL[700] }}

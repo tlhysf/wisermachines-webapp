@@ -14,11 +14,11 @@ highchartsMore(Highcharts);
 solidGauge(Highcharts);
 
 // const fontSize = 12;
-const chartWidth = 200;
+const chartWidth = 150;
 const trackWidth = 10;
-const item1OuterRadius = chartWidth - 100;
+const item1OuterRadius = chartWidth - 50;
 const item1InnerRadius = item1OuterRadius - trackWidth;
-const item2OuterRadius = item1InnerRadius - 3;
+const item2OuterRadius = item1InnerRadius - 5;
 const item2InnerRadius = item2OuterRadius - trackWidth;
 
 // const item1OffsetName = 45;
@@ -27,7 +27,7 @@ const item2InnerRadius = item2OuterRadius - trackWidth;
 // const item1OffsetValue = 0;
 // const item2OffsetValue = item1OffsetValue - 20;
 
-const opacity = 0.2;
+const opacity = 0.3;
 
 const getColor = (change, thresholds, colors) => {
   return change >= thresholds.high

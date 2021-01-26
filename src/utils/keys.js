@@ -1,9 +1,9 @@
 const keys = {
   server: "http://115.186.183.129:37000",
 
-  showMockData: false,
-  showDashboardSummaryCards: false,
-  showDashboardSummaryHeaders: false,
+  showMockData: true,
+  showDashboardSummaryCards: true,
+  showDashboardSummaryHeaders: true,
 
   featureTemporarilyUnavailable: false,
 
@@ -23,13 +23,19 @@ const keys = {
     {
       name: "gsk",
       password: "1234",
-      workshopID: "6001954861c4ce272c5630d5",
+      workshopID: "600fabc8549c501670d98806",
       navigationAliases: ["workshops", "zones"],
     },
     {
       name: "kolson",
       password: "1234",
       workshopID: "",
+      navigationAliases: ["workshops", "zones"],
+    },
+    {
+      name: "demo",
+      password: "demo",
+      workshopID: "demo",
       navigationAliases: ["workshops", "zones"],
     },
   ],

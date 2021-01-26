@@ -26,6 +26,7 @@ export const machinesReducer = (state = initialMachinesState, action) => {
     case machines.machinesLoading:
       return {
         ...state,
+        zoneID: action.payload,
         machinesLoading: true,
       };
 

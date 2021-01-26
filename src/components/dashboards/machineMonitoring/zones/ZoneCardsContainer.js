@@ -57,7 +57,7 @@ export default function ZoneCards(props) {
               in={true}
               {...{ timeout: animationDuration + index * animationDuration }}
             >
-              <Grid key={index} item xl={3} lg={4} md={3} sm={6} xs={12}>
+              <Grid key={index} item xl={3} md={3} sm={6} xs={12}>
                 {keys.showDashboardSummaryCards ? (
                   <DashboardSummaryCard
                     data={{

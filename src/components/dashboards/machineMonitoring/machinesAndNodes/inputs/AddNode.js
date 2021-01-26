@@ -111,6 +111,7 @@ const AddNode = (props) => {
     sensor1Rating: sensorRatings[0].value,
     sensor2Rating: sensorRatings[0].value,
   });
+
   const [errors, setErrors] = useState({});
   const [expectedResponse, setExpectedResponse] = useState("");
   const [success, setSuccess] = useState(false);

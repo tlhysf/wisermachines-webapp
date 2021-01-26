@@ -120,7 +120,7 @@ export default function ContainerDetails(props) {
       // Mock live data generator
       setInterval(() => {
         setLiveData(liveEnvData());
-      }, 5000);
+      }, 3000);
     }
   }, [containerID]);
 
@@ -128,9 +128,14 @@ export default function ContainerDetails(props) {
 
   // ******* TOASTS *******
 
+  // const dismissAll = () => {
+  //   toast.dismiss();
+  //   setToastsCount(0);
+  // };
+
   const toastsContainer = (
     <ToastContainer
-      position="top-right"
+      position="bottom-left"
       autoClose={10000}
       hideProgressBar={false}
       newestOnTop={true}
@@ -141,6 +146,12 @@ export default function ContainerDetails(props) {
       pauseOnHover
       enableMultiContainer
       containerId={"ContainerDetails"}
+      // limit={keys.showMockData ? 5 : 100}
+      // closeButton={
+      //   <Tooltip placment="right" title="Dismiss All">
+      //     <i onClick={(e) => dismissAll()}>x</i>
+      //   </Tooltip>
+      // }
     />
   );
 
@@ -151,7 +162,7 @@ export default function ContainerDetails(props) {
       toast.info(value, { containerId: "ContainerDetails" });
 
     notify(msg, {
-      position: "top-right",
+      position: "bottom-left",
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -192,7 +203,7 @@ export default function ContainerDetails(props) {
       <div>
         <div>
           <Typography align="left" variant="button">
-            {data.humidity}
+            {data[type]}
             {unit}
           </Typography>
         </div>
@@ -209,29 +220,24 @@ export default function ContainerDetails(props) {
   useEffect(() => {
     if (isNotEmpty(liveData)) {
       if (liveData.humidity_alert === -1) {
-        const type = "Low Humidity";
+        const type = "humidity";
         notifyLow(toastContent(liveData, type, humidityUnit));
       }
       if (liveData.humidity_alert === 1) {
-        const type = "High Humidity";
+        const type = "humidity";
         notifyHigh(toastContent(liveData, type, humidityUnit));
       }
       if (liveData.temperature_alert === -1) {
-        const type = "Low Temperature";
+        const type = "temperature";
         notifyLow(toastContent(liveData, type, temperatureUnit));
       }
       if (liveData.temperature_alert === 1) {
-        const type = "High Temperature";
-        notifyLow(toastContent(liveData, type, temperatureUnit));
+        const type = "temperature";
+        notifyHigh(toastContent(liveData, type, temperatureUnit));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [liveData]);
-
-  // const dismissAll = () => {
-  //   toast.dismiss();
-  //   setToastsCount(0);
-  // };
 
   // const dismissAllButton =
   //   toastsCount > 2 ? (

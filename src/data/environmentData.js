@@ -1,10 +1,10 @@
-const randomIntFromInterval = (min, max) => {
+export const randomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 const max = 60;
 const min = 20;
-const difference = 1;
+const difference = 5;
 
 const getAlert = (value) => {
   if (value >= max) {
@@ -63,23 +63,17 @@ export const containerProfile = [
 ];
 
 export const liveEnvData = () => {
-  const send = true;
-
   const timestamp = String(new Date());
   const temperature = randomIntFromInterval(min - difference, max + difference);
   const humidity = randomIntFromInterval(min - difference, max + difference);
   const temperature_alert = getAlert(temperature);
   const humidity_alert = getAlert(humidity);
 
-  if (send) {
-    return {
-      temperature_alert,
-      humidity_alert,
-      temperature,
-      humidity,
-      timestamp,
-    };
-  } else {
-    return null;
-  }
+  return {
+    temperature_alert,
+    humidity_alert,
+    temperature,
+    humidity,
+    timestamp,
+  };
 };

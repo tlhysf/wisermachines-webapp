@@ -39,7 +39,11 @@ export default function Card(props) {
             alignItems="center"
           >
             <Grid item xs={"auto"}>
-              <Typography align="center" variant="h6">
+              <Typography
+                align="center"
+                variant="h6"
+                style={{ color: colors.BLUEGREY[600] }}
+              >
                 {values.primary}
               </Typography>
             </Grid>
@@ -47,7 +51,7 @@ export default function Card(props) {
               <Typography
                 align="center"
                 variant="body1"
-                style={{ color: colors.BLUEGREY[600] }}
+                style={{ color: colors.BLUEGREY[500] }}
               >
                 {values.secondary}
               </Typography>
