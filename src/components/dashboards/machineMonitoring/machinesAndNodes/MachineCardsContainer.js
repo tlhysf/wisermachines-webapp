@@ -1,9 +1,11 @@
 import React from "react";
 
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Grid from "@material-ui/core/Grid";
-import DashboardSummaryCard from "../../../common/DashboardSummaryCard";
+import DashboardSummaryCard, {
+  DashboardSummaryCardMinimalVersion,
+} from "../../../common/DashboardSummaryCard";
 import Card from "../../../common/Card";
 import Grow from "@material-ui/core/Grow";
 
@@ -27,6 +29,41 @@ const animationDuration = 200;
 
 export default function MachineCards(props) {
   // const zoneSummary = useSelector((state) => state.machines.zoneSummary);
+
+  const unfilteredList = props.allMachinesInAZone;
+  const mapping = useSelector((state) => state.nodes.allNodesInAZone);
+
+  let listOfMachineIDs = [];
+  Object.values(mapping).map((node, i) => {
+    node.map((machine, j) => {
+      listOfMachineIDs.push(machine._id);
+      return j;
+    });
+    return i;
+  });
+
+  let filteredList = [];
+  listOfMachineIDs.map((item) => {
+    for (let i = 0; i < unfilteredList.length; i++) {
+      if (unfilteredList[i]._id === item) {
+        filteredList.push(unfilteredList[i]);
+        break;
+      }
+    }
+    return item;
+  });
+
+  const renderCards = (item) =>
+    keys.minimalMachineSummaryCards ? (
+      <DashboardSummaryCardMinimalVersion
+        data={{ name: item.name, ID: item._id }}
+      />
+    ) : (
+      <DashboardSummaryCard
+        compact={props.compact}
+        data={parseZoneDetailsData(item)}
+      />
+    );
 
   return (
     <Grid container spacing={2}>
@@ -80,7 +117,7 @@ export default function MachineCards(props) {
           alignItems="center"
           spacing={2}
         >
-          {props.allMachinesInAZone.map((item, index) => (
+          {filteredList.map((item, index) => (
             <Grow
               key={index}
               in={true}
@@ -102,10 +139,7 @@ export default function MachineCards(props) {
                     }}
                   />
                 ) : (
-                  <DashboardSummaryCard
-                    compact={props.compact}
-                    data={parseZoneDetailsData(item)}
-                  />
+                  renderCards(item)
                 )}
               </Grid>
             </Grow>

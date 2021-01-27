@@ -80,7 +80,7 @@ const Containers = (props) => {
           style={{ height: "70vh" }}
           spacing={4}
         >
-          <AlertCard message={`Nothing has been added yet.`} />
+          <AlertCard message={"Couldnt find anything"} />
         </Grid>
       </Grid>
     ) : null;

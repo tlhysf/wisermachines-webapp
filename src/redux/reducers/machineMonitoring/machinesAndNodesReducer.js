@@ -44,7 +44,7 @@ export const machinesReducer = (state = initialMachinesState, action) => {
       return {
         ...state,
         machineMappings: action.payload,
-        machinesLoading: false,
+        // machinesLoading: false,
       };
 
     case machines.addMachineLoading:
@@ -104,6 +104,7 @@ export const machinesReducer = (state = initialMachinesState, action) => {
       return {
         ...state,
         notFound: true,
+        machinesLoading: false,
       };
 
     default:
@@ -182,6 +183,7 @@ export const nodesReducer = (state = initialNodesState, action) => {
       return {
         ...state,
         notFound: true,
+        nodesLoading: false,
       };
 
     default:

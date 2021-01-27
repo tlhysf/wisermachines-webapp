@@ -284,7 +284,7 @@ export default function MachineDetails(props) {
           style={{ height: "70vh" }}
           spacing={4}
         >
-          <AlertCard message={"No data has been stored yet for this machine"} />
+          <AlertCard message={"Couldnt find anything"} />
         </Grid>
       </Grid>
     </Grid>

@@ -15,7 +15,8 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
 
   const config = {
     method: "get",
-    url: keys.server + "/zone/Summary/" + zoneID,
+    // url: keys.server + "/zone/Summary/" + zoneID,
+    url: keys.server + "/machines",
     headers: {
       "Content-Type": "application/json",
     },
@@ -29,18 +30,27 @@ export const getAllMachinesInAZoneAction = (dispatch, zoneID) => {
         const { data } = res;
         if (isNotEmpty(data)) {
           // console.log(data);
-          const allMachinesInAZone = data.machines_data;
-          const zoneSummary = data.zone_summary;
+          // const allMachinesInAZone = data.machines_data;
+          // const zoneSummary = data.zone_summary;
+          const allMachinesInAZone = data.filter((x) => x);
           dispatch({
             type: machines.getAllMachinesInAZone,
-            payload: { allMachinesInAZone, zoneID, zoneSummary },
+            payload: {
+              allMachinesInAZone,
+              zoneID,
+              // zoneSummary
+            },
           });
         } else {
-          console.log("error: unexpected response", data);
+          dispatch({
+            type: machines.notFound,
+          });
         }
       })
       .catch((error) => {
-        // httpRequestErrorAction(error, dispatch, machines)
+        dispatch({
+          type: machines.notFound,
+        });
       });
   } else {
     setTimeout(() => {
@@ -111,12 +121,16 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
                   },
                 });
               } else {
-                console.log("error: unexpected response", data);
+                dispatch({
+                  type: nodes.notFound,
+                });
               }
             })
             .catch((error) => httpRequestErrorAction(error, dispatch, nodes));
         } else {
-          console.log("error: unexpected response", data);
+          dispatch({
+            type: nodes.notFound,
+          });
         }
       })
       .catch((error) => httpRequestErrorAction(error, dispatch, nodes));
@@ -135,9 +149,9 @@ export const getAllNodesInAZoneAction = (dispatch, zoneID) => {
 };
 
 export const getAllMachineMappingsAction = (dispatch) => {
-  dispatch({
-    type: machines.machinesLoading,
-  });
+  // dispatch({
+  //   type: machines.machinesLoading,
+  // });
 
   const config = {
     method: "get",

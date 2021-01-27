@@ -20,6 +20,7 @@ import MachineCards from "./MachineCardsContainer";
 import NodeCards from "./NodeCardsContainer";
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
+import AlertCard from "../../../common/AlertCard";
 
 // Forms
 import AddMachine from "./inputs/AddMachine";
@@ -37,6 +38,7 @@ import {
 } from "../../../../redux/actions/machineMonitoring/machinesAndNodesActions";
 import { toggleAddFormDrawerAction } from "../../../../redux/actions/commonActions";
 import { common as commonActionTypes } from "../../../../redux/actions/actionTypes";
+import { isNotEmpty } from "../../../../utils/validation";
 
 // Loaders
 import Loader from "../../../common/Loader";
@@ -152,6 +154,21 @@ const MachinesAndNodes = (props) => {
     </Grid>
   );
 
+  const renderNotFound = (list, loading) =>
+    !isNotEmpty(list) && !loading ? (
+      <Grid item>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{ height: "70vh" }}
+          spacing={4}
+        >
+          <AlertCard message={"Couldnt find anything"} />
+        </Grid>
+      </Grid>
+    ) : null;
+
   const renderNodes = nodesLoading ? (
     <Loader />
   ) : (
@@ -169,6 +186,11 @@ const MachinesAndNodes = (props) => {
       ? renderNodes
       : renderMachines;
 
+  const renderMachinesOrNodesNotFound =
+    machinesOrNodesFilter === machinesOrNodesFiltersList[1]
+      ? renderNotFound(allNodesInAZone, nodesLoading)
+      : renderNotFound(allMachinesInAZone, machinesLoading);
+
   return (
     <>
       <Grid container justify="center" alignItems="center" spacing={2}>
@@ -178,7 +200,9 @@ const MachinesAndNodes = (props) => {
         <Grid item xs={12}>
           {renderMachinesOrNodes}
         </Grid>
+        {renderMachinesOrNodesNotFound}
       </Grid>
+
       {machinesOrNodesFilter === machinesOrNodesFiltersList[1] ? (
         <AddNode />
       ) : (

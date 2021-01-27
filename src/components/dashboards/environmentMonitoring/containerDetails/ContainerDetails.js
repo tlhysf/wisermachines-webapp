@@ -281,6 +281,13 @@ export default function ContainerDetails(props) {
 
   const thresholdLineColor = colors.BLUEGREY[600];
 
+  const yMax = (threshold, list) => {
+    const max1 = threshold;
+    const max2 = Math.max(...list);
+
+    return Math.max(max1, max2);
+  };
+
   const lineCharts = {
     cleanUp: {
       series: timestamps.map((x) => 1000),
@@ -306,7 +313,7 @@ export default function ContainerDetails(props) {
       color: chartColors.temperature,
       type: "line",
       large: true,
-      yMax: 70,
+      yMax: yMax(containerProfile.max_temperature, temperature),
 
       series2: temperature.map((x) => containerProfile.max_temperature),
       series2Name: "Max Threshold",
@@ -323,7 +330,7 @@ export default function ContainerDetails(props) {
       color: chartColors.humidity,
       type: "line",
       large: true,
-      yMax: 70,
+      yMax: yMax(containerProfile.max_humidity, humidity),
 
       series2: humidity.map((x) => containerProfile.max_humidity),
       series2Name: "Max Threshold",
@@ -463,7 +470,7 @@ export default function ContainerDetails(props) {
           style={{ height: "70vh" }}
           spacing={4}
         >
-          <AlertCard message={"No data has been stored yet."} />
+          <AlertCard message={"Couldnt find anything"} />
         </Grid>
       </Grid>
     </Grid>

@@ -1,9 +1,11 @@
 const keys = {
   server: "http://115.186.183.129:37000",
 
-  showMockData: true,
-  showDashboardSummaryCards: true,
-  showDashboardSummaryHeaders: true,
+  showMockData: false,
+  showDashboardSummaryCards: false,
+  showDashboardSummaryHeaders: false,
+
+  minimalMachineSummaryCards: true,
 
   featureTemporarilyUnavailable: false,
 
@@ -36,6 +38,12 @@ const keys = {
       name: "demo",
       password: "demo",
       workshopID: "demo",
+      navigationAliases: ["workshops", "zones"],
+    },
+    {
+      name: "ihsan-safety",
+      password: "1234",
+      workshopID: "6011407db9c4963230840521",
       navigationAliases: ["workshops", "zones"],
     },
   ],
