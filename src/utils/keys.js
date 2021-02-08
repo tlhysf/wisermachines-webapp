@@ -1,5 +1,9 @@
 const keys = {
+  // Production
   server: "http://115.186.183.129:37000",
+  
+  // Staging
+  // server: "http://115.186.183.129:27000",
 
   showMockData: false,
   showDashboardSummaryCards: false,
