@@ -1,56 +1,115 @@
 import React from "react";
-import Paper from "@material-ui/core/Paper";
-// import Typography from "@material-ui/core/Typography";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-// import Button from "@material-ui/core/Button";
-import Grow from "@material-ui/core/Grow";
+import { useSelector } from "react-redux";
+
+import {
+  PDFViewer,
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+} from "@react-pdf/renderer";
+
+// import html2canvas from "html2canvas";
+// import { htmlToText } from "html-to-text";
+// import DomToImage from "dom-to-image";
+// import { Table, TableRow, TableCell } from "react-table-pdf";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
+import AssessmentIcon from "@material-ui/icons/Assessment";
+
 import colors from "../../../../utils/colors";
+import { common } from "../../../../utils/styles";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
-  root: {
-    width: "100%",
+import { parseEnviromentDataFromSSN } from "../../../../utils/parse";
+
+const useStyles = makeStyles((theme) => common(theme));
+
+const stylesForDocument = StyleSheet.create({
+  page: {
     display: "flex",
-    justifyContent: "center",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    flexDirection: "column",
+    backgroundColor: "#ffffff",
+    padding: 10,
   },
-  constainerPrimary: {
-    flexGrow: 1,
-    maxWidth: "95vw",
+
+  tableContainer: {
+    flexDirection: "column",
+    width: "100%",
   },
-  containerSecondary: {
-    maxHeight: "85vh",
+
+  tableHeaderRow: {
+    backgroundColor: colors.BLUEGREY[700],
+    color: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: "row",
+    width: "100%",
+    padding: 5,
+  },
+
+  tableRow: {
+    backgroundColor: "white",
+    color: colors.BLUEGREY[700],
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: "row",
+    width: "100%",
+    borderBottom: true,
+    borderBottomStyle: "solid",
+    borderBottomColor: colors.BLUEGREY[700],
+    padding: 5,
+  },
+  tableCell: [
+    {
+      width: "40%",
+      paddingRight: 5,
+    },
+    {
+      width: "20%",
+      paddingRight: 5,
+    },
+    {
+      width: "20%",
+      paddingRight: 5,
+    },
+    {
+      width: "20%",
+      paddingRight: 5,
+    },
+  ],
+
+  tableHeaderText: {
+    fontSize: 14,
+  },
+
+  tableContentText: {
+    fontSize: 12,
   },
 });
 
-const animationDuration = 200;
-
-const Report = (props) => {
-  const classes = useStyles();
-
+const ReportDocument = (props) => {
   const {
-    humidity,
-    humidityAlerts,
+    // Time
+    timestamps,
+
+    // Temperature
     temperature,
     temperatureAlerts,
-    timestamps,
+
+    // Humidity
+    humidity,
+    humidityAlerts,
   } = props.data;
-
-  const columnTitles = ["Alert", "Value", "Time", "Date"];
-
-  const renderTableHeader = (
-    <TableRow>
-      {columnTitles.map((column, i) => (
-        <TableCell key={i} align="left">
-          {column}
-        </TableCell>
-      ))}
-    </TableRow>
-  );
 
   let tableRows = [];
 
@@ -59,21 +118,14 @@ const Report = (props) => {
     const date = dateTime.toLocaleDateString();
     const time = dateTime.toLocaleTimeString();
 
-    const low = { color: colors.BLUE[600] };
-    const high = { color: colors.RED[600] };
+    // const low = { color: colors.BLUE[600] };
+    // const high = { color: colors.RED[600] };
 
-    const lowHumidityMsg = (
-      <span style={low}>{"Low humidity threshold crossed"}</span>
-    );
-    const highHumidityMsg = (
-      <span style={high}>{"High humidity threshold crossed"}</span>
-    );
-    const lowTemperatureMsg = (
-      <span style={low}>{"Low temperature threshold crossed"}</span>
-    );
-    const highTemperatureMsg = (
-      <span style={high}>{"High temperature threshold crossed"}</span>
-    );
+    const lowHumidityMsg = "Low humidity threshold crossed";
+    const highHumidityMsg = "High humidity threshold crossed";
+
+    const lowTemperatureMsg = "Low temperature threshold crossed";
+    const highTemperatureMsg = "High temperature threshold crossed";
 
     const lowHumidity = humidityAlerts[i] === -1;
     const highHumidity = humidityAlerts[i] === 1;
@@ -138,37 +190,86 @@ const Report = (props) => {
 
   tableRows.reverse(); // sort by newest
 
-  const renderTable = tableRows.map((cells, i) => (
-    <TableRow key={i} hover>
+  const renderTableContent = tableRows.map((cells, i) => (
+    <View style={stylesForDocument.tableRow}>
       {cells.map((cell, j) => (
-        <TableCell key={j} align="left">
-          {cell}
-        </TableCell>
+        <View style={stylesForDocument.tableCell[j]}>
+          <Text style={stylesForDocument.tableContentText}>{cell}</Text>
+        </View>
       ))}
-    </TableRow>
+    </View>
   ));
 
-  const tablePopulated = (
-    <Grow in={true} {...{ timeout: animationDuration + 4 * animationDuration }}>
-      <Paper className={classes.root}>
-        <div className={classes.constainerPrimary}>
-          <TableContainer className={classes.containerSecondary}>
-            <Table stickyHeader>
-              <TableHead>{renderTableHeader}</TableHead>
-              <TableBody>{renderTable}</TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      </Paper>
-    </Grow>
+  const columnTitles = ["Event", "Value", "Time", "Date"];
+
+  const renderTableHeader = (
+    <View style={stylesForDocument.tableHeaderRow}>
+      {columnTitles.map((column, j) => (
+        <View style={stylesForDocument.tableCell[j]}>
+          <Text style={stylesForDocument.tableHeaderText}>{column}</Text>
+        </View>
+      ))}
+    </View>
   );
 
-  return tablePopulated;
+  return (
+    <Document>
+      <Page size="A4" style={stylesForDocument.page}>
+        <View style={stylesForDocument.tableContainer}>
+          {renderTableHeader}
+          {renderTableContent}
+        </View>
+      </Page>
+    </Document>
+  );
+};
+
+const Report = () => {
+  const classes = useStyles();
+
+  const storedData = useSelector(
+    (state) => state.environmentMonitoring.containerDetails.containerDetailsData
+  );
+
+  // Apply time filter on storedData first, then call parsing function
+  const parsedData = parseEnviromentDataFromSSN(storedData);
+
+  const [showReport, setShowReport] = React.useState(false);
+
+  const handleReportButton = (e) => {
+    setShowReport(!showReport);
+  };
+
+  const renderReportDocument = <ReportDocument data={parsedData} />;
+
+  return (
+    <div>
+      <Tooltip placement="top" title="Report">
+        <Button
+          className={classes.button}
+          variant="contained"
+          onClick={(e) => handleReportButton(e)}
+        >
+          <AssessmentIcon
+            className={classes.iconInsideButton}
+            style={{ color: colors.TEAL[700] }}
+          />
+        </Button>
+      </Tooltip>
+      <Dialog fullScreen open={showReport}>
+        <DialogContent>
+          <PDFViewer width={"100%"} height={"100%"}>
+            {renderReportDocument}
+          </PDFViewer>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={(e) => handleReportButton(e)}>
+            Back
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 };
 
 export default Report;
-
-// const timestampToDate = (timestamp) => {
-//   const dateTime = new Date(timestamp);
-//   return dateTime.toLocaleTimeString() + " - " + dateTime.toLocaleDateString();
-// };

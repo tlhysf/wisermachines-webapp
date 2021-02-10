@@ -27,7 +27,7 @@ const LastUpdatedCard = (props) => {
       type="Bars"
       height={20}
       color={colors.TEAL[700]}
-      style={{ marginBottom: -5, marginRight: -20, marginLeft: -20 }}
+      style={{ marginBottom: "-5", marginRight: "-20", marginLeft: "-20" }}
     />
   ) : (
     <CheckCircleIcon

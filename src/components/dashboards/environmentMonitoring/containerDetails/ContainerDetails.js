@@ -390,6 +390,9 @@ export default function ContainerDetails(props) {
               </Button>
             </Tooltip>
           </Grid> */}
+          <Grid item onClick={(e) => console.log("Clicked on report")}>
+            <Report />
+          </Grid>
           <Grid item>
             <Alerts
               data={{
@@ -439,7 +442,7 @@ export default function ContainerDetails(props) {
         <Charts lineCharts={lineCharts} />
       </Grid>
 
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <Report
           data={{
             humidity,
@@ -449,7 +452,7 @@ export default function ContainerDetails(props) {
             timestamps,
           }}
         />
-      </Grid>
+      </Grid> */}
 
       {toastsContainer}
       {/* {dismissAllButton} */}
