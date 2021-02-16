@@ -128,12 +128,15 @@ export default function ContainerDetails(props) {
 
   // ******* TOASTS *******
 
+  const [toastsCount, setToastsCount] = useState(0);
+  const [showToasts, setShowToasts] = useState(true);
+
   // const dismissAll = () => {
   //   toast.dismiss();
   //   setToastsCount(0);
   // };
 
-  const toastsContainer = (
+  const toastsContainer = showToasts ? (
     <ToastContainer
       position="bottom-left"
       autoClose={10000}
@@ -153,9 +156,7 @@ export default function ContainerDetails(props) {
       //   </Tooltip>
       // }
     />
-  );
-
-  const [toastsCount, setToastsCount] = useState(0);
+  ) : null;
 
   const notifyLow = (msg) => {
     const notify = (value) =>
@@ -390,8 +391,8 @@ export default function ContainerDetails(props) {
               </Button>
             </Tooltip>
           </Grid> */}
-          <Grid item onClick={(e) => console.log("Clicked on report")}>
-            <Report />
+          <Grid item onClick={(e) => setShowToasts(!showToasts)}>
+            <Report chartColors={chartColors} />
           </Grid>
           <Grid item>
             <Alerts

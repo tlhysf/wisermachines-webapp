@@ -22,6 +22,8 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 
+import LineChart from "./LineChartForReport";
+
 import colors from "../../../../utils/colors";
 import { common } from "../../../../utils/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -224,7 +226,7 @@ const ReportDocument = (props) => {
   );
 };
 
-const Report = () => {
+const Report = (props) => {
   const classes = useStyles();
 
   const storedData = useSelector(
@@ -232,6 +234,53 @@ const Report = () => {
   );
 
   // Apply time filter on storedData first, then call parsing function
+  const slicedByDays = getSlicedData(storedData, "days");
+  const {
+    timestamps,
+    temperature,
+    temperatureAlerts,
+
+    humidity,
+    humidityAlerts,
+  } = parseEnviromentDataFromSSN(Object.values(slicedByDays)[0]);
+
+  // console.dir(slicedByDays);
+
+  const { chartColors } = props;
+
+  const lineCharts = {
+    temperature: {
+      series: temperature,
+      timestamps: timestamps,
+      name: "Temperature",
+      color: chartColors.temperature,
+    },
+    humidity: {
+      series: humidity,
+      timestamps: timestamps,
+      name: "Humidity",
+      color: chartColors.humidity,
+    },
+    temperatureAlerts: {
+      series: temperatureAlerts.map((x) => x + 1),
+      timestamps: timestamps,
+      name: "Temperature Alerts",
+      color: chartColors.temperatureAlerts,
+      step: "center",
+      yMax: 3,
+      yLabels: ["LOW", "NORMAL", "HIGH"],
+    },
+    humidityAlerts: {
+      series: humidityAlerts.map((x) => x + 1),
+      timestamps: timestamps,
+      name: "Humidity Alerts",
+      color: chartColors.humidityAlerts,
+      step: "center",
+      yMax: 3,
+      yLabels: ["LOW", "NORMAL", "HIGH"],
+    },
+  };
+
   const parsedData = parseEnviromentDataFromSSN(storedData);
 
   const [showReport, setShowReport] = React.useState(false);
@@ -258,6 +307,7 @@ const Report = () => {
       </Tooltip>
       <Dialog fullScreen open={showReport}>
         <DialogContent>
+          <LineChart chartData={lineCharts.temperature} />
           <PDFViewer width={"100%"} height={"100%"}>
             {renderReportDocument}
           </PDFViewer>
@@ -273,3 +323,54 @@ const Report = () => {
 };
 
 export default Report;
+
+const getSlicedData = (inputData, unit) => {
+  // input data is assumed to be of less than one month
+  // input data is assumed to be an array of packets
+
+  // output is also array of packets
+  const slicedOutputData = {};
+
+  // outlier can be any number other than 1-31 (for days) and 0-23 (for hours)
+  const outlier = 100;
+
+  const getValue = (timestamp) => {
+    if (unit === "days") {
+      return new Date(timestamp).getDate();
+    }
+    if (unit === "hours") {
+      return new Date(timestamp).getHours();
+    }
+  };
+
+  let saved = outlier;
+
+  const keys = inputData
+    .map((item) => {
+      const { timestamp } = item;
+      const current = getValue(timestamp);
+
+      if (current !== saved) {
+        saved = current;
+        return timestamp;
+      }
+
+      return outlier;
+    })
+    .filter((x) => x !== outlier);
+
+  for (let i = 0; i < keys.length; i++) {
+    const filtered = inputData
+      .map((item) => {
+        if (getValue(item.timestamp) === getValue(keys[i])) {
+          return item;
+        }
+        return null;
+      })
+      .filter((x) => x);
+
+    slicedOutputData[String(keys[i])] = filtered;
+  }
+
+  return slicedOutputData;
+};
