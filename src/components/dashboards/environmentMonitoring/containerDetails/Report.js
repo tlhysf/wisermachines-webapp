@@ -1,4 +1,5 @@
 import React from "react";
+import Pdf from "react-to-pdf";
 import { useSelector } from "react-redux";
 
 import {
@@ -98,6 +99,8 @@ const stylesForDocument = StyleSheet.create({
     fontSize: 12,
   },
 });
+
+const ref = React.createRef();
 
 const ReportDocument = (props) => {
   const {
@@ -307,10 +310,15 @@ const Report = (props) => {
       </Tooltip>
       <Dialog fullScreen open={showReport}>
         <DialogContent>
-          <LineChart chartData={lineCharts.temperature} />
-          <PDFViewer width={"100%"} height={"100%"}>
+          <Pdf targetRef={ref} filename="example.pdf">
+            {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
+          </Pdf>
+          <div ref={ref}>
+            <LineChart chartData={lineCharts.temperature} />
+          </div>
+          {/* <PDFViewer width={"100%"} height={"100%"}>
             {renderReportDocument}
-          </PDFViewer>
+          </PDFViewer> */}
         </DialogContent>
         <DialogActions>
           <Button variant="text" onClick={(e) => handleReportButton(e)}>
