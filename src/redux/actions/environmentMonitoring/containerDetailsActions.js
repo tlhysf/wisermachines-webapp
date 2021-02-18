@@ -92,3 +92,9 @@ export const populateContainerDetailsPageAction = (dispatch, ID) => {
     }, loadingTime);
   }
 };
+
+export const showToastsAction = (dispatch) => {
+  dispatch({
+    type: types.showToasts,
+  });
+};

@@ -7,6 +7,7 @@ const initialState = {
   containerDetailsLoading: false,
   containerProfile: null,
   notFound: false,
+  showToasts: true,
 };
 
 export const containerDetailsReducer = (state = initialState, action) => {
@@ -45,6 +46,12 @@ export const containerDetailsReducer = (state = initialState, action) => {
       return {
         ...state,
         containerProfile: action.payload,
+      };
+
+    case types.showToasts:
+      return {
+        ...state,
+        showToasts: !state.showToasts,
       };
 
     default:

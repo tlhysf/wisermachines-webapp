@@ -98,5 +98,7 @@ export const environmentMonitoring = {
       "NO_STORED_ENV_MONITORING_CONTAINER_DETAILS_DATA_RESPONSE",
 
     getContainerProfile: "GET_ENV_MONITORING_CONTAINER_PROFILE",
+
+    showToasts: "TOASTS_ON_ENV_MONITORING_CONTAINER_DETAILS",
   },
 };

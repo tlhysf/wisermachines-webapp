@@ -18,6 +18,8 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.0",
+    "core-js": "2",
+    "dom-to-image": "^2.6.0",
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^3.0.0",
     "material-ui-image": "^3.3.0",

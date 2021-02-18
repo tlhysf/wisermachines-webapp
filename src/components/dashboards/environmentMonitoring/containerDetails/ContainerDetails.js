@@ -33,7 +33,7 @@ import Typography from "@material-ui/core/Typography";
 import Cards from "./Cards";
 import Charts from "./Charts";
 import Alerts from "./Alerts";
-import Report from "./Report";
+import Report from "./Report/Index";
 
 // Common Components
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
@@ -129,7 +129,10 @@ export default function ContainerDetails(props) {
   // ******* TOASTS *******
 
   const [toastsCount, setToastsCount] = useState(0);
-  const [showToasts, setShowToasts] = useState(true);
+
+  let showToasts = useSelector(
+    (state) => state.environmentMonitoring.containerDetails.showToasts
+  );
 
   // const dismissAll = () => {
   //   toast.dismiss();
@@ -391,7 +394,7 @@ export default function ContainerDetails(props) {
               </Button>
             </Tooltip>
           </Grid> */}
-          <Grid item onClick={(e) => setShowToasts(!showToasts)}>
+          <Grid item>
             <Report chartColors={chartColors} />
           </Grid>
           <Grid item>
