@@ -19,9 +19,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
+import Grid from "@material-ui/core/Grid";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 
 import LineChart from "./LineChartForReport";
@@ -33,6 +35,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { parseEnviromentDataFromSSN } from "../../../../../utils/parse";
 
 import { showToastsAction } from "../../../../../redux/actions/environmentMonitoring/containerDetailsActions";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => common(theme));
 
@@ -236,7 +239,7 @@ const Report = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  // const chartRef = React.useRef(null);
+  const pdfContainer = React.useRef(null);
 
   const storedData = useSelector(
     (state) => state.environmentMonitoring.containerDetails.containerDetailsData
@@ -321,6 +324,19 @@ const Report = (props) => {
   //   }
   // });
 
+  const handlePrintButton = (e) => {
+    const printContent = pdfContainer.current;
+    const WinPrint = window.open(
+      "",
+      "",
+      "fullscreen=yes,toolbar=0,scrollbars=0,status=0"
+    );
+    WinPrint.document.write(printContent.innerHTML);
+    WinPrint.document.close();
+    WinPrint.focus();
+    WinPrint.print();
+    // WinPrint.close();
+  };
   return (
     <div>
       <Tooltip placement="top" title="Report">
@@ -336,17 +352,53 @@ const Report = (props) => {
         </Button>
       </Tooltip>
       <Dialog fullScreen open={showReport}>
-        <DialogContent>
+        {/* <DialogTitle>
+          <Typography variant="button" style={{ color: colors.TEAL[800] }}>
+            Export
+          </Typography>
+        </DialogTitle> */}
+        <DialogContent dividers>
           {/* <Pdf targetRef={ref} filename="example.pdf">
             {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
           </Pdf> */}
-          <div>
-            
-              <LineChart chartData={lineCharts.temperature} />
-            
-            <LineChart chartData={lineCharts.temperatureAlerts} />
-            <LineChart chartData={lineCharts.humidity} />
-            <LineChart chartData={lineCharts.humidityAlerts} />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            <div
+              style={{
+                
+                width: "210mm",
+              }}
+              ref={pdfContainer}
+            >
+              <Grid
+                container
+                style={{
+                  
+                  marginTop: 10,
+                  marginBottom: 10,
+                  marginLeft: 20,
+                  marginRight: 20,
+                  border: true,
+                  borderStyle: "solid",
+                  borderColor: colors.BLUEGREY[700],
+                  borderWidth: 1,
+                }}
+                justify="center"
+              >
+                <Grid item xs={12}>
+                  <LineChart chartData={lineCharts.temperature} />
+                </Grid>
+                <Grid item xs={12}>
+                  <LineChart chartData={lineCharts.temperatureAlerts} />
+                </Grid>
+              </Grid>
+            </div>
           </div>
 
           {/* <PDFViewer width={"100%"} height={"100%"}>
@@ -354,8 +406,19 @@ const Report = (props) => {
           </PDFViewer> */}
         </DialogContent>
         <DialogActions>
-          <Button variant="text" onClick={(e) => handleReportButton(e)}>
-            Back
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={(e) => handlePrintButton(e)}
+          >
+            Print
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={(e) => handleReportButton(e)}
+          >
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
