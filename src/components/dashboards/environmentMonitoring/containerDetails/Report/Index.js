@@ -371,30 +371,57 @@ const Report = (props) => {
           >
             <div
               style={{
-                
                 width: "210mm",
+                height: "297mm",
               }}
               ref={pdfContainer}
             >
               <Grid
                 container
                 style={{
-                  
-                  marginTop: 10,
-                  marginBottom: 10,
-                  marginLeft: 20,
-                  marginRight: 20,
+                  width: "100%",
+                  height: "100%",
+
                   border: true,
                   borderStyle: "solid",
                   borderColor: colors.BLUEGREY[700],
                   borderWidth: 1,
                 }}
+                direction="row"
                 justify="center"
+                alignItems="center"
               >
-                <Grid item xs={12}>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                  }}
+                >
                   <LineChart chartData={lineCharts.temperature} />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                  }}
+                >
+                  <LineChart chartData={lineCharts.temperature} />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                  }}
+                >
                   <LineChart chartData={lineCharts.temperatureAlerts} />
                 </Grid>
               </Grid>
