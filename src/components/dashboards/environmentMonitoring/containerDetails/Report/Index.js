@@ -344,9 +344,9 @@ const Report = (props) => {
             
               <LineChart chartData={lineCharts.temperature} />
             
-            {/* <LineChart chartData={lineCharts.temperatureAlerts} />
+            <LineChart chartData={lineCharts.temperatureAlerts} />
             <LineChart chartData={lineCharts.humidity} />
-            <LineChart chartData={lineCharts.humidityAlerts} /> */}
+            <LineChart chartData={lineCharts.humidityAlerts} />
           </div>
 
           {/* <PDFViewer width={"100%"} height={"100%"}>
