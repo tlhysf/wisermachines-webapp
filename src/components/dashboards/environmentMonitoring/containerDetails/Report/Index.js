@@ -243,7 +243,7 @@ const generateProps = (inputArray, props, timeFrame, table) => {
     humidityAlerts,
   } = parseEnviromentDataFromSSN(inputArray);
 
-  const { chartColors } = props;
+  const { chartColors, thresholds } = props;
 
   const lineCharts = {
     temperature: {
@@ -278,24 +278,35 @@ const generateProps = (inputArray, props, timeFrame, table) => {
     },
   };
 
-  const generateTableProps = (inputArray) => {
+  const generateTableProps = (inputArray, alertsArray) => {
     const max = Math.max(...inputArray);
     const min = Math.min(...inputArray);
     const maxTimestamp = timestamps[inputArray.indexOf(max)];
     const minTimestamp = timestamps[inputArray.indexOf(min)];
+
+    const numberOfAlerts = (type) =>
+      alertsArray.filter((item) => item === type).length;
+
     return {
-      title: "Temperature",
       timeFrame,
       min,
       max,
       maxTimestamp,
       minTimestamp,
+      lows: numberOfAlerts(-1),
+      high: numberOfAlerts(1),
     };
   };
 
   const tableProps = {
-    temperature: generateTableProps(temperature),
-    humidity: generateTableProps(humidity),
+    temperature: {
+      ...generateTableProps(temperature, temperatureAlerts),
+      title: "Temperature",
+    },
+    humidity: {
+      ...generateTableProps(humidity, humidityAlerts),
+      title: "Humidity",
+    },
   };
 
   return table ? tableProps : lineCharts;
@@ -311,6 +322,7 @@ const renderContent = (inputObject, temperatureOrHumidity, props) => {
     const chartProps = generateProps(inputObject[key], props, timeFrame);
     const tableProps = generateProps(inputObject[key], props, timeFrame, true);
 
+    console.log(temperatureOrHumidity);
     console.log(tableProps[temperatureOrHumidity]);
 
     return (
