@@ -17,8 +17,9 @@ const dateTimeLabelFormats = {
 const commonOptions = () => ({
   chart: {
     height: 200,
-    margin: [25, 25, 25, 25],
-    renderTo: "container",
+    // margin: [25, 25, 25, 25],
+    // padding: [25, 25, 25, 25],
+    // renderTo: "container",
   },
   tooltip: {
     enabled: false,
@@ -30,7 +31,9 @@ const commonOptions = () => ({
     enabled: false,
   },
   xAxis: {
+    tickInterval: 1000 * 1000,
     type: "datetime",
+    startOnTick: true,
     dateTimeLabelFormats,
     gridLineWidth: 2,
     lineWidth: 1,
@@ -82,6 +85,10 @@ const LineChart = (props) => {
           min: yMin ? yMin : 0,
           max: yMax ? yMax : Math.max(...series),
           categories: yLabels,
+          labels: {
+            align: "left",
+            reserveSpace: true,
+          },
         },
       ],
       series: [

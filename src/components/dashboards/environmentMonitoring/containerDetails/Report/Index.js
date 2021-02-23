@@ -233,20 +233,7 @@ const useStyles = makeStyles((theme) => common(theme));
 //   );
 // };
 
-const Report = (props) => {
-  // const [imageSrc, setImageSrc] = React.useState("");
-
-  const classes = useStyles();
-  const dispatch = useDispatch();
-
-  const pdfContainer = React.useRef(null);
-
-  const storedData = useSelector(
-    (state) => state.environmentMonitoring.containerDetails.containerDetailsData
-  );
-
-  // Apply time filter on storedData first, then call parsing function
-  const slicedByDays = getSlicedData(storedData, "days");
+const generateProps = (inputArray, props, timeFrame, table) => {
   const {
     timestamps,
     temperature,
@@ -254,9 +241,7 @@ const Report = (props) => {
 
     humidity,
     humidityAlerts,
-  } = parseEnviromentDataFromSSN(Object.values(slicedByDays)[0]);
-
-  // console.dir(slicedByDays);
+  } = parseEnviromentDataFromSSN(inputArray);
 
   const { chartColors } = props;
 
@@ -293,7 +278,106 @@ const Report = (props) => {
     },
   };
 
-  // const parsedData = parseEnviromentDataFromSSN(storedData);
+  const generateTableProps = (inputArray) => {
+    const max = Math.max(...inputArray);
+    const min = Math.min(...inputArray);
+    const maxTimestamp = timestamps[inputArray.indexOf(max)];
+    const minTimestamp = timestamps[inputArray.indexOf(min)];
+    return {
+      title: "Temperature",
+      timeFrame,
+      min,
+      max,
+      maxTimestamp,
+      minTimestamp,
+    };
+  };
+
+  const tableProps = {
+    temperature: generateTableProps(temperature),
+    humidity: generateTableProps(humidity),
+  };
+
+  return table ? tableProps : lineCharts;
+};
+
+const temperatureOrHumidity = ["temperature", "humidity"];
+
+const renderContent = (inputObject, temperatureOrHumidity, props) => {
+  return Object.keys(inputObject).map((key) => {
+    const forPrimaryChart = temperatureOrHumidity;
+    const forAlertsChart = temperatureOrHumidity + "Alerts";
+    const timeFrame = new Date(key).toLocaleDateString();
+    const chartProps = generateProps(inputObject[key], props, timeFrame);
+    const tableProps = generateProps(inputObject[key], props, timeFrame, true);
+
+    console.log(tableProps[temperatureOrHumidity]);
+
+    return (
+      <Grid
+        item
+        key={key}
+        xs={12}
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "center",
+        }}
+      >
+        <Grid container>
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
+            }}
+          >
+            <Typography
+              variant={"button"}
+              color="textPrimary"
+              style={{ paddingRight: 10 }}
+            >
+              {forPrimaryChart}
+            </Typography>
+            <Typography variant={"button"} color="textSecondary">
+              {new Date(key).toLocaleDateString()}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
+            }}
+          >
+            <LineChart chartData={chartProps[forPrimaryChart]} />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "center",
+            }}
+          >
+            <LineChart chartData={chartProps[forAlertsChart]} />
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  });
+};
+
+const Report = (props) => {
+  // const [imageSrc, setImageSrc] = React.useState("");
+
+  const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [showReport, setShowReport] = React.useState(false);
 
@@ -301,6 +385,17 @@ const Report = (props) => {
     setShowReport(!showReport);
     showToastsAction(dispatch);
   };
+
+  const pdfContainer = React.useRef(null);
+
+  const storedData = useSelector(
+    (state) => state.environmentMonitoring.containerDetails.containerDetailsData
+  );
+
+  // Apply time filter on storedData first, then call parsing function
+  const slicedByDays = getSlicedData(storedData, "days");
+
+  // const parsedData = parseEnviromentDataFromSSN(storedData);
 
   // const renderReportDocument = (
   //   <ReportDocument data={parsedData} img={imageSrc} />
@@ -325,18 +420,20 @@ const Report = (props) => {
   // });
 
   const handlePrintButton = (e) => {
-    const printContent = pdfContainer.current;
-    const WinPrint = window.open(
-      "",
-      "",
-      "fullscreen=yes,toolbar=0,scrollbars=0,status=0"
-    );
-    WinPrint.document.write(printContent.innerHTML);
-    WinPrint.document.close();
-    WinPrint.focus();
-    WinPrint.print();
+    // const printContent = pdfContainer.current;
+    // const WinPrint = window.open(
+    //   "",
+    //   "",
+    //   "fullscreen=yes,toolbar=0,scrollbars=0,status=0"
+    // );
+    // WinPrint.document.write(printContent.innerHTML);
+    // WinPrint.document.close();
+    // WinPrint.focus();
+    // WinPrint.print();
     // WinPrint.close();
+    console.log("clicked print");
   };
+
   return (
     <div>
       <Tooltip placement="top" title="Report">
@@ -378,52 +475,20 @@ const Report = (props) => {
             >
               <Grid
                 container
-                style={{
-                  width: "100%",
-                  height: "100%",
-
-                  border: true,
-                  borderStyle: "solid",
-                  borderColor: colors.BLUEGREY[700],
-                  borderWidth: 1,
-                }}
+                style={
+                  {
+                    // border: true,
+                    // borderStyle: "solid",
+                    // borderColor: colors.BLUEGREY[500],
+                    // borderWidth: 1,
+                  }
+                }
                 direction="row"
                 justify="center"
-                alignItems="center"
+                alignItems="flex-start"
               >
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    justifyContent: "center",
-                  }}
-                >
-                  <LineChart chartData={lineCharts.temperature} />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    justifyContent: "center",
-                  }}
-                >
-                  <LineChart chartData={lineCharts.temperature} />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    justifyContent: "center",
-                  }}
-                >
-                  <LineChart chartData={lineCharts.temperatureAlerts} />
-                </Grid>
+                {renderContent(slicedByDays, temperatureOrHumidity[0], props)}
+                {renderContent(slicedByDays, temperatureOrHumidity[1], props)}
               </Grid>
             </div>
           </div>
