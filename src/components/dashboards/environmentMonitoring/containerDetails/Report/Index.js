@@ -1,5 +1,5 @@
 import React from "react";
-// import Pdf from "react-to-pdf";
+import Pdf from "react-to-pdf";
 import { useSelector, useDispatch } from "react-redux";
 
 // import {
@@ -19,7 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import DialogTitle from "@material-ui/core/DialogTitle";
+// import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -398,7 +398,7 @@ const Report = (props) => {
     showToastsAction(dispatch);
   };
 
-  const pdfContainer = React.useRef(null);
+  const pdfRef = React.useRef(null);
 
   const storedData = useSelector(
     (state) => state.environmentMonitoring.containerDetails.containerDetailsData
@@ -461,15 +461,7 @@ const Report = (props) => {
         </Button>
       </Tooltip>
       <Dialog fullScreen open={showReport}>
-        {/* <DialogTitle>
-          <Typography variant="button" style={{ color: colors.TEAL[800] }}>
-            Export
-          </Typography>
-        </DialogTitle> */}
         <DialogContent dividers>
-          {/* <Pdf targetRef={ref} filename="example.pdf">
-            {({ toPdf }) => <button onClick={toPdf}>Generate Pdf</button>}
-          </Pdf> */}
           <div
             style={{
               display: "flex",
@@ -480,50 +472,33 @@ const Report = (props) => {
           >
             <div
               style={{
-                width: "210mm",
-                height: "297mm",
+                width: "297mm",
+                height: "210mm",
+                backgroundColor: colors.BLUEGREY[500],
+                border: true,
+                borderStyle: "solid",
+                borderColor: colors.RED[500],
+                borderWidth: 5,
               }}
-              ref={pdfContainer}
-            >
-              <Grid
-                container
-                style={
-                  {
-                    // border: true,
-                    // borderStyle: "solid",
-                    // borderColor: colors.BLUEGREY[500],
-                    // borderWidth: 1,
-                  }
-                }
-                direction="row"
-                justify="center"
-                alignItems="flex-start"
-              >
-                {renderContent(slicedByDays, temperatureOrHumidity[0], props)}
-                {renderContent(slicedByDays, temperatureOrHumidity[1], props)}
-              </Grid>
-            </div>
+              ref={pdfRef}
+            ></div>
           </div>
-
-          {/* <PDFViewer width={"100%"} height={"100%"}>
-            {renderReportDocument}
-          </PDFViewer> */}
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={(e) => handlePrintButton(e)}
+          <Pdf
+            targetRef={pdfRef}
+            filename="example.pdf"
+            option={{
+              orientation: "landscape",
+              unit: "mm",
+              format: [2, 4],
+            }}
+            scale={0.5}
           >
-            Print
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={(e) => handleReportButton(e)}
-          >
-            Cancel
-          </Button>
+            {({ toPdf }) => <button onClick={toPdf}>Print</button>}
+          </Pdf>
+
+          <button onClick={(e) => handleReportButton(e)}>Cancel</button>
         </DialogActions>
       </Dialog>
     </div>
