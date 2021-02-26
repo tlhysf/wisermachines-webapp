@@ -395,7 +395,10 @@ export default function ContainerDetails(props) {
             </Tooltip>
           </Grid> */}
           <Grid item>
-            <Report chartColors={chartColors} thresholds={containerProfile} />
+            <Report
+              chartColors={chartColors}
+              containerProfile={containerProfile}
+            />
           </Grid>
           <Grid item>
             <Alerts
