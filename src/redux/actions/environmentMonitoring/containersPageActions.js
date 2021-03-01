@@ -32,9 +32,15 @@ export const populateContainersPageAction = (dispatch, targetUser) => {
         if (isNotEmpty(res.data)) {
           const data = res.data.filter((x) => x);
 
-          let allZonesInAWorkshop = data.map((zone) =>
-            zone.workshop_id === thisUser.workshopID ? zone : null
-          );
+          let allZonesInAWorkshop;
+
+          if (thisUser.type === "admin") {
+            allZonesInAWorkshop = data;
+          } else {
+            allZonesInAWorkshop = data.map((zone) =>
+              zone.workshop_id === thisUser.workshopID ? zone : null
+            );
+          }
 
           if (isNotEmpty(allZonesInAWorkshop)) {
             allZonesInAWorkshop = allZonesInAWorkshop.filter((x) => x);

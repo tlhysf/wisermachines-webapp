@@ -33,10 +33,16 @@ export const getAllWorkshopsAction = (dispatch, targetUser) => {
           );
           thisUser = thisUser.filter((x) => x).pop();
 
-          let allWorkshopsForThisUser = data.map((workshop) =>
-            workshop._id === thisUser.workshopID ? workshop : null
-          );
-          allWorkshopsForThisUser = allWorkshopsForThisUser.filter((x) => x);
+          let allWorkshopsForThisUser;
+
+          if (thisUser.type === "admin") {
+            allWorkshopsForThisUser = data;
+          } else {
+            allWorkshopsForThisUser = data.map((workshop) =>
+              workshop._id === thisUser.workshopID ? workshop : null
+            );
+            allWorkshopsForThisUser = allWorkshopsForThisUser.filter((x) => x);
+          }
 
           dispatch({
             type: workshops.getAllWorkshops,

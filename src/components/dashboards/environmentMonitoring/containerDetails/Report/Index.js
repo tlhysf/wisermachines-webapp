@@ -18,16 +18,21 @@ import { common } from "../../../../../utils/styles";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { parseEnviromentDataFromSSN } from "../../../../../utils/parse";
+import { isNotEmpty } from "../../../../../utils/validation";
 
 import { showToastsAction } from "../../../../../redux/actions/environmentMonitoring/containerDetailsActions";
 
 const useStyles = makeStyles((theme) => common(theme));
 
+const pageHeight = "210mm";
+const pageWidth = "297mm";
+// const pagePadding = 20;
+
 const Report = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { chartColors, containerProfile } = props;
+  const { containerProfile, lineCharts } = props;
 
   const [showReport, setShowReport] = React.useState(false);
 
@@ -97,8 +102,8 @@ const Report = (props) => {
           >
             <div
               style={{
-                width: "297mm",
-                height: "210mm",
+                width: pageWidth,
+                height: pageHeight,
                 border: true,
                 borderStyle: "solid",
                 borderColor: colors.BLUEGREY[700],
@@ -108,16 +113,38 @@ const Report = (props) => {
               <Header data={headerData} />
               <Grid
                 container
-                container
-                direction="row"
-                justify="space-between"
                 style={{
-                  padding: 20,
+                  paddingTop: 0,
+                  paddingLeft: 15,
+                  paddingRight: 15,
+                  paddingBottom: 0,
                 }}
               >
-                <Grid item>{renderReportColumn("Temperature")}</Grid>
-                <Grid item style={{ marginLeft: 10 }}>
-                  {renderReportColumn("Humidity")}
+                <Grid
+                  item
+                  xs={6}
+                  style={{
+                    paddingRight: 7,
+                  }}
+                >
+                  {renderReportColumn(
+                    "Temperature (\u00B0C)",
+                    lineCharts.temperature,
+                    lineCharts.temperatureAlerts
+                  )}
+                </Grid>
+                <Grid
+                  item
+                  xs={6}
+                  style={{
+                    paddingLeft: 7,
+                  }}
+                >
+                  {renderReportColumn(
+                    "Humidity (%Rh)",
+                    lineCharts.humidity,
+                    lineCharts.humidityAlerts
+                  )}
                 </Grid>
               </Grid>
             </div>
@@ -135,24 +162,153 @@ const Report = (props) => {
 
 export default Report;
 
-const renderReportColumn = (heading) => {
+const renderReportColumn = (heading, chartProps, alertChartProps) => {
   return (
-    <div
-      style={{
-        border: true,
-        borderStyle: "solid",
-        borderColor: colors.BLUEGREY[700],
-        borderWidth: 1,
-      }}
-    >
-      <Grid container direction="column" spacing={1}>
-        <Grid item>
-          <Typography variant="h6">{heading}</Typography>
+    <Grid container>
+      <Grid item xs={12}>
+        <Grid
+          container
+          style={{
+            border: true,
+            borderStyle: "solid",
+            borderColor: colors.BLUEGREY[500],
+            borderWidth: 1,
+          }}
+        >
+          <Grid
+            item
+            xs={12}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <Typography variant="button">{heading}</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <LineChart chartData={chartProps} hideXAxis={true} />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <LineChart chartData={alertChartProps} hideXAxis={false} />
+          </Grid>
         </Grid>
-        <Grid item>DATA CHART</Grid>
-        <Grid item>ALERT CHART</Grid>
-        <Grid item>TABLE</Grid>
       </Grid>
-    </div>
+      <Grid
+        item
+        xs={12}
+        style={{ display: "flex", justifyContent: "center", marginTop: 10 }}
+      >
+        {renderTable(chartProps, alertChartProps)}
+      </Grid>
+    </Grid>
+  );
+};
+
+const renderTable = (chartProps, alertChartProps) => {
+  const { series, timestamps } = chartProps;
+
+  // Minimum and maximum
+  const max = Math.max(...series);
+  const min = Math.min(...series);
+  const maxTimestamp = new Date(
+    timestamps[series.indexOf(max)]
+  ).toLocaleTimeString();
+  const minTimestamp = new Date(
+    timestamps[series.indexOf(min)]
+  ).toLocaleTimeString();
+
+  // Average
+  const arrAvg = (arr) => {
+    if (isNotEmpty(arr)) {
+      return arr.reduce((a, b) => a + b, 0) / arr.length;
+    } else return 0;
+  };
+  const average = arrAvg(series).toFixed(2);
+
+  // Standard Deviation
+  const getStandardDeviation = (array) => {
+    if (isNotEmpty(array)) {
+      const n = array.length;
+      const mean = array.reduce((a, b) => a + b) / n;
+      return Math.sqrt(
+        array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
+      );
+    } else return 0;
+  };
+  const stdDev = getStandardDeviation(series).toFixed(2);
+
+  // Number of times high and low threshold were crossed
+  const numberOfAlerts = (type) =>
+    alertChartProps.series.filter((item) => item === type).length;
+
+  const numberOfHighs = numberOfAlerts(2);
+  const numberOfLows = numberOfAlerts(0);
+
+  const renderTableCell = (cellsPerRow, value, textStyle) => {
+    return (
+      <Grid
+        item
+        xs={12 / cellsPerRow}
+        style={{
+          border: true,
+          borderStyle: "solid",
+          borderColor: "white",
+          borderWidth: 1,
+          backgroundColor: colors.BLUEGREY[300],
+        }}
+      >
+        <div style={{ paddingLeft: 10, paddingTop: 5, paddingBottom: 2 }}>
+          <Typography variant={textStyle}>{value}</Typography>
+        </div>
+      </Grid>
+    );
+  };
+
+  const tableBreak = <Grid item xs={12} style={{ marginTop: 5 }} />;
+
+  return (
+    <Grid container>
+      <Grid item xs={12}>
+        <Grid container>
+          {renderTableCell(3, "Max", "body2")}
+          {renderTableCell(3, max, "subtitle2")}
+          {renderTableCell(3, maxTimestamp, "caption")}
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container>
+          {renderTableCell(3, "Min", "body2")}
+          {renderTableCell(3, min, "subtitle2")}
+          {renderTableCell(3, minTimestamp, "caption")}
+        </Grid>
+      </Grid>
+      {tableBreak}
+      <Grid item xs={12}>
+        <Grid container>
+          {renderTableCell(4, "Average", "body2")}
+          {renderTableCell(4, average, "subtitle2")}
+          {renderTableCell(4, "Std. Deviation", "body2")}
+          {renderTableCell(4, stdDev, "subtitle2")}
+        </Grid>
+      </Grid>
+      {tableBreak}
+      <Grid item xs={12}>
+        <Grid container>
+          {renderTableCell(2, "Overshoot Frequency", "body2")}
+          {renderTableCell(2, numberOfHighs, "subtitle2")}
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container>
+          {renderTableCell(2, "Undershoot Frequency", "body2")}
+          {renderTableCell(2, numberOfLows, "subtitle2")}
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };

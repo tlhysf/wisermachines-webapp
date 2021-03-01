@@ -284,6 +284,7 @@ export default function ContainerDetails(props) {
   );
 
   const thresholdLineColor = colors.BLUEGREY[600];
+  const alertLabels = ["Low", "Ok", "High"];
 
   const yMax = (threshold, list) => {
     const max1 = threshold;
@@ -353,7 +354,7 @@ export default function ContainerDetails(props) {
       step: "center",
       large: true,
       yMax: 3,
-      yLabels: ["LOW", "NORMAL", "HIGH"],
+      yLabels: alertLabels,
     },
     humidityAlerts: {
       series: humidityAlerts.map((x) => x + 1),
@@ -364,7 +365,7 @@ export default function ContainerDetails(props) {
       step: "center",
       large: true,
       yMax: 3,
-      yLabels: ["LOW", "NORMAL", "HIGH"],
+      yLabels: alertLabels,
     },
   };
 
@@ -398,6 +399,7 @@ export default function ContainerDetails(props) {
             <Report
               chartColors={chartColors}
               containerProfile={containerProfile}
+              lineCharts={lineCharts}
             />
           </Grid>
           <Grid item>

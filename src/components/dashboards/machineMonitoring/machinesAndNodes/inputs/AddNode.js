@@ -74,26 +74,46 @@ const formatToMAC = (string) => {
   return result;
 };
 
-const sensorRatings = [
+export const sensorRatings = [
   {
     value: 10,
-    label: "10 A",
+    label: "",
+  },
+  {
+    value: 20,
+    label: "",
   },
   {
     value: 30,
-    label: "30 A",
+    label: "",
+  },
+  {
+    value: 40,
+    label: "",
   },
   {
     value: 50,
-    label: "50 A",
+    label: "",
+  },
+  {
+    value: 60,
+    label: "",
+  },
+  {
+    value: 70,
+    label: "",
   },
   {
     value: 80,
-    label: "80 A",
+    label: "",
+  },
+  {
+    value: 90,
+    label: "",
   },
   {
     value: 100,
-    label: "100 A",
+    label: "",
   },
 ];
 
@@ -264,7 +284,7 @@ const AddNode = (props) => {
                 style={formSlider.title}
                 color={errors.sensor1Rating ? "secondary" : "primary"}
               >
-                Sensor 1*
+                sensor 1 (A)*
               </Typography>
               <Slider
                 min={
@@ -303,7 +323,7 @@ const AddNode = (props) => {
                 style={formSlider.title}
                 color={errors.sensor2Rating ? "secondary" : "primary"}
               >
-                Sensor 2*
+                sensor 2 (A)*
               </Typography>
               <Slider
                 min={

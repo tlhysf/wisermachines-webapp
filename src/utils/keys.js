@@ -5,9 +5,9 @@ const keys = {
   // Staging
   // server: "http://115.186.183.129:27000",
 
-  showMockData: true,
-  showDashboardSummaryCards: true,
-  showDashboardSummaryHeaders: true,
+  showMockData: false,
+  showDashboardSummaryCards: false,
+  showDashboardSummaryHeaders: false,
 
   minimalMachineSummaryCards: true,
 
@@ -19,36 +19,49 @@ const keys = {
       password: "default",
       workshopID: "default",
       navigationAliases: ["default", "default"],
+      type: "default",
     },
     {
       name: "shifa",
       password: "1234",
       workshopID: "5fecdd5a7221a50e7842198b",
       navigationAliases: ["workshops", "zones"],
+      type: "user",
     },
     {
       name: "gsk",
       password: "1234",
       workshopID: "600fabc8549c501670d98806",
       navigationAliases: ["workshops", "zones"],
+      type: "user",
     },
     {
       name: "kolson",
       password: "1234",
       workshopID: "",
       navigationAliases: ["workshops", "zones"],
+      type: "user",
     },
     {
       name: "demo",
       password: "demo",
-      workshopID: "demo",
+      workshopID: "",
       navigationAliases: ["workshops", "zones"],
+      type: "user",
     },
     {
       name: "ihsan-safety",
       password: "1234",
       workshopID: "6011407db9c4963230840521",
       navigationAliases: ["workshops", "zones"],
+      type: "user",
+    },
+    {
+      name: "admin",
+      password: "12345678",
+      workshopID: "",
+      navigationAliases: ["workshops", "zones"],
+      type: "admin",
     },
   ],
 };

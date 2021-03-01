@@ -21,6 +21,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { formStyle, formSlider } from "../../../../../utils/styles";
 import { requestBodyFormat } from "../../../../../utils/validation";
 
+import { sensorRatings } from "./AddNode";
+
 const useStyles = makeStyles((theme) => formStyle(theme));
 
 const isHex = (string) => {
@@ -59,29 +61,6 @@ const isHex = (string) => {
 
   return !results.includes(false);
 };
-
-const sensorRatings = [
-  {
-    value: 10,
-    label: "10 A",
-  },
-  {
-    value: 30,
-    label: "30 A",
-  },
-  {
-    value: 50,
-    label: "50 A",
-  },
-  {
-    value: 80,
-    label: "80 A",
-  },
-  {
-    value: 100,
-    label: "100 A",
-  },
-];
 
 const EditNode = (props) => {
   const classes = useStyles();
@@ -304,7 +283,7 @@ const EditNode = (props) => {
                 style={formSlider.title}
                 color={errors.sensor1Rating ? "secondary" : "primary"}
               >
-                Sensor 1*
+                sensor 1 (A)*
               </Typography>
               <Slider
                 min={
@@ -344,7 +323,7 @@ const EditNode = (props) => {
                 style={formSlider.title}
                 color={errors.sensor2Rating ? "secondary" : "primary"}
               >
-                Sensor 2*
+                sensor 2 (A)*
               </Typography>
               <Slider
                 min={

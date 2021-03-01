@@ -14,12 +14,15 @@ const dateTimeLabelFormats = {
   year: "%Y",
 };
 
-const commonOptions = () => ({
+const commonOptions = (hideXAxis) => ({
   chart: {
-    height: 200,
-    // margin: [25, 25, 25, 25],
-    // padding: [25, 25, 25, 25],
-    // renderTo: "container",
+    height: "200",
+    width: "500",
+    renderTo: "container",
+    // marginBottom: hideXAxis ? 0 : 60,
+    // marginTop: hideXAxis ? 10 : 0,
+    // marginLeft: 20,
+    // marginRight: 25,
   },
   tooltip: {
     enabled: false,
@@ -38,7 +41,10 @@ const commonOptions = () => ({
     gridLineWidth: 2,
     lineWidth: 1,
     minorGridLineWidth: 1,
-    tickColor: "rgb(0,0,0,1)",
+    tickColor: hideXAxis ? "rgb(0,0,0,0)" : "rgb(0,0,0,1)",
+    labels: {
+      enabled: hideXAxis ? false : true,
+    },
   },
 
   navigator: {
@@ -53,7 +59,9 @@ const commonOptions = () => ({
 });
 
 const LineChart = (props) => {
-  const [chartOptions, setChartOptions] = useState(commonOptions());
+  const [chartOptions, setChartOptions] = useState(
+    commonOptions(props.hideXAxis)
+  );
 
   useEffect(() => {
     const defaultChartData = {
@@ -73,22 +81,22 @@ const LineChart = (props) => {
       name,
       step,
       color,
-      yMax,
-      yMin,
+      // yMin,
       yLabels,
     } = props.chartData ? props.chartData : defaultChartData;
 
     setChartOptions({
       yAxis: [
         {
-          // offset: -20,
-          min: yMin ? yMin : 0,
-          max: yMax ? yMax : Math.max(...series),
+          offset: 25,
+          min: Math.min(...series),
+          max: Math.max(...series),
+          showLastLabel: true,
           categories: yLabels,
-          labels: {
-            align: "left",
-            reserveSpace: true,
-          },
+          // labels: {
+          //   align: "left",
+          //   reserveSpace: 20,
+          // },
         },
       ],
       series: [
@@ -116,13 +124,11 @@ const LineChart = (props) => {
   }, [props]);
 
   return (
-    <div>
-      <HighchartsReact
-        highcharts={Highcharts}
-        constructorType={"stockChart"}
-        options={chartOptions}
-      />
-    </div>
+    <HighchartsReact
+      highcharts={Highcharts}
+      constructorType={"stockChart"}
+      options={chartOptions}
+    />
   );
 };
 

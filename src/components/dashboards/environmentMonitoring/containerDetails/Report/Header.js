@@ -13,8 +13,15 @@ const Header = (props) => {
 
   const { heading, logo, filename, to, from, thresholds } = props.data;
 
-  const renderRowText = (text) => (
-    <Typography variant="body1">{text}</Typography>
+  const renderRowText = (text, value) => (
+    <div>
+      <Typography variant="body2" display="inline">
+        {text}
+      </Typography>
+      <Typography variant="subtitle2" display="inline">
+        {value}
+      </Typography>
+    </div>
   );
 
   return (
@@ -30,12 +37,26 @@ const Header = (props) => {
             <Typography variant="h5">{heading}</Typography>
           </Grid>
           <Grid item xs={12}>
-            {renderRowText("File Name: " + filename)}
+            {renderRowText("File Name: ", filename)}
           </Grid>
           <Grid item xs={12}>
-            {renderRowText("From: " + from)}
+            {renderRowText("From: ", from)}
           </Grid>
-          {renderRowText("To: " + to)}
+          <Grid item xs={12}>
+            {renderRowText("To: ", to)}
+          </Grid>
+          <Grid item xs={12}>
+            {renderRowText(
+              "Temperature Thresholds: ",
+              thresholds.temperature.min + " - " + thresholds.temperature.max
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            {renderRowText(
+              "Humidity Thresholds: ",
+              thresholds.humidity.min + " - " + thresholds.humidity.max
+            )}
+          </Grid>
         </Grid>
       </Grid>
       <Grid
