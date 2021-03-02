@@ -2,6 +2,7 @@
 - report markup // done
 - addNode, editNode sliders, set range 0-100 // done
 - update build on server // done
+- remove ignore node filter 
 - report printing
 - summary cards and headers 
 - graphs, xaxis, labels, fixed count
