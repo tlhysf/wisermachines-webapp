@@ -44,6 +44,7 @@ export default function CardMedium(props) {
     maxValue,
     minTitle,
     minValue,
+    lg,
   } = props.data;
 
   const gaugeItem1 = {
@@ -107,33 +108,35 @@ export default function CardMedium(props) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={5}>
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="flex-start"
-          spacing={2}
-          style={{ paddingLeft: 15, paddingTop: 15 }}
-        >
-          <Grid item xs={12}>
-            {minMaxRender(
-              maxTitle,
-              maxValue,
-              getColor(maxValue, thresholds, colorSets),
-              <ArrowUpwardIcon style={iconStyle} />
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            {minMaxRender(
-              minTitle,
-              minValue,
-              getColor(minValue, thresholds, colorSets),
-              <ArrowDownwardIcon style={iconStyle} />
-            )}
+      {lg ? (
+        <Grid item xs={5}>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="flex-start"
+            spacing={2}
+            style={{ paddingLeft: 15, paddingTop: 15 }}
+          >
+            <Grid item xs={12}>
+              {minMaxRender(
+                maxTitle,
+                maxValue,
+                getColor(maxValue, thresholds, colorSets),
+                <ArrowUpwardIcon style={iconStyle} />
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              {minMaxRender(
+                minTitle,
+                minValue,
+                getColor(minValue, thresholds, colorSets),
+                <ArrowDownwardIcon style={iconStyle} />
+              )}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      ) : null}
     </Grid>
   );
 }

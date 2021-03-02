@@ -66,6 +66,7 @@ export default function ContainerDetails(props) {
   const { containerID } = props.match.params;
 
   const [liveData, setLiveData] = useState(null);
+  const [liveDataArr, setLiveDataArr] = useState([]);
 
   const loading = useSelector(
     (state) =>
@@ -86,19 +87,6 @@ export default function ContainerDetails(props) {
 
   containerProfile = containerProfile !== null ? containerProfile[0] : {};
 
-  const allData = !isNotEmpty(storedData)
-    ? []
-    : !isNotEmpty(liveData)
-    ? storedData
-    : [...storedData, liveData];
-
-  const parsedData = parseEnviromentDataFromSSN(allData);
-
-  useEffect(() => {
-    populateContainerDetailsPageAction(dispatch, containerID);
-    getContainerProfile(dispatch, containerID);
-  }, [dispatch, containerID]);
-
   useEffect(() => {
     if (!keys.showMockData) {
       client.emit("send-data-environment", { _id: containerID });
@@ -106,10 +94,10 @@ export default function ContainerDetails(props) {
     if (!keys.showMockData) {
       client.on(`data-environment-${containerID}`, (msg) => {
         try {
-          if (msg) {
+          if (isNotEmpty(msg) && msg.node_mac !== ignoreMAC) {
             setLiveData(msg);
-          } else {
-            setLiveData(null);
+            // setLiveDataArr([...liveDataArr, msg]);
+            setLiveDataArr((prevItems) => [...prevItems, msg]);
           }
         } catch (error) {
           setLiveData(null);
@@ -123,6 +111,38 @@ export default function ContainerDetails(props) {
       }, 3000);
     }
   }, [containerID]);
+
+  console.log(liveDataArr);
+
+  // const allData = !isNotEmpty(storedData)
+  //   ? []
+  //   : !isNotEmpty(liveData)
+  //   ? storedData
+  //   : [...storedData, liveData];
+
+  const allData = [...storedData, ...liveDataArr];
+
+  ///////////////////////////////////////////////////////////////////////
+  // filter node
+  const ignoreID = "603c9bb20f2dc628d8e1a8d4";
+  const ignoreMAC = "70:B3:D5:FE:4C:E1";
+
+  let allDataFiltered = allData.map((item) => {
+    if (item.node_id === ignoreID) {
+      return null;
+    } else return item;
+  });
+
+  allDataFiltered = allDataFiltered.filter((item) => item);
+
+  // console.log(allDataFiltered);
+
+  const parsedData = parseEnviromentDataFromSSN(allDataFiltered);
+
+  useEffect(() => {
+    populateContainerDetailsPageAction(dispatch, containerID);
+    getContainerProfile(dispatch, containerID);
+  }, [dispatch, containerID]);
 
   // console.log(liveData);
 

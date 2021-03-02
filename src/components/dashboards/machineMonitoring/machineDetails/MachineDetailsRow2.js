@@ -31,6 +31,7 @@ export default function MachineDetailsRow2(props) {
       high: 66,
       low: 33,
     },
+    lg: true,
   };
 
   const oeeCard = {
@@ -45,6 +46,7 @@ export default function MachineDetailsRow2(props) {
       high: 66,
       low: 33,
     },
+    lg: false,
   };
 
   const temperatureCard = {
@@ -59,6 +61,7 @@ export default function MachineDetailsRow2(props) {
       high: 66,
       low: 33,
     },
+    lg: true,
   };
 
   const humidityCard = {
@@ -73,6 +76,7 @@ export default function MachineDetailsRow2(props) {
       high: 66,
       low: 33,
     },
+    lg: true,
   };
 
   return (
