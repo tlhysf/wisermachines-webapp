@@ -94,7 +94,10 @@ export default function ContainerDetails(props) {
     if (!keys.showMockData) {
       client.on(`data-environment-${containerID}`, (msg) => {
         try {
-          if (isNotEmpty(msg) && msg.node_mac !== ignoreMAC) {
+          if (
+            isNotEmpty(msg)
+            //&& msg.node_mac !== ignoreMAC
+          ) {
             setLiveData(msg);
             // setLiveDataArr([...liveDataArr, msg]);
             setLiveDataArr((prevItems) => [...prevItems, msg]);
@@ -112,7 +115,7 @@ export default function ContainerDetails(props) {
     }
   }, [containerID]);
 
-  console.log(liveDataArr);
+  // console.log(liveDataArr);
 
   // const allData = !isNotEmpty(storedData)
   //   ? []
@@ -124,20 +127,17 @@ export default function ContainerDetails(props) {
 
   ///////////////////////////////////////////////////////////////////////
   // filter node
-  const ignoreID = "603c9bb20f2dc628d8e1a8d4";
-  const ignoreMAC = "70:B3:D5:FE:4C:E1";
-
-  let allDataFiltered = allData.map((item) => {
-    if (item.node_id === ignoreID) {
-      return null;
-    } else return item;
-  });
-
-  allDataFiltered = allDataFiltered.filter((item) => item);
-
+  // const ignoreID = "603c9bb20f2dc628d8e1a8d4";
+  // const ignoreMAC = "70:B3:D5:FE:4C:E1";
+  // let allDataFiltered = allData.map((item) => {
+  //   if (item.node_id === ignoreID) {
+  //     return null;
+  //   } else return item;
+  // });
+  // allDataFiltered = allDataFiltered.filter((item) => item);
   // console.log(allDataFiltered);
 
-  const parsedData = parseEnviromentDataFromSSN(allDataFiltered);
+  const parsedData = parseEnviromentDataFromSSN(allData);
 
   useEffect(() => {
     populateContainerDetailsPageAction(dispatch, containerID);

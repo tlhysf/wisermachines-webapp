@@ -2,11 +2,12 @@
 - report markup // done
 - addNode, editNode sliders, set range 0-100 // done
 - update build on server // done
-- remove ignore node filter 
-- report printing
+- remove ignore node filter // done
+- report printing // done
+- chart refresh problem // done
+
 - summary cards and headers 
 - graphs, xaxis, labels, fixed count
 - set min, max thresholds for zone using only sliders, no text inputs 
 - integrate APIs in edit mapping 
 - test add machine, edit machine, edit mapping
-- chart refresh problem // done

@@ -1,9 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import ReactToPdf from "react-to-pdf";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import Grid from "@material-ui/core/Grid";
@@ -24,21 +26,25 @@ import { showToastsAction } from "../../../../../redux/actions/environmentMonito
 
 const useStyles = makeStyles((theme) => common(theme));
 
-const pageHeight = "210mm";
-const pageWidth = "297mm";
+const pageHeight = 210;
+const pageWidth = 297;
 // const pagePadding = 20;
 
 const Report = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const ref = React.createRef();
+
   const { containerProfile, lineCharts } = props;
 
   const [showReport, setShowReport] = React.useState(false);
+  const [printingStatus, setPrintingStatus] = React.useState(null);
 
   const handleReportButton = (e) => {
     setShowReport(!showReport);
     showToastsAction(dispatch);
+    setPrintingStatus(null);
   };
 
   const storedData = useSelector(
@@ -91,6 +97,7 @@ const Report = (props) => {
         </Button>
       </Tooltip>
       <Dialog fullScreen open={showReport}>
+        {printingStatus ? <DialogTitle>{printingStatus}</DialogTitle> : null}
         <DialogContent dividers>
           <div
             style={{
@@ -102,13 +109,14 @@ const Report = (props) => {
           >
             <div
               style={{
-                width: pageWidth,
-                height: pageHeight,
+                width: `${pageWidth}mm`,
+                height: `${pageHeight}mm`,
                 border: true,
                 borderStyle: "solid",
-                borderColor: colors.BLUEGREY[700],
+                borderColor: colors.BLUEGREY[600],
                 borderWidth: 2,
               }}
+              ref={ref}
             >
               <Header data={headerData} />
               <Grid
@@ -151,7 +159,39 @@ const Report = (props) => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={(e) => handleReportButton(e)}>
+          <ReactToPdf
+            targetRef={ref}
+            filename={headerData.filename}
+            options={{
+              orientation: "landscape",
+              unit: "mm",
+              format: [pageWidth * 5.69, pageHeight * 5.69],
+            }}
+            scale={2}
+            onComplete={(e) => {
+              setPrintingStatus("PDF Generated.");
+            }}
+          >
+            {({ toPdf }) => (
+              <Button
+                style={{ width: 80 }}
+                variant="outlined"
+                color="primary"
+                onClick={(e) => {
+                  setPrintingStatus("Generating PDF...");
+                  toPdf();
+                }}
+              >
+                Export
+              </Button>
+            )}
+          </ReactToPdf>
+          <Button
+            style={{ width: 80 }}
+            variant="outlined"
+            color="secondary"
+            onClick={(e) => handleReportButton(e)}
+          >
             Cancel
           </Button>
         </DialogActions>
