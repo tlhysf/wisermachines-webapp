@@ -3,7 +3,9 @@ import Loader from "react-loader-spinner";
 import Grid from "@material-ui/core/Grid";
 import colors from "../../utils/colors";
 
-export default function Spinner() {
+export default function Spinner(props) {
+  const defaultColor = colors.TEAL[500];
+  const color = props.color ? props.color : defaultColor;
   return (
     <Grid item xs={12}>
       <Grid
@@ -14,7 +16,7 @@ export default function Spinner() {
         style={{ height: "50vh" }}
       >
         <Grid item>
-          <Loader type="Bars" height={50} width={50} color={colors.TEAL[500]} />
+          <Loader type="Bars" height={50} width={50} color={color} />
         </Grid>
       </Grid>
     </Grid>

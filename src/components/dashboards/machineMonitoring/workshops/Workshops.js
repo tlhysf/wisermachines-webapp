@@ -82,15 +82,25 @@ const Workshops = (props) => {
       </Grid>
     ) : null;
 
+  const renderLoading = (
+    <div>
+      <Loader color={colors.BLUE[600]} />
+
+      <div>
+        <AlertCard message={"Your Data is Being Loaded."} />
+      </div>
+    </div>
+  );
+
   return (
     <>
       <Grid container justify="center" alignItems="center" spacing={2}>
         <Grid item xs={12}>
           {navbar}
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={workshopsLoading ? "auto" : 12}>
           {workshopsLoading ? (
-            <Loader />
+            renderLoading
           ) : (
             <WorkshopCards allWorkshops={allWorkshops} />
           )}

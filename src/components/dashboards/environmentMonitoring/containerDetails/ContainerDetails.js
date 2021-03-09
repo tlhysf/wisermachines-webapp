@@ -444,7 +444,11 @@ export default function ContainerDetails(props) {
         {navbar}
       </Grid>
 
-      <Loader />
+      <Loader color={colors.BLUE[600]} />
+
+      <div>
+        <AlertCard message={"Your Data is Being Loaded."} />
+      </div>
     </Grid>
   );
 

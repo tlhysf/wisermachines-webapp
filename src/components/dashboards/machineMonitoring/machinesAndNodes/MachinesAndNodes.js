@@ -169,16 +169,30 @@ const MachinesAndNodes = (props) => {
       </Grid>
     ) : null;
 
+  const renderLoading = (
+    <div>
+      <Loader color={colors.BLUE[600]} />
+
+      <div>
+        <AlertCard message={"Your Data is Being Loaded."} />
+      </div>
+    </div>
+  );
+
   const renderNodes = nodesLoading ? (
-    <Loader />
+    <Grid item>{renderLoading}</Grid>
   ) : (
-    <NodeCards allNodesInAZone={allNodesInAZone} />
+    <Grid item xs={12}>
+      <NodeCards allNodesInAZone={allNodesInAZone} />
+    </Grid>
   );
 
   const renderMachines = machinesLoading ? (
-    <Loader />
+    <Grid item>{renderLoading}</Grid>
   ) : (
-    <MachineCards allMachinesInAZone={allMachinesInAZone} compact={compact} />
+    <Grid item xs={12}>
+      <MachineCards allMachinesInAZone={allMachinesInAZone} compact={compact} />
+    </Grid>
   );
 
   const renderMachinesOrNodes =
@@ -197,9 +211,7 @@ const MachinesAndNodes = (props) => {
         <Grid item xs={12}>
           {navbar}
         </Grid>
-        <Grid item xs={12}>
-          {renderMachinesOrNodes}
-        </Grid>
+        {renderMachinesOrNodes}
         {renderMachinesOrNodesNotFound}
       </Grid>
 

@@ -3,6 +3,8 @@ import Grid from "@material-ui/core/Grid";
 import Grow from "@material-ui/core/Grow";
 
 import Card from "./cards/Card";
+import CostAndUnitsCard from "./cards/CostAndUnitsCard";
+
 import LastUpdatedCard from "../../../common/LastUpdatedCard";
 
 import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
@@ -10,6 +12,7 @@ import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import CancelIcon from "@material-ui/icons/Cancel";
 import PowerIcon from "@material-ui/icons/Power";
 import FlashOnOutlinedIcon from "@material-ui/icons/FlashOnOutlined";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 
 import colors from "../../../../utils/colors";
 
@@ -62,7 +65,7 @@ export default function MachineDetailsRow1(props) {
     },
   };
 
-  const unitsUntilNow = {
+  const unitsData = {
     icon: (
       <PowerIcon
         size="small"
@@ -70,7 +73,33 @@ export default function MachineDetailsRow1(props) {
       />
     ),
     values: {
-      primary: unitsConsumed + " kwh",
+      primary: unitsConsumed + " KwH",
+      secondary: timeFilter,
+    },
+  };
+
+  const calculateCost = (units) => {
+    const costPerUnit = 19.74; // PKR per KWH
+    let total = String((unitsConsumed * costPerUnit).toFixed(0));
+
+    if (total.length > 3) {
+      total =
+        total.substr(0, total.length - 3) +
+        "," +
+        total.substr(total.length - 3);
+    }
+    return total;
+  };
+
+  const costData = {
+    icon: (
+      <AttachMoneyIcon
+        size="small"
+        style={{ color: colors.GREEN[700], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: calculateCost(unitsConsumed) + " PKR",
       secondary: timeFilter,
     },
   };
@@ -112,7 +141,7 @@ export default function MachineDetailsRow1(props) {
         {...{ timeout: animationDuration + 4 * animationDuration }}
       >
         <Grid item md={3} sm={6} xs={12}>
-          <Card data={unitsUntilNow} />
+          <CostAndUnitsCard costData={costData} unitsData={unitsData} />
         </Grid>
       </Grow>
     </Grid>
