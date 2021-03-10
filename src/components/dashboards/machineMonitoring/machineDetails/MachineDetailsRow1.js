@@ -73,7 +73,7 @@ export default function MachineDetailsRow1(props) {
       />
     ),
     values: {
-      primary: unitsConsumed + " KwH",
+      primary: unitsConsumed + " kWh",
       secondary: timeFilter,
     },
   };
