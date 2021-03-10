@@ -164,7 +164,7 @@ const MachinesAndNodes = (props) => {
           style={{ height: "70vh" }}
           spacing={4}
         >
-          <AlertCard message={"Couldnt find anything"} />
+          <AlertCard message={"Couldn't find anything"} />
         </Grid>
       </Grid>
     ) : null;
