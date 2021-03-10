@@ -2,11 +2,13 @@ import React, { useState } from "react";
 
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import LineChart from "../../../common/LineChart";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
 import Grow from "@material-ui/core/Grow";
+
+import LineChart from "../../../common/LineChart";
+import DutyCyclePieChart from "./cards/DutyCyclePieChart";
 
 import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../../utils/colors";
@@ -102,6 +104,9 @@ export default function MachineDetailsRow3(props) {
         </Grid>
         <Grid item xs={12}>
           {chartRenders[buttonIndex]}
+        </Grid>
+        <Grid item>
+          <DutyCyclePieChart />
         </Grid>
       </Grid>
     </Grow>
