@@ -48,7 +48,7 @@ export default function WorkshopCards(props) {
           container
           direction="row"
           justify="center"
-          alignItems="center"
+          alignItems="flex-start"
           spacing={2}
         >
           {props.allWorkshops.map((item, index) => (

@@ -466,15 +466,16 @@ const DashboardSummaryCardMinimal = (props) => {
             container
             direction="row"
             justify="space-between"
-            alignItems="center"
+            alignItems="flex-start"
           >
-            <Grid item>
+            <Grid item xs={10}>
               {ID ? (
                 <Tooltip title="Open" placement="top">
                   <Button onClick={handlePageChange}>
                     <Typography
                       variant="button"
                       style={{ color: colors.BLUEGREY[600] }}
+                      align="left"
                     >
                       {name}
                     </Typography>
@@ -491,7 +492,7 @@ const DashboardSummaryCardMinimal = (props) => {
                 </Button>
               )}
             </Grid>
-            <Grid item>
+            <Grid item xs={"auto"}>
               <Tooltip title="Settings" placement="top">
                 <IconButton onClick={(e) => handleClick(e)}>
                   <MoreHorizIcon className={classes.iconButton} />
