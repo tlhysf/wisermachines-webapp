@@ -419,6 +419,11 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
   let downtime = "Unknown";
   let operationCount = 0; // no of times state went from ON to OFF/IDLE
 
+  // Duty Cycle
+  let onLoadHours = 0;
+  let offLoadHours = 0;
+  let shutdownHours = 0;
+
   if (packets) {
     try {
       const latest = packets.slice(-1)[0];
@@ -492,8 +497,10 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
 
       // Utilization
       const interval = 5;
-      let upCount = 0;
-      let downCount = 0;
+      let onCount = 0;
+      let idleCount = 0;
+      let offCount = 0;
+
       statesInGivenInterval.map((state, i) => {
         if (state === 2) {
           if (
@@ -502,15 +509,25 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
           )
             operationCount++;
 
-          upCount++;
-        } else downCount++;
+          onCount++;
+        } else if (state === 1) idleCount++;
+        else if (state === 0) offCount++;
 
         return i;
       });
-      utilization = Math.round((upCount / statesInGivenInterval.length) * 100);
-      const forCovertingToMinutes = 60 / interval;
-      uptime = minutesToHours(Math.round(upCount / forCovertingToMinutes));
-      downtime = minutesToHours(Math.round(downCount / forCovertingToMinutes));
+      utilization = Math.round((onCount / statesInGivenInterval.length) * 100);
+
+      const minutesFromCount = (count) => {
+        return Math.round((count * interval) / 60);
+      };
+
+      uptime = minutesToHours(minutesFromCount(onCount));
+      downtime = minutesToHours(minutesFromCount(idleCount + offCount));
+
+      //Duty Cycle
+      onLoadHours = minutesFromCount(onCount) / 60;
+      offLoadHours = minutesFromCount(idleCount) / 60;
+      shutdownHours = minutesFromCount(offCount) / 60;
     } catch (error) {
       console.log(error);
     }
@@ -551,6 +568,9 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
     uptime,
     downtime,
     operationCount,
+
+    //Duty Cycle
+    dutyCycle: { shutdownHours, offLoadHours, onLoadHours },
   };
 };
 

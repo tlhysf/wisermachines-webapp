@@ -5,7 +5,7 @@ const keys = {
   // Staging
   // server: "http://115.186.183.129:27000",
 
-  showMockData: false,
+  showMockData: true,
   showDashboardSummaryCards: false,
   showDashboardSummaryHeaders: false,
 

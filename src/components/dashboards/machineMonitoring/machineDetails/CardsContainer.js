@@ -104,7 +104,7 @@ export default function MachineDetailsRow1(props) {
     },
   };
 
-  return (
+  const renderRow1 = (
     <Grid
       container
       direction="row"
@@ -116,7 +116,7 @@ export default function MachineDetailsRow1(props) {
         in={true}
         {...{ timeout: animationDuration + 0 * animationDuration }}
       >
-        <Grid item md={3} sm={6} xs={12}>
+        <Grid item md={4} sm={6} xs={12}>
           <LastUpdatedCard data={updateStatus} />
         </Grid>
       </Grow>
@@ -124,7 +124,7 @@ export default function MachineDetailsRow1(props) {
         in={true}
         {...{ timeout: animationDuration + 1 * animationDuration }}
       >
-        <Grid item md={3} sm={6} xs={12}>
+        <Grid item md={4} sm={6} xs={12}>
           <Card data={stateRightNow} />
         </Grid>
       </Grow>
@@ -132,18 +132,67 @@ export default function MachineDetailsRow1(props) {
         in={true}
         {...{ timeout: animationDuration + 3 * animationDuration }}
       >
-        <Grid item md={3} sm={6} xs={12}>
+        <Grid item md={4} sm={6} xs={12}>
           <Card data={currentRightNow} />
+        </Grid>
+      </Grow>
+      {/* <Grow
+    in={true}
+    {...{ timeout: animationDuration + 4 * animationDuration }}
+  >
+    <Grid item md={3} sm={6} xs={12}>
+      <CostAndUnitsCard costData={costData} unitsData={unitsData} />
+    </Grid>
+  </Grow> */}
+    </Grid>
+  );
+
+  const renderRow2 = (
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="stretch"
+      spacing={2}
+    >
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 0 * animationDuration }}
+      >
+        <Grid item md={4} sm={6} xs={12}>
+          <Card data={stateRightNow} />
         </Grid>
       </Grow>
       <Grow
         in={true}
-        {...{ timeout: animationDuration + 4 * animationDuration }}
+        {...{ timeout: animationDuration + 1 * animationDuration }}
       >
-        <Grid item md={3} sm={6} xs={12}>
-          <CostAndUnitsCard costData={costData} unitsData={unitsData} />
+        <Grid item md={4} sm={6} xs={12}>
+          <Card data={stateRightNow} />
         </Grid>
       </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 3 * animationDuration }}
+      >
+        <Grid item md={4} sm={6} xs={12}>
+          <Card data={currentRightNow} />
+        </Grid>
+      </Grow>
+    </Grid>
+  );
+
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        {renderRow1}
+      </Grid>
+      <Grid item xs={12}>
+        {renderRow2}
+      </Grid>
+      <Grid item xs={12}>
+        {renderRow1}
+      </Grid>
     </Grid>
   );
 }

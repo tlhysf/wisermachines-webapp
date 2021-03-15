@@ -20,7 +20,8 @@ import HistoryIcon from "@material-ui/icons/History";
 import { makeStyles } from "@material-ui/core/Styles";
 
 // Custom Components
-import MachineDetailsRow1 from "./MachineDetailsRow1";
+import MachineDetailsRow1 from "./CardsContainer";
+import PieChartContainer from "./PieChartContainer";
 import MachineDetailsRow2 from "./MachineDetailsRow2";
 import MachineDetailsRow3 from "./MachineDetailsRow3";
 
@@ -148,6 +149,8 @@ export default function MachineDetails(props) {
     uptime,
     downtime,
     operationCount,
+
+    dutyCycle,
   } = parsedMachineData;
 
   const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
@@ -232,12 +235,12 @@ export default function MachineDetails(props) {
   );
 
   const renderLoaded = (
-    <Grid container justify="center" alignItems="center" spacing={2}>
+    <Grid container justify="center" alignItems="stretch" spacing={2}>
       <Grid item xs={12}>
         {navbar}
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item md={9} xs={12}>
         <MachineDetailsRow1
           data={{
             currentNow,
@@ -250,8 +253,10 @@ export default function MachineDetails(props) {
           }}
         />
       </Grid>
-
-      <Grid item xs={12}>
+      <Grid item md={3} xs={12}>
+        <PieChartContainer dutyCycle={dutyCycle} />
+      </Grid>
+      {/* <Grid item xs={12}>
         <MachineDetailsRow2
           data={{
             operationCount,
@@ -266,7 +271,7 @@ export default function MachineDetails(props) {
             humidityMin,
           }}
         />
-      </Grid>
+      </Grid> */}
 
       <Grid item xs={12}>
         <MachineDetailsRow3 lineCharts={lineCharts} />

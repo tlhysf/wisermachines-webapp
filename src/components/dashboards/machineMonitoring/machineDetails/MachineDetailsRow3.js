@@ -105,9 +105,7 @@ export default function MachineDetailsRow3(props) {
         <Grid item xs={12}>
           {chartRenders[buttonIndex]}
         </Grid>
-        <Grid item>
-          <DutyCyclePieChart />
-        </Grid>
+        
       </Grid>
     </Grow>
   );
