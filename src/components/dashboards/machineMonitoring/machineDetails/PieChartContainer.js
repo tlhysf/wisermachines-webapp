@@ -21,22 +21,24 @@ export default function PieChartContainer(props) {
   const classes = useStyles();
 
   return (
-    <Grid
-      container
-      alignItems="center"
-      justify="center"
-      component={Paper}
-      className={classes.cardHover}
-      style={{ height: "100%" }}
-    >
-      <Grow
-        in={true}
-        {...{ timeout: animationDuration + 9 * animationDuration }}
+    <Tooltip title="Duty Cycle" placement="top">
+      <Grid
+        container
+        alignItems="center"
+        justify="center"
+        component={Paper}
+        className={classes.cardHover}
+        style={{ height: "100%" }}
       >
-        <Grid item>
-          <DutyCyclePieChart data={props.dutyCycle} />
-        </Grid>
-      </Grow>
-    </Grid>
+        <Grow
+          in={true}
+          {...{ timeout: animationDuration + 9 * animationDuration }}
+        >
+          <Grid item>
+            <DutyCyclePieChart data={props.dutyCycle} />
+          </Grid>
+        </Grow>
+      </Grid>
+    </Tooltip>
   );
 }

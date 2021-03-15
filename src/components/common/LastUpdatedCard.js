@@ -69,12 +69,12 @@ const LastUpdatedCard = (props) => {
       style={{ padding: 12, height: "100%" }}
       className={classes.cardHover}
     >
-      <Grid item>
+      <Grid item xs={2}>
         <Paper style={smallCard.iconPaper} elevation={0}>
           {updateIconRender}
         </Paper>
       </Grid>
-      <Grid item>
+      <Grid item xs={10}>
         <Paper style={smallCard.textPaper} elevation={0}>
           <Grid
             container
