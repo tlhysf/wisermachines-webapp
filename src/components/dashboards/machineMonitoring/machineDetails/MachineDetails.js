@@ -106,7 +106,7 @@ export default function MachineDetails(props) {
   }, [machineID]);
 
   const allData = [...storedData, ...liveDataArr];
-  console.log(allData);
+  // console.log(allData);
   const parsedMachineData = parseDataFromSSN(
     allData,
     timeFiltersList.indexOf(timeFilter)
