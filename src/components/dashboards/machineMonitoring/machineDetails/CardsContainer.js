@@ -1,9 +1,10 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Grow from "@material-ui/core/Grow";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import Card from "./cards/Card";
-import CostAndUnitsCard from "./cards/CostAndUnitsCard";
+// import CostAndUnitsCard from "./cards/CostAndUnitsCard";
 
 import LastUpdatedCard from "../../../common/LastUpdatedCard";
 
@@ -13,6 +14,11 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import PowerIcon from "@material-ui/icons/Power";
 import FlashOnOutlinedIcon from "@material-ui/icons/FlashOnOutlined";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import BuildIcon from "@material-ui/icons/Build";
+import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import SpeedIcon from "@material-ui/icons/Speed";
+import OpacityIcon from "@material-ui/icons/Opacity";
 
 import colors from "../../../../utils/colors";
 
@@ -20,7 +26,7 @@ const animationDuration = 200;
 
 const iconHeight = 40;
 
-export default function MachineDetailsRow1(props) {
+export default function CardsContainer(props) {
   const {
     liveData,
     currentNow,
@@ -29,8 +35,13 @@ export default function MachineDetailsRow1(props) {
     stateNowDuration,
     unitsConsumed,
     timeFilter,
+    temperatureNow,
+    humidityNow,
+    offLoadHours,
+    onLoadHours,
   } = props.data;
 
+  // ********** Row 1 **********
   const updateStatus = { liveData, lastUpdateTimestamp };
 
   const stateRightNow = {
@@ -41,7 +52,7 @@ export default function MachineDetailsRow1(props) {
         />
       ) : stateNow === "IDLE" ? (
         <PauseCircleFilledIcon
-          style={{ color: colors.TEAL[700], height: iconHeight }}
+          style={{ color: colors.BLUE[700], height: iconHeight }}
         />
       ) : (
         <CancelIcon style={{ color: colors.RED[700], height: iconHeight }} />
@@ -56,7 +67,7 @@ export default function MachineDetailsRow1(props) {
     icon: (
       <FlashOnOutlinedIcon
         size="small"
-        style={{ color: colors.INDIGO[700], height: iconHeight }}
+        style={{ color: colors.PURPLE[700], height: iconHeight }}
       />
     ),
     values: {
@@ -65,11 +76,54 @@ export default function MachineDetailsRow1(props) {
     },
   };
 
+  const renderRow1 = (
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="stretch"
+      spacing={2}
+    >
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 0 * animationDuration }}
+      >
+        <Tooltip title="Update Status" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <LastUpdatedCard data={updateStatus} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 1 * animationDuration }}
+      >
+        <Tooltip title="Machine Status" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={stateRightNow} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 2 * animationDuration }}
+      >
+        <Tooltip title="Machine Current" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={currentRightNow} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+    </Grid>
+  );
+
+  // ********** Row 2 **********
+
   const unitsData = {
     icon: (
       <PowerIcon
         size="small"
-        style={{ color: colors.PURPLE[700], height: iconHeight }}
+        style={{ color: colors.INDIGO[700], height: iconHeight }}
       />
     ),
     values: {
@@ -99,53 +153,23 @@ export default function MachineDetailsRow1(props) {
       />
     ),
     values: {
-      primary: calculateCost(unitsConsumed) + " PKR",
+      primary: "Rs. " + calculateCost(unitsConsumed),
       secondary: timeFilter,
     },
   };
 
-  const renderRow1 = (
-    <Grid
-      container
-      direction="row"
-      justify="center"
-      alignItems="stretch"
-      spacing={2}
-    >
-      <Grow
-        in={true}
-        {...{ timeout: animationDuration + 0 * animationDuration }}
-      >
-        <Grid item md={4} sm={6} xs={12}>
-          <LastUpdatedCard data={updateStatus} />
-        </Grid>
-      </Grow>
-      <Grow
-        in={true}
-        {...{ timeout: animationDuration + 1 * animationDuration }}
-      >
-        <Grid item md={4} sm={6} xs={12}>
-          <Card data={stateRightNow} />
-        </Grid>
-      </Grow>
-      <Grow
-        in={true}
-        {...{ timeout: animationDuration + 3 * animationDuration }}
-      >
-        <Grid item md={4} sm={6} xs={12}>
-          <Card data={currentRightNow} />
-        </Grid>
-      </Grow>
-      {/* <Grow
-    in={true}
-    {...{ timeout: animationDuration + 4 * animationDuration }}
-  >
-    <Grid item md={3} sm={6} xs={12}>
-      <CostAndUnitsCard costData={costData} unitsData={unitsData} />
-    </Grid>
-  </Grow> */}
-    </Grid>
-  );
+  const maxLoad = {
+    icon: (
+      <FitnessCenterIcon
+        size="small"
+        style={{ color: colors.TEAL[700], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: "Unknown",
+      secondary: "Amperes",
+    },
+  };
 
   const renderRow2 = (
     <Grid
@@ -159,25 +183,195 @@ export default function MachineDetailsRow1(props) {
         in={true}
         {...{ timeout: animationDuration + 0 * animationDuration }}
       >
-        <Grid item md={4} sm={6} xs={12}>
-          <Card data={stateRightNow} />
-        </Grid>
+        <Tooltip title="Maximum Load" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={maxLoad} />
+          </Grid>
+        </Tooltip>
       </Grow>
       <Grow
         in={true}
         {...{ timeout: animationDuration + 1 * animationDuration }}
       >
-        <Grid item md={4} sm={6} xs={12}>
-          <Card data={stateRightNow} />
-        </Grid>
+        <Tooltip title="Units Consumed" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={unitsData} />
+          </Grid>
+        </Tooltip>
       </Grow>
       <Grow
         in={true}
-        {...{ timeout: animationDuration + 3 * animationDuration }}
+        {...{ timeout: animationDuration + 2 * animationDuration }}
       >
-        <Grid item md={4} sm={6} xs={12}>
-          <Card data={currentRightNow} />
-        </Grid>
+        <Tooltip title="Electricity Cost" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={costData} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+    </Grid>
+  );
+
+  // ********** Row 3 **********
+  const hrsTillNextService = {
+    icon: (
+      <BuildIcon
+        size="small"
+        style={{ color: colors.CYAN[700], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: "Unknown",
+      secondary: "Hours",
+    },
+  };
+
+  // onLoadHours,
+  const loadedHours = {
+    icon: (
+      <AccessTimeIcon
+        size="small"
+        style={{ color: colors.LIGHTGREEN[700], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: onLoadHours,
+      secondary: "Hours",
+    },
+  };
+
+  // offLoadHours
+  const unLoadedHours = {
+    icon: (
+      <AccessTimeIcon
+        size="small"
+        style={{ color: colors.ORANGE[700], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: offLoadHours,
+      secondary: "Hours",
+    },
+  };
+
+  const renderRow3 = (
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="stretch"
+      spacing={2}
+    >
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 0 * animationDuration }}
+      >
+        <Tooltip title="Hours Till Next Service" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={hrsTillNextService} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 1 * animationDuration }}
+      >
+        <Tooltip title="Total Loaded Hours" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={loadedHours} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 2 * animationDuration }}
+      >
+        <Tooltip title="Total Un-Loaded Hours" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={unLoadedHours} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+    </Grid>
+  );
+
+  // ********** Row 4 **********
+  const temperatureNowData = {
+    icon: (
+      <SpeedIcon
+        size="small"
+        style={{ color: colors.RED[500], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: temperatureNow,
+      secondary: "\u00B0C",
+    },
+  };
+
+  const humidityNowData = {
+    icon: (
+      <OpacityIcon
+        size="small"
+        style={{ color: colors.BLUE[500], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: humidityNow,
+      secondary: "%RH",
+    },
+  };
+
+  const pressureNowData = {
+    icon: (
+      <SpeedIcon
+        size="small"
+        style={{ color: colors.GREEN[500], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: "Unknown",
+      secondary: "psi",
+    },
+  };
+
+  const renderRow4 = (
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="stretch"
+      spacing={2}
+    >
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 0 * animationDuration }}
+      >
+        <Tooltip title="Temperature" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={temperatureNowData} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 1 * animationDuration }}
+      >
+        <Tooltip title="Humidity" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={humidityNowData} />
+          </Grid>
+        </Tooltip>
+      </Grow>
+      <Grow
+        in={true}
+        {...{ timeout: animationDuration + 2 * animationDuration }}
+      >
+        <Tooltip title="Pressure" placement="top">
+          <Grid item md={4} sm={6} xs={12}>
+            <Card data={pressureNowData} />
+          </Grid>
+        </Tooltip>
       </Grow>
     </Grid>
   );
@@ -191,7 +385,10 @@ export default function MachineDetailsRow1(props) {
         {renderRow2}
       </Grid>
       <Grid item xs={12}>
-        {renderRow1}
+        {renderRow3}
+      </Grid>
+      <Grid item xs={12}>
+        {renderRow4}
       </Grid>
     </Grid>
   );

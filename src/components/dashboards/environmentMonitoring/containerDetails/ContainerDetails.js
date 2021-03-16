@@ -110,7 +110,9 @@ export default function ContainerDetails(props) {
     } else {
       // Mock live data generator
       setInterval(() => {
-        setLiveData(liveEnvData());
+        const msg = liveEnvData();
+        setLiveData(msg);
+        setLiveDataArr((prevItems) => [...prevItems, msg]);
       }, 3000);
     }
   }, [containerID]);

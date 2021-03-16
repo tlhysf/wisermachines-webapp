@@ -525,9 +525,10 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
       downtime = minutesToHours(minutesFromCount(idleCount + offCount));
 
       //Duty Cycle
-      onLoadHours = minutesFromCount(onCount) / 60;
-      offLoadHours = minutesFromCount(idleCount) / 60;
-      shutdownHours = minutesFromCount(offCount) / 60;
+      const trimHours = (value) => parseFloat(value.toFixed(2));
+      onLoadHours = trimHours(minutesFromCount(onCount) / 60);
+      offLoadHours = trimHours(minutesFromCount(idleCount) / 60);
+      shutdownHours = trimHours(minutesFromCount(offCount) / 60);
     } catch (error) {
       console.log(error);
     }

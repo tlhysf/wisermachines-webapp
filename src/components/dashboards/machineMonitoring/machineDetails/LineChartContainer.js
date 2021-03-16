@@ -8,7 +8,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Grow from "@material-ui/core/Grow";
 
 import LineChart from "../../../common/LineChart";
-import DutyCyclePieChart from "./cards/DutyCyclePieChart";
 
 import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../../utils/colors";
@@ -18,7 +17,7 @@ const animationDuration = 200;
 
 const useStyles = makeStyles((theme) => common(theme));
 
-export default function MachineDetailsRow3(props) {
+export default function LineChartContainer(props) {
   const classes = useStyles();
   const {
     machineCurrent,
@@ -105,7 +104,6 @@ export default function MachineDetailsRow3(props) {
         <Grid item xs={12}>
           {chartRenders[buttonIndex]}
         </Grid>
-        
       </Grid>
     </Grow>
   );

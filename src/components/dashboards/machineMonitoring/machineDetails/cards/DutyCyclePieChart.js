@@ -10,7 +10,7 @@ const commonOptions = (offLoad, onLoad, shutdown) => {
       ? null
       : {
           name: name,
-          y: parseFloat(value.toFixed(2)),
+          y: value,
         };
   };
 

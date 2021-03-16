@@ -20,10 +20,9 @@ import HistoryIcon from "@material-ui/icons/History";
 import { makeStyles } from "@material-ui/core/Styles";
 
 // Custom Components
-import MachineDetailsRow1 from "./CardsContainer";
+import CardsContainer from "./CardsContainer";
 import PieChartContainer from "./PieChartContainer";
-import MachineDetailsRow2 from "./MachineDetailsRow2";
-import MachineDetailsRow3 from "./MachineDetailsRow3";
+import LineChartContainer from "./LineChartContainer";
 
 // Common Components
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
@@ -61,23 +60,13 @@ export default function MachineDetails(props) {
 
   const [timeFilter, settimeFilter] = useState(timeFiltersList[0]);
   const [liveData, setLiveData] = useState(null);
+  const [liveDataArr, setLiveDataArr] = useState([]);
 
   const loading = useSelector((state) => state.machineDetails.machineLoading);
   const timeFilterSelected = useSelector((state) => state.common.timeFilter);
   const storedData = useSelector((state) => state.machineDetails.data);
   const noData = useSelector(
     (state) => state.machineDetails.noStoredMachineDataResponse
-  );
-
-  const allData = !isNotEmpty(storedData)
-    ? []
-    : !isNotEmpty(liveData)
-    ? storedData
-    : [...storedData, liveData];
-
-  const parsedMachineData = parseDataFromSSN(
-    allData,
-    timeFiltersList.indexOf(timeFilter)
   );
 
   useEffect(() => {
@@ -96,10 +85,10 @@ export default function MachineDetails(props) {
     if (!keys.showMockData) {
       client.on(`data-demo-machine-${machineID}`, (msg) => {
         try {
-          if (msg) {
+          if (isNotEmpty(msg)) {
             setLiveData(msg);
-          } else {
-            setLiveData(null);
+
+            setLiveDataArr((prevItems) => [...prevItems, msg]);
           }
         } catch (error) {
           setLiveData(null);
@@ -109,11 +98,19 @@ export default function MachineDetails(props) {
     } else {
       // Mock live data generator
       setInterval(() => {
-        setLiveData(liveMachineData());
+        const msg = liveMachineData();
+        setLiveData(msg);
+        setLiveDataArr((prevItems) => [...prevItems, msg]);
       }, 5000);
     }
   }, [machineID]);
 
+  const allData = [...storedData, ...liveDataArr];
+  console.log(allData);
+  const parsedMachineData = parseDataFromSSN(
+    allData,
+    timeFiltersList.indexOf(timeFilter)
+  );
   const {
     // Time
     timestamps,
@@ -124,12 +121,12 @@ export default function MachineDetails(props) {
     // Enviroment
     temperature,
     temperatureNow,
-    temperatureMax,
-    temperatureMin,
+    // temperatureMax,
+    // temperatureMin,
     humidity,
     humidityNow,
-    humidityMax,
-    humidityMin,
+    // humidityMax,
+    // humidityMin,
 
     // Current
     loadCurrent,
@@ -145,19 +142,19 @@ export default function MachineDetails(props) {
     stateNow,
 
     // Utilization
-    utilization,
-    uptime,
-    downtime,
-    operationCount,
+    // utilization,
+    // uptime,
+    // downtime,
+    // operationCount,
 
     dutyCycle,
   } = parsedMachineData;
-
   const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
     "en-US"
   );
 
-  const lineCharts = {
+  // ******** Props ********
+  const lineChartsProps = {
     machineState: {
       series: machineState,
       timestamps: timestamps,
@@ -192,6 +189,20 @@ export default function MachineDetails(props) {
       name: "Humidity",
       color: chartColors.humidity,
     },
+  };
+
+  const cardsProps = {
+    liveData,
+    currentNow,
+    lastUpdateTimestamp,
+    stateNow,
+    stateNowDuration,
+    unitsConsumed,
+    timeFilter,
+    temperatureNow,
+    humidityNow,
+    offLoadHours: dutyCycle.offLoadHours,
+    onLoadHours: dutyCycle.onLoadHours,
   };
 
   const navbar = (
@@ -241,23 +252,13 @@ export default function MachineDetails(props) {
       </Grid>
 
       <Grid item md={9} xs={12}>
-        <MachineDetailsRow1
-          data={{
-            currentNow,
-            lastUpdateTimestamp,
-            stateNow,
-            stateNowDuration,
-            unitsConsumed,
-            timeFilter,
-            liveData,
-          }}
-        />
+        <CardsContainer data={cardsProps} />
       </Grid>
       <Grid item md={3} xs={12}>
         <PieChartContainer dutyCycle={dutyCycle} />
       </Grid>
       {/* <Grid item xs={12}>
-        <MachineDetailsRow2
+        <CardsWithGaugeContainer
           data={{
             operationCount,
             utilization,
@@ -274,7 +275,7 @@ export default function MachineDetails(props) {
       </Grid> */}
 
       <Grid item xs={12}>
-        <MachineDetailsRow3 lineCharts={lineCharts} />
+        <LineChartContainer lineCharts={lineChartsProps} />
       </Grid>
     </Grid>
   );

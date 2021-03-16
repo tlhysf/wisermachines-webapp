@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+// import Button from "@material-ui/core/Button";
+// import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
 import Grow from "@material-ui/core/Grow";
 
 import DutyCyclePieChart from "./cards/DutyCyclePieChart";
 
 import { makeStyles } from "@material-ui/core/styles";
-import colors from "../../../../utils/colors";
+// import colors from "../../../../utils/colors";
 import { common } from "../../../../utils/styles";
 
 const animationDuration = 200;
@@ -18,6 +18,7 @@ const animationDuration = 200;
 const useStyles = makeStyles((theme) => common(theme));
 
 export default function PieChartContainer(props) {
+  const data = props.dutyCycle;
   const classes = useStyles();
 
   return (
@@ -35,7 +36,7 @@ export default function PieChartContainer(props) {
           {...{ timeout: animationDuration + 9 * animationDuration }}
         >
           <Grid item>
-            <DutyCyclePieChart data={props.dutyCycle} />
+            <DutyCyclePieChart data={data} />
           </Grid>
         </Grow>
       </Grid>
