@@ -21,6 +21,7 @@ import SpeedIcon from "@material-ui/icons/Speed";
 import OpacityIcon from "@material-ui/icons/Opacity";
 
 import colors from "../../../../utils/colors";
+// import { isNotEmpty } from "../../../../utils/validation";
 
 const animationDuration = 200;
 
@@ -39,7 +40,12 @@ export default function CardsContainer(props) {
     humidityNow,
     offLoadHours,
     onLoadHours,
+    machineProfile,
   } = props.data;
+
+  const maxLoadValue = Number.isInteger(machineProfile.max_load)
+    ? machineProfile.max_load
+    : "Unknown";
 
   // ********** Row 1 **********
   const updateStatus = { liveData, lastUpdateTimestamp };
@@ -158,7 +164,7 @@ export default function CardsContainer(props) {
     },
   };
 
-  const maxLoad = {
+  const maxLoadData = {
     icon: (
       <FitnessCenterIcon
         size="small"
@@ -166,7 +172,7 @@ export default function CardsContainer(props) {
       />
     ),
     values: {
-      primary: "Unknown",
+      primary: maxLoadValue,
       secondary: "Amperes",
     },
   };
@@ -185,7 +191,7 @@ export default function CardsContainer(props) {
       >
         <Tooltip title="Maximum Load" placement="top">
           <Grid item md={4} sm={6} xs={12}>
-            <Card data={maxLoad} />
+            <Card data={maxLoadData} />
           </Grid>
         </Tooltip>
       </Grow>

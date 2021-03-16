@@ -53,6 +53,7 @@ export const nodes = {
 
 export const machineDetails = {
   getMachineDataByID: "GET_MACHINE_DATA_BY_ID",
+  getMachineProfileByID: "GET_MACHINE_PROFILE_BY_ID",
   machineLoading: "LOADING_MACHINE",
   noStoredMachineDataResponse: "NO_STORED_MACHINE_DATA_RESPONSE",
 

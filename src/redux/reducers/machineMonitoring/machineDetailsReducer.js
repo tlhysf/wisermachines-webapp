@@ -3,6 +3,7 @@ import { machineDetails } from "../../actions/actionTypes";
 const initialState = {
   machineID: "",
   data: [],
+  profile: {},
   timeFilter: "",
   machineLoading: false,
   noStoredMachineDataResponse: null,
@@ -26,6 +27,14 @@ export const machineDetailsReducer = (state = initialState, action) => {
         notFound: false,
         machineLoading: false,
       };
+
+    case machineDetails.getMachineProfileByID: {
+      // console.log(action.payload);
+      return {
+        ...state,
+        profile: action.payload,
+      };
+    }
 
     case machineDetails.noStoredMachineDataResponse:
       return {

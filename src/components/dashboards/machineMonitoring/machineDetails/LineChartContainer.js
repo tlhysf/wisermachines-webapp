@@ -78,7 +78,7 @@ export default function LineChartContainer(props) {
   ));
 
   return (
-    <Grow in={true} {...{ timeout: animationDuration + 9 * animationDuration }}>
+    <Grow in={true} {...{ timeout: animationDuration + 5 * animationDuration }}>
       <Grid
         container
         justify="center"

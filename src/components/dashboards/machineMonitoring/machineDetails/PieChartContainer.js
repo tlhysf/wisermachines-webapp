@@ -33,7 +33,7 @@ export default function PieChartContainer(props) {
       >
         <Grow
           in={true}
-          {...{ timeout: animationDuration + 9 * animationDuration }}
+          {...{ timeout: animationDuration + 5 * animationDuration }}
         >
           <Grid item>
             <DutyCyclePieChart data={data} />

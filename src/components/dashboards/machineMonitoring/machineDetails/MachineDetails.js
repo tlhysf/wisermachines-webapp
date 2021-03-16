@@ -7,7 +7,10 @@ import { parseDataFromSSN } from "../../../../utils/parse";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
-import { getMachineDataByIDAction } from "../../../../redux/actions/machineMonitoring/machineDetailsActions";
+import {
+  getMachineDataByIDAction,
+  getMachineProfileByIDAction,
+} from "../../../../redux/actions/machineMonitoring/machineDetailsActions";
 import { common } from "../../../../redux/actions/actionTypes";
 
 // Styling
@@ -65,17 +68,21 @@ export default function MachineDetails(props) {
   const loading = useSelector((state) => state.machineDetails.machineLoading);
   const timeFilterSelected = useSelector((state) => state.common.timeFilter);
   const storedData = useSelector((state) => state.machineDetails.data);
+  const machineProfile = useSelector((state) => state.machineDetails.profile);
+
   const noData = useSelector(
     (state) => state.machineDetails.noStoredMachineDataResponse
   );
 
   useEffect(() => {
-    settimeFilter(timeFilterSelected);
-  }, [timeFilterSelected]);
+    getMachineDataByIDAction(dispatch, machineID);
+    getMachineProfileByIDAction(dispatch, machineID);
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
-    getMachineDataByIDAction(dispatch, machineID);
-  }, [dispatch, machineID]);
+    settimeFilter(timeFilterSelected);
+  }, [timeFilterSelected]);
 
   useEffect(() => {
     if (!keys.showMockData) {
@@ -203,6 +210,7 @@ export default function MachineDetails(props) {
     humidityNow,
     offLoadHours: dutyCycle.offLoadHours,
     onLoadHours: dutyCycle.onLoadHours,
+    machineProfile,
   };
 
   const navbar = (
