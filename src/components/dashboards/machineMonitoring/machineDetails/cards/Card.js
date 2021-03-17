@@ -62,3 +62,31 @@ export default function Card(props) {
     </Grid>
   );
 }
+
+export function CardWithImage(props) {
+  const { src, alt } = props;
+  const classes = useStyles();
+
+  return (
+    <Grid
+      container
+      component={Paper}
+      direction="row"
+      justify="center"
+      alignItems="center"
+      elevation={2}
+      style={{ padding: 12, height: "100%" }}
+      className={classes.cardHover}
+    >
+      <Grid item>
+        <img
+          src={src}
+          alt={alt}
+          style={{
+            maxWidth: "100px",
+          }}
+        />
+      </Grid>
+    </Grid>
+  );
+}

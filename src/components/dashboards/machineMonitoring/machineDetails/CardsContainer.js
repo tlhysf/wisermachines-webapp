@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Grow from "@material-ui/core/Grow";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import Card from "./cards/Card";
+import Card, { CardWithImage } from "./cards/Card";
 // import CostAndUnitsCard from "./cards/CostAndUnitsCard";
 
 import LastUpdatedCard from "../../../common/LastUpdatedCard";
@@ -29,11 +29,6 @@ const iconHeight = 40;
 
 export default function CardsContainer(props) {
   const {
-    liveData,
-    currentNow,
-    lastUpdateTimestamp,
-    stateNow,
-    stateNowDuration,
     unitsConsumed,
     timeFilter,
     temperatureNow,
@@ -46,82 +41,6 @@ export default function CardsContainer(props) {
   const maxLoadValue = Number.isInteger(machineProfile.max_load)
     ? machineProfile.max_load
     : "Unknown";
-
-  // ********** Row 1 **********
-  const updateStatus = { liveData, lastUpdateTimestamp };
-
-  const stateRightNow = {
-    icon:
-      stateNow === "ON" ? (
-        <PlayCircleFilledIcon
-          style={{ color: colors.GREEN[700], height: iconHeight }}
-        />
-      ) : stateNow === "IDLE" ? (
-        <PauseCircleFilledIcon
-          style={{ color: colors.BLUE[700], height: iconHeight }}
-        />
-      ) : (
-        <CancelIcon style={{ color: colors.RED[700], height: iconHeight }} />
-      ),
-    values: {
-      primary: stateNow,
-      secondary: stateNowDuration,
-    },
-  };
-
-  const currentRightNow = {
-    icon: (
-      <FlashOnOutlinedIcon
-        size="small"
-        style={{ color: colors.PURPLE[700], height: iconHeight }}
-      />
-    ),
-    values: {
-      primary: currentNow + " A",
-      secondary: lastUpdateTimestamp,
-    },
-  };
-
-  const renderRow1 = (
-    <Grid
-      container
-      direction="row"
-      justify="center"
-      alignItems="stretch"
-      spacing={2}
-    >
-      <Grow
-        in={true}
-        {...{ timeout: animationDuration + 0 * animationDuration }}
-      >
-        <Tooltip title="Update Status" placement="top">
-          <Grid item md={4} sm={6} xs={12}>
-            <LastUpdatedCard data={updateStatus} />
-          </Grid>
-        </Tooltip>
-      </Grow>
-      <Grow
-        in={true}
-        {...{ timeout: animationDuration + 1 * animationDuration }}
-      >
-        <Tooltip title="Machine Status" placement="top">
-          <Grid item md={4} sm={6} xs={12}>
-            <Card data={stateRightNow} />
-          </Grid>
-        </Tooltip>
-      </Grow>
-      <Grow
-        in={true}
-        {...{ timeout: animationDuration + 2 * animationDuration }}
-      >
-        <Tooltip title="Machine Current" placement="top">
-          <Grid item md={4} sm={6} xs={12}>
-            <Card data={currentRightNow} />
-          </Grid>
-        </Tooltip>
-      </Grow>
-    </Grid>
-  );
 
   // ********** Row 2 **********
 
@@ -385,9 +304,6 @@ export default function CardsContainer(props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        {renderRow1}
-      </Grid>
-      <Grid item xs={12}>
         {renderRow2}
       </Grid>
       <Grid item xs={12}>
@@ -399,3 +315,104 @@ export default function CardsContainer(props) {
     </Grid>
   );
 }
+
+export const CardsContainerRow1 = (props) => {
+  const {
+    liveData,
+    currentNow,
+    lastUpdateTimestamp,
+    stateNow,
+    stateNowDuration,
+  } = props.data;
+
+  const logo = { src: "/img/Sakoon-logo-web.png", alt: "logo" };
+
+  const updateStatus = { liveData, lastUpdateTimestamp };
+
+  const stateRightNow = {
+    icon:
+      stateNow === "ON" ? (
+        <PlayCircleFilledIcon
+          style={{ color: colors.GREEN[700], height: iconHeight }}
+        />
+      ) : stateNow === "IDLE" ? (
+        <PauseCircleFilledIcon
+          style={{ color: colors.BLUE[700], height: iconHeight }}
+        />
+      ) : (
+        <CancelIcon style={{ color: colors.RED[700], height: iconHeight }} />
+      ),
+    values: {
+      primary: stateNow,
+      secondary: stateNowDuration,
+    },
+  };
+
+  const currentRightNow = {
+    icon: (
+      <FlashOnOutlinedIcon
+        size="small"
+        style={{ color: colors.PURPLE[700], height: iconHeight }}
+      />
+    ),
+    values: {
+      primary: currentNow + " A",
+      secondary: lastUpdateTimestamp,
+    },
+  };
+
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="stretch"
+          spacing={2}
+        >
+          <Grow
+            in={true}
+            {...{ timeout: animationDuration + 0 * animationDuration }}
+          >
+            <Tooltip title={logo.alt} placement="top">
+              <Grid item md={3} sm={6} xs={12}>
+                <CardWithImage src={logo.src} alt={logo.alt} />
+              </Grid>
+            </Tooltip>
+          </Grow>
+          <Grow
+            in={true}
+            {...{ timeout: animationDuration + 1 * animationDuration }}
+          >
+            <Tooltip title="Update Status" placement="top">
+              <Grid item md={3} sm={6} xs={12}>
+                <LastUpdatedCard data={updateStatus} />
+              </Grid>
+            </Tooltip>
+          </Grow>
+          <Grow
+            in={true}
+            {...{ timeout: animationDuration + 2 * animationDuration }}
+          >
+            <Tooltip title="Machine Status" placement="top">
+              <Grid item md={3} sm={6} xs={12}>
+                <Card data={stateRightNow} />
+              </Grid>
+            </Tooltip>
+          </Grow>
+          <Grow
+            in={true}
+            {...{ timeout: animationDuration + 3 * animationDuration }}
+          >
+            <Tooltip title="Machine Current" placement="top">
+              <Grid item md={3} sm={6} xs={12}>
+                <Card data={currentRightNow} />
+              </Grid>
+            </Tooltip>
+          </Grow>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};

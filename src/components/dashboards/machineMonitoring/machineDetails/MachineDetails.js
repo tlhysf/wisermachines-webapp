@@ -23,7 +23,7 @@ import HistoryIcon from "@material-ui/icons/History";
 import { makeStyles } from "@material-ui/core/Styles";
 
 // Custom Components
-import CardsContainer from "./CardsContainer";
+import CardsContainer, { CardsContainerRow1 } from "./CardsContainer";
 import PieChartContainer from "./PieChartContainer";
 import LineChartContainer from "./LineChartContainer";
 
@@ -199,11 +199,11 @@ export default function MachineDetails(props) {
   };
 
   const cardsProps = {
-    liveData,
-    currentNow,
-    lastUpdateTimestamp,
-    stateNow,
-    stateNowDuration,
+    // liveData,
+    // currentNow,
+    // lastUpdateTimestamp,
+    // stateNow,
+    // stateNowDuration,
     unitsConsumed,
     timeFilter,
     temperatureNow,
@@ -258,7 +258,17 @@ export default function MachineDetails(props) {
       <Grid item xs={12}>
         {navbar}
       </Grid>
-
+      <Grid item xs={12}>
+        <CardsContainerRow1
+          data={{
+            liveData,
+            currentNow,
+            lastUpdateTimestamp,
+            stateNow,
+            stateNowDuration,
+          }}
+        />
+      </Grid>
       <Grid item md={9} xs={12}>
         <CardsContainer data={cardsProps} />
       </Grid>
