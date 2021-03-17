@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import Grid from "@material-ui/core/Grid";
 import DashboardSummaryCard, {
-  DashboardSummaryCardMinimalVersion,
+  DashboardSummaryCardListViewVersion,
 } from "../../../common/DashboardSummaryCard";
 import Card from "../../../common/Card";
 import Grow from "@material-ui/core/Grow";
@@ -55,7 +55,7 @@ export default function MachineCards(props) {
 
   const renderCards = (item) =>
     keys.minimalMachineSummaryCards ? (
-      <DashboardSummaryCardMinimalVersion
+      <DashboardSummaryCardListViewVersion
         data={{ name: item.name, ID: item._id }}
       />
     ) : (
@@ -123,8 +123,8 @@ export default function MachineCards(props) {
               in={true}
               {...{ timeout: animationDuration + index * animationDuration }}
             >
-              <Grid key={index} item md={3} sm={6} xs={12}>
-                {keys.showMockData ? (
+              {keys.showMockData ? (
+                <Grid key={index} item md={3} sm={6} xs={12}>
                   <DashboardSummaryCard
                     compact={props.compact}
                     data={{
@@ -138,10 +138,12 @@ export default function MachineCards(props) {
                       gaugeItem2: gaugeItem2(),
                     }}
                   />
-                ) : (
-                  renderCards(item)
-                )}
-              </Grid>
+                </Grid>
+              ) : (
+                <Grid key={index} item xs={12}>
+                  {renderCards(item)}
+                </Grid>
+              )}
             </Grow>
           ))}
         </Grid>

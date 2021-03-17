@@ -91,6 +91,7 @@ const MachinesAndNodes = (props) => {
           <Grid item>
             <BreadcrumbsNav list={props.navigationList} />
           </Grid>
+
           <Grid item>
             <FilterAndSortMenu
               options={machinesOrNodesFiltersList}
@@ -211,6 +212,10 @@ const MachinesAndNodes = (props) => {
         <Grid item xs={12}>
           {navbar}
         </Grid>
+        <Grid item>
+          <AlertCard message={"Under Development"} />
+        </Grid>
+
         {renderMachinesOrNodes}
         {renderMachinesOrNodesNotFound}
       </Grid>

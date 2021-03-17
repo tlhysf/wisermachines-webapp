@@ -21,6 +21,13 @@ import DualGauge from "./DualGauge";
 import EditIcon from "@material-ui/icons/Edit";
 import LinkIcon from "@material-ui/icons/Link";
 
+import PauseCircleFilledIcon from "@material-ui/icons/PauseCircleFilled";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import SpeedIcon from "@material-ui/icons/Speed";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import NotificationImportantIcon from "@material-ui/icons/NotificationImportant";
+
 import {
   toggleEditFormDrawerAction,
   toggleEditMappingFormDrawerAction,
@@ -528,4 +535,225 @@ const DashboardSummaryCardMinimal = (props) => {
 
 export const DashboardSummaryCardMinimalVersion = withRouter(
   DashboardSummaryCardMinimal
+);
+
+const DashboardSummaryCardListView = (props) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const { name, ID, mapping } = props.data;
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handlePageChange = () => {
+    const { pathname } = props.location;
+    window.location.href = makePath(pathname, ID, name);
+  };
+
+  const handleEdit = () => {
+    handleClose();
+    toggleEditFormDrawerAction(dispatch, ID, name);
+  };
+
+  const handleMapping = () => {
+    handleClose();
+    toggleEditMappingFormDrawerAction(dispatch, ID, name);
+  };
+
+  const miniCard = (icon, title, value) => {
+    return (
+      <Tooltip title="Dummy Data" placement="bottom">
+        <Paper
+          elevation={2}
+          style={{
+            padding: 10,
+            height: 40,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          className={classes.cardHover}
+        >
+          <Grid
+            container
+            spacing={1}
+            direction="row"
+            justify="center"
+            alignItem="center"
+            style={{ paddingLeft: 5, paddingRight: 5 }}
+          >
+            <Grid item>{icon}</Grid>
+            <Grid item>
+              <Typography
+                variant="button"
+                style={{ color: colors.BLUEGREY[800] }}
+              >
+                {title}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography
+                variant="button"
+                style={{ color: colors.BLUEGREY[600] }}
+              >
+                {value}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Tooltip>
+    );
+  };
+
+  return (
+    <Grid
+      container
+      direction="row"
+      justify="flex-start"
+      alignItems="center"
+      spacing={2}
+    >
+      <Grid item xs={3}>
+        <Paper
+          elevation={2}
+          style={{
+            padding: 10,
+            height: 40,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          className={classes.cardHover}
+        >
+          <Grid container justify="space-around" alignItems="center">
+            <Grid item xs={12}>
+              <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="flex-start"
+              >
+                <Grid item xs={10}>
+                  {ID ? (
+                    <Tooltip title="Open" placement="top">
+                      <Button onClick={handlePageChange}>
+                        <Typography
+                          variant="button"
+                          style={{ color: colors.BLUEGREY[600] }}
+                          align="left"
+                        >
+                          {name}
+                        </Typography>
+                      </Button>
+                    </Tooltip>
+                  ) : (
+                    <Button disableRipple>
+                      <Typography
+                        variant="button"
+                        style={{ color: colors.BLUEGREY[600] }}
+                      >
+                        {name}
+                      </Typography>
+                    </Button>
+                  )}
+                </Grid>
+                <Grid item xs={"auto"}>
+                  <Tooltip title="Settings" placement="top">
+                    <IconButton onClick={(e) => handleClick(e)}>
+                      <MoreHorizIcon className={classes.iconButton} />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    id="settingsMenu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleEdit}>
+                      <EditIcon className={classes.menuItemIcon} />
+
+                      <Typography variant="inherit">Edit</Typography>
+                    </MenuItem>
+                    {mapping ? (
+                      <MenuItem onClick={handleMapping}>
+                        <LinkIcon className={classes.menuItemIcon} />
+
+                        <Typography variant="inherit">
+                          Change Mapping
+                        </Typography>
+                      </MenuItem>
+                    ) : null}
+                  </Menu>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
+      <Grid item>
+        {miniCard(
+          <PauseCircleFilledIcon
+            style={{ height: "20", color: colors.CYAN[700] }}
+          />,
+          null,
+          "Un-Loaded"
+        )}
+      </Grid>
+      <Grid item>
+        {miniCard(
+          <SpeedIcon style={{ height: "20", color: colors.ORANGE[700] }} />,
+
+          null,
+          "25 \u00B0C"
+        )}
+      </Grid>
+      <Grid item>
+        {miniCard(
+          <AttachMoneyIcon
+            style={{ height: "20", color: colors.GREEN[700] }}
+          />,
+          null,
+          "Rs. 10,067"
+        )}
+      </Grid>
+      <Grid item>
+        {miniCard(
+          <ArrowUpwardIcon style={{ height: "20", color: colors.RED[700] }} />,
+          "Uptime",
+          "18 Hours"
+        )}
+      </Grid>
+      <Grid item>
+        {miniCard(
+          <ArrowDownwardIcon
+            style={{ height: "20", color: colors.BLUE[700] }}
+          />,
+          "Downtime",
+          "6 Hours"
+        )}
+      </Grid>
+      <Grid item>
+        {miniCard(
+          <NotificationImportantIcon
+            style={{ height: "20", color: colors.LIGHTGREEN[700] }}
+          />,
+          null,
+          "6"
+        )}
+      </Grid>
+    </Grid>
+  );
+};
+
+export const DashboardSummaryCardListViewVersion = withRouter(
+  DashboardSummaryCardListView
 );
