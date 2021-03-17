@@ -7,6 +7,7 @@
 - chart refresh problem // done
 - machine details dashboard redesign // done
 
+- skaoon logo
 - integrate new machine data API
 - integrate new notification API
 - summary cards and headers 
