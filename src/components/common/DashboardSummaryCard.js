@@ -587,7 +587,7 @@ const DashboardSummaryCardListView = (props) => {
             spacing={1}
             direction="row"
             justify="center"
-            alignItem="center"
+            alignItems="center"
             style={{ paddingLeft: 5, paddingRight: 5 }}
           >
             <Grid item>{icon}</Grid>
