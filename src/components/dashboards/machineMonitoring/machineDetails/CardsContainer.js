@@ -146,7 +146,7 @@ export default function CardsContainer(props) {
       />
     ),
     values: {
-      primary: "Unknown",
+      primary: 120,
       secondary: "Hours",
     },
   };
@@ -251,13 +251,14 @@ export default function CardsContainer(props) {
     icon: (
       <SpeedIcon
         size="small"
-        style={{ color: colors.GREEN[500], height: iconHeight }}
+        style={{ color: colors.GREY[500], height: iconHeight }}
       />
     ),
     values: {
-      primary: "Unknown",
+      primary: 0,
       secondary: "psi",
     },
+    disabled: true,
   };
 
   const renderRow4 = (

@@ -63,6 +63,13 @@ const keys = {
       navigationAliases: ["workshops", "zones"],
       type: "admin",
     },
+    {
+      name: "karachi-steel",
+      password: "1234",
+      workshopID: "603c8b590f2dc628d8e1a6e9",
+      navigationAliases: ["workshops", "zones"],
+      type: "user",
+    },
   ],
 };
 

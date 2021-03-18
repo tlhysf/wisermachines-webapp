@@ -11,7 +11,7 @@ import colors from "../../../../../utils/colors";
 const useStyles = makeStyles((theme) => common(theme));
 
 export default function Card(props) {
-  const { icon, values } = props.data;
+  const { icon, values, disabled } = props.data;
   const classes = useStyles();
 
   return (
@@ -22,8 +22,12 @@ export default function Card(props) {
       justify="center"
       alignItems="center"
       elevation={2}
-      style={{ padding: 12, height: "100%" }}
-      className={classes.cardHover}
+      style={{
+        padding: 12,
+        height: "100%",
+        backgroundColor: disabled ? colors.GREY[300] : "white",
+      }}
+      className={disabled ? "" : classes.cardHover}
     >
       <Grid item xs={2}>
         <Paper style={smallCard.iconPaper} elevation={0}>
