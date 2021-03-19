@@ -575,6 +575,201 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
   };
 };
 
+export const parseHistoricalDataFromSSN = (data, timeFilterIndex) => {
+  const numOfHours =
+    timeFilterIndex === 0
+      ? 1
+      : timeFilterIndex === 1
+      ? 12
+      : timeFilterIndex === 2
+      ? 24
+      : 1;
+
+  // Time
+  let timestamps = [];
+  let timestampEnd = 0;
+  let timestampStart = 0;
+  let timestampStartFilter = 0;
+
+  // Enviroment
+  let temperature = [];
+  let temperatureNow = 0;
+  let temperatureMax = 0;
+  let temperatureMin = 0;
+  let humidity = [];
+  let humidityNow = 0;
+  let humidityMax = 0;
+  let humidityMin = 0;
+
+  // Current
+  let loadCurrent = [];
+  let currentNow = 0;
+
+  // Power
+  let instantPower = [];
+  let unitsConsumed = 0;
+
+  //State
+  let machineStateStr = [];
+  let machineState = [];
+  let stateNowDuration = "Unknown";
+  let stateNow = "Unknown";
+
+  // Utilization
+  let utilization = 0;
+  let uptime = "Unknown";
+  let downtime = "Unknown";
+  let operationCount = 0; // no of times state went from ON to OFF/IDLE
+
+  // Duty Cycle
+  let onLoadHours = 0;
+  let offLoadHours = 0;
+  let shutdownHours = 0;
+
+  if (data) {
+    try {
+      // Time
+      timestamps = data.timestamp.map((timestampStr) =>
+        Date.parse(timestampStr)
+      );
+      timestampStart = timestamps[0];
+      timestampEnd = timestamps.slice(-1)[0];
+      timestampStartFilter = subtractHours(numOfHours, timestampEnd);
+
+      const NumberOfPacketsFilteredByTime = timestamps.map((timestamp) => {
+        if (timestamp > timestampStartFilter) {
+          return timestamp;
+        } else {
+          return null;
+        }
+      });
+
+      const timeFilter = NumberOfPacketsFilteredByTime.filter((x) => x).length;
+
+      // Environment
+      temperature = data.temperature;
+      const temperatureInGivenInterval = temperature.slice(-timeFilter);
+      temperatureNow = temperature.slice(-1)[0];
+      temperatureMax = Math.max(...temperatureInGivenInterval);
+      temperatureMin = Math.min(...temperatureInGivenInterval);
+
+      humidity = data.humidity;
+      const humidityInGivenInterval = humidity.slice(-timeFilter);
+      humidityNow = humidity.slice(-1)[0];
+      humidityMax = Math.max(...humidityInGivenInterval);
+      humidityMin = Math.min(...humidityInGivenInterval);
+
+      // Load Current
+      loadCurrent = data.load_current;
+      currentNow = loadCurrent.slice(-1)[0];
+
+      //Power
+      instantPower = loadCurrent.map((current) => {
+        return 1.732 * 0.95 * 400 * current;
+      });
+      const powerInGivenInterval = instantPower.slice(-timeFilter);
+      unitsConsumed = Math.round(
+        (arrayAverage(powerInGivenInterval) / 1000) * numOfHours
+      );
+
+      // State
+      machineStateStr = data.status;
+      machineState = machineStateStr.map((state) => {
+        if (state === "OFF") {
+          return 0;
+        } else if (state === "IDLE") {
+          return 1;
+        } else if (state === "ON") {
+          return 2;
+        } else return 0;
+      });
+      stateNow = machineStateStr.slice(-1)[0];
+      stateNowDuration = timeDifference(
+        data.machine_state_duration.slice(-1)[0] * 1000,
+        0
+      );
+      const statesInGivenInterval = machineState.slice(-timeFilter);
+
+      // Utilization
+      const interval = 5;
+      let onCount = 0;
+      let idleCount = 0;
+      let offCount = 0;
+
+      statesInGivenInterval.map((state, i) => {
+        if (state === 2) {
+          if (
+            statesInGivenInterval[i + 1] === 1 ||
+            statesInGivenInterval[i + 1] === 0
+          )
+            operationCount++;
+
+          onCount++;
+        } else if (state === 1) idleCount++;
+        else if (state === 0) offCount++;
+
+        return i;
+      });
+      utilization = Math.round((onCount / statesInGivenInterval.length) * 100);
+
+      const minutesFromCount = (count) => {
+        return Math.round((count * interval) / 60);
+      };
+
+      uptime = minutesToHours(minutesFromCount(onCount));
+      downtime = minutesToHours(minutesFromCount(idleCount + offCount));
+
+      //Duty Cycle
+      const trimHours = (value) => parseFloat(value.toFixed(2));
+      onLoadHours = trimHours(minutesFromCount(onCount) / 60);
+      offLoadHours = trimHours(minutesFromCount(idleCount) / 60);
+      shutdownHours = trimHours(minutesFromCount(offCount) / 60);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return {
+    // Time
+    timestamps,
+    timestampEnd,
+    timestampStart,
+    timestampStartFilter,
+
+    // Enviroment
+    temperature,
+    temperatureNow,
+    temperatureMax,
+    temperatureMin,
+    humidity,
+    humidityNow,
+    humidityMax,
+    humidityMin,
+
+    // Current
+    loadCurrent,
+    currentNow,
+
+    // Power
+    instantPower,
+    unitsConsumed,
+
+    // State
+    machineState,
+    stateNowDuration,
+    stateNow,
+
+    // Utilization
+    utilization,
+    uptime,
+    downtime,
+    operationCount,
+
+    //Duty Cycle
+    dutyCycle: { shutdownHours, offLoadHours, onLoadHours },
+  };
+};
+
 const minutesToHours = (minutes) => {
   if (minutes <= 60) {
     return `00:${pad(minutes, 2)}`;

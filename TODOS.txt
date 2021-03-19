@@ -11,8 +11,9 @@
     1 - new machine data
     2 - new environment data
     3 - new notifications  
-    4 - summary headers and cards, machines and nodes page
-    5 - edit machine mapping 
-    6 - machine maintainance  
+    6 - machine maintainance 
+    5 - summary headers and cards, machines and nodes page // Response needs to be finalised
+    6 - edit machine mapping, // Incompatible machine mapping patch request  
+     
 
 - set min, max thresholds for zone using only sliders, no text inputs 

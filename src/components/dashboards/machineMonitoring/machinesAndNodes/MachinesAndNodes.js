@@ -192,6 +192,10 @@ const MachinesAndNodes = (props) => {
     <Grid item>{renderLoading}</Grid>
   ) : (
     <Grid item xs={12}>
+      <div style={{ padding: 5, marginBottom: 15 }}>
+        <AlertCard message={"Under Development"} />
+      </div>
+
       <MachineCards allMachinesInAZone={allMachinesInAZone} compact={compact} />
     </Grid>
   );
@@ -211,9 +215,6 @@ const MachinesAndNodes = (props) => {
       <Grid container justify="center" alignItems="center" spacing={2}>
         <Grid item xs={12}>
           {navbar}
-        </Grid>
-        <Grid item>
-          <AlertCard message={"Under Development"} />
         </Grid>
 
         {renderMachinesOrNodes}

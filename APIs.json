@@ -1,0 +1,1929 @@
+{
+	"info": {
+		"_postman_id": "daa88346-134d-40f4-9110-491b4c289306",
+		"name": "SSN-DEV-APP-MAIN",
+		"description": "## SSN API Collection\r\nThis collection contains all APIs for Smart Sense Node Application\r\n\r\nIt contains following folders of requests\r\n\r\n<ul>\r\n    <li>Zone Requests</li>\r\n    <li>Workshop Requests</li>\r\n    <li>Node Requests</li>\r\n    <li>Machine Requests</li>\r\n    <li>Zone Mapping Requests</li>\r\n    <li>Machine Mapping Requests</li>\r\n</ul>",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Zone Requests",
+			"item": [
+				{
+					"name": "Get all zones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.0.160:3001/Zones",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Zones"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get All Zones",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "192.168.0.160:3000/Zones",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Zones"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "304"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"130-aLBmaOYVc5s0zz3mYQK0+2D3R0A\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:48:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"5fa2485dca43d10a04b4d932\",\n        \"name\": \"Zone-11\",\n        \"workshop_id\": \"5fa240db7011b92124e035d5\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"5fa2486cca43d10a04b4d933\",\n        \"name\": \"Zone-02\",\n        \"workshop_id\": \"5fa240e17011b92124e035d6\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"5fa24870ca43d10a04b4d934\",\n        \"name\": \"Zone-06\",\n        \"workshop_id\": \"5fa240ef7011b92124e035d8\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get one zone by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa2485dca43d10a04b4d932\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3000/Zone/5fb3a46f3e26341b70e74f77",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3000",
+							"path": [
+								"Zone",
+								"5fb3a46f3e26341b70e74f77"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get One Zone By Id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5fa2485dca43d10a04b4d932\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "192.168.0.160:3000/Zone",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Zone"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"66-9FGXWDhKD4ftQEQ6oksb/1L3+iU\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:48:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"5fa2485dca43d10a04b4d932\",\n        \"name\": \"Zone-11\",\n        \"workshop_id\": \"5fa240db7011b92124e035d5\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create zone",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Sample-Zone-2\",\r\n    \"workshop_id\":\"60488f8506b8b407d03e9058\",\r\n    \"min_temperature\":30,\r\n    \"max_temperature\":60,\r\n    \"min_humidity\":30,\r\n    \"max_humidity\":60\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/Zone",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Zone"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create One Zone",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Zone-17\",\r\n    \"workshop_id\":\"5fa240e17011b92124e035d6\"\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "192.168.0.160:3000/Zone",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Zone"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "100"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"64-ctB2qdoEz64xYAvhBF0zFmLHHB4\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:49:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"5fa3a07ad006011f38010035\",\n    \"name\": \"Zone-17\",\n    \"workshop_id\": \"5fa240e17011b92124e035d6\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Update zone",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"604893875e31ef15f4e43cdd\",\r\n    \"min_temperature\":-10,\r\n    \"max_temperature\":-20,\r\n    \"min_humidity\":0,\r\n    \"max_humidity\":0\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/Zone",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Zone"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Zone",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5fa24870ca43d10a04b4d934\",\r\n    \"name\":\"Zone-06\",\r\n    \"workshop_id\":\"5fa240ef7011b92124e035d8\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "192.168.0.160:3000/Zone",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Zone"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "100"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"64-/EEx/csjjSOCGSSbzxTg0Lmz9dM\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:53:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"5fa24870ca43d10a04b4d934\",\n    \"name\": \"Zone-06\",\n    \"workshop_id\": \"5fa240ef7011b92124e035d8\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete zone",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa24850ca43d10a04b4d931\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3000/Zone",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3000",
+							"path": [
+								"Zone"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Zone",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5fa24850ca43d10a04b4d931\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "192.168.0.160:3000/Zone",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Zone"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:53:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "Get nodes and machine data ",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.10.5:3001/Zone/Node_Machine_Data/600fac28549c501670d98807",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"Zone",
+								"Node_Machine_Data",
+								"600fac28549c501670d98807"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get zone summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.10.5:3001/Zone/Summary/5fe9b90bbcf8642b68e4e47c",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"Zone",
+								"Summary",
+								"5fe9b90bbcf8642b68e4e47c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get zone alerts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.0.160:3001/Zone/TemperatureHumidity/Alerts/6045d7e8eb512924e8de5485",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Zone",
+								"TemperatureHumidity",
+								"Alerts",
+								"6045d7e8eb512924e8de5485"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Workshop Requests",
+			"item": [
+				{
+					"name": "Get all workshops",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.0.160:3001/Workshops",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Workshops"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get All Workshops",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "192.168.0.160:3000/Workshops",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Workshops"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "273"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"111-bk+mtEKZBfr1PEOL0mqq9O6QqLk\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:57:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"5fa240d67011b92124e035d4\",\n        \"name\": \"ERP-WorkShop-22\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"5fa240db7011b92124e035d5\",\n        \"name\": \"ERP-WorkShop-24\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"5fa240e17011b92124e035d6\",\n        \"name\": \"MES-WorkShop-12\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"5fa240ef7011b92124e035d8\",\n        \"name\": \"ERP-WorkShop-08\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create workshop",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Test-Workshop\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/Workshop",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Workshop"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Workshop",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"ERP-WorkShop-10\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "192.168.0.160:3000/Workshop",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Workshop"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "67"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"43-2y2v4y/xEMhjXpLy1t/Q3KwdLgA\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:58:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"5fa3a27ad006011f38010036\",\n    \"name\": \"ERP-WorkShop-10\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Get single workshop by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa240d67011b92124e035d4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3000/Workshop",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3000",
+							"path": [
+								"Workshop"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Single Workshop By Id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5fa240d67011b92124e035d4\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "192.168.0.160:3000/Workshop",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Workshop"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "69"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"45-3fjFxIXSvKu4eXCXp3ikgUyp96o\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:58:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"5fa240d67011b92124e035d4\",\n        \"name\": \"ERP-WorkShop-22\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Update workshop",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fc0d36b4016a62cbcbcb865\",\r\n    \"name\":\"MES-workshop-102\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.14:3000/Workshop",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"14"
+							],
+							"port": "3000",
+							"path": [
+								"Workshop"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Workshop",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5fa240d67011b92124e035d4\",\r\n    \"name\":\"MES-workshop-102\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "192.168.0.160:3000/Workshop",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Workshop"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "67"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"43-QQc0P9nIq/tqPvg2v9VNaeuoFp4\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:59:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"5fa240d67011b92124e035d4\",\n    \"name\": \"ERP-WorkShop-22\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete workshop",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fe9b4acff6bf106e484ea4f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.11:3001/Workshop",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"11"
+							],
+							"port": "3001",
+							"path": [
+								"Workshop"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Workshop",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":\"5fa240d67011b92124e035d4\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "192.168.0.160:3000/Workshop",
+									"host": [
+										"192",
+										"168",
+										"0",
+										"160"
+									],
+									"port": "3000",
+									"path": [
+										"Workshop"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 05 Nov 2020 06:59:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Node Requests",
+			"item": [
+				{
+					"name": "get unregistered nodes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.0.160:3001/UnregisteredNodes",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"UnregisteredNodes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all nodes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.0.160:3001/Nodes",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Nodes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one node by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa52473c773bd0380d9168a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3000/Node",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3000",
+							"path": [
+								"Node"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create node",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mac\":\"70:b3:d5:fe:4c:e5\",\r\n    \"sensor_1_rating\":60,\r\n    \"sensor_2_rating\":60\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/Node",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Node"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update node",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"6045eedd1b2d331884b42ba0\",\r\n    \"sensor_2_rating\": 70\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/Node",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Node"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete node",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"601befd7dca67508b0754b3e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.100:3001/Node",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "3001",
+							"path": [
+								"Node"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Machine Requests",
+			"item": [
+				{
+					"name": "get all machines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.0.160:3001/Machines",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one machine by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa273813ea43c167c1fdb58\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.7:3000/Machine/5fc0d4b8eebc8e1ac43efb49",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"7"
+							],
+							"port": "3000",
+							"path": [
+								"Machine",
+								"5fc0d4b8eebc8e1ac43efb49"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update machine",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"id\": \"5fe45fc1dbaab20d947403b8\",\r\n   \"idle_threshold\":3,\r\n   \"max_load\":250,\r\n   \"sensor_voltage_scalar\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3000/Machine",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3000",
+							"path": [
+								"Machine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create machine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\":\"SAMPLE Machine-2\",\r\n   \"idle_threshold\":45,\r\n   \"max_load\":20,\r\n   \"sensor_voltage_scalar\":0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/Machine",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"Machine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete machine",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa273773ea43c167c1fdb57\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3000/Machine",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3000",
+							"path": [
+								"Machine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get machine utilization",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fe9b964bcf8642b68e4e47f\",\r\n    \"timestamp\":\"2021-01-07T15:46:53.346Z\",\r\n    \"duration\":24\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.5:3001/Machine/State/Utilization",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"Machine",
+								"State",
+								"Utilization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set config for machine maintenance",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"machine_id\":\"604894085e31ef15f4e43ce6\",\r\n    \"maintenance_recurrence_period_hours\":10,\r\n    \"machine_runtime\":7,\r\n    \"maintenance_history\":[{\"maintenance_performed_on\":\"2021-03-17T10:38:03.211Z\"}]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/MachineMaintenance/SetConfig",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"MachineMaintenance",
+								"SetConfig"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update history for machine maintenance",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"machine_id\":\"604894085e31ef15f4e43ce6\",\r\n    \"maintenance_date\":\"2021-03-19T12:01:15.099Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/MachineMaintenance/UpdateConfig",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"MachineMaintenance",
+								"UpdateConfig"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View config for machine maintenance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.0.160:3001/MachineMaintenance/ViewConfig/604894085e31ef15f4e43ce6",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"MachineMaintenance",
+								"ViewConfig",
+								"604894085e31ef15f4e43ce6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get maintenace due time",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Zone Mapping Requests",
+			"item": [
+				{
+					"name": "get all zone mappings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.10.5:3001/ZoneMappings",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"ZoneMappings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one zone mapping by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa27f0773f9f005187cb969\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3000/ZoneMapping",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3000",
+							"path": [
+								"ZoneMapping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create zone mapping",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"zone_id\":\"604893875e31ef15f4e43cdd\",\r\n    \"node_id\":\"604893c15e31ef15f4e43cde\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/ZoneMapping",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"ZoneMapping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update zone mapping",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fbe25b8fa641425dc0bbe88\",\r\n    \"node_id\":\"5fbf8969df666030d80bf9a1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.14:3000/ZoneMapping",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"14"
+							],
+							"port": "3000",
+							"path": [
+								"ZoneMapping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete zone mapping",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fe9b944bcf8642b68e4e47e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.11:3001/ZoneMapping",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"11"
+							],
+							"port": "3001",
+							"path": [
+								"ZoneMapping"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Machine Mapping Requests",
+			"item": [
+				{
+					"name": "get all machines mapping",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.11:3001/MachineMappings",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"11"
+							],
+							"port": "3001",
+							"path": [
+								"MachineMappings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one machine mapping by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fa284dd53a7d836888cd558\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3000/MachineMapping",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3000",
+							"path": [
+								"MachineMapping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create machine mapping",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"machine_id\":\"604894085e31ef15f4e43ce6\",\r\n    \"node_id\":\"604893c15e31ef15f4e43cde\",\r\n    \"sensor_number\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.0.160:3001/MachineMapping",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"MachineMapping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update machine mapping",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"id\":\"5fe4609bf588d9415caaa4b3\",\r\n\"machine_id\": \"5fbf929a4110a93ebc89b34b\",\r\n\"sensor_number\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.14:3000/MachineMapping",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"14"
+							],
+							"port": "3000",
+							"path": [
+								"MachineMapping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete machine mapping",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5fbe2681d7e61a2ab4ea68e3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.14:3000/MachineMapping",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"14"
+							],
+							"port": "3000",
+							"path": [
+								"MachineMapping"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Demo SSN",
+			"item": [
+				{
+					"name": "get data for previous 24 hours",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.0.160:3001/data/6045ef1f1b2d331884b42ba2",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"160"
+							],
+							"port": "3001",
+							"path": [
+								"data",
+								"6045ef1f1b2d331884b42ba2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Zone Mapping Machine Request",
+			"item": [
+				{
+					"name": "get all zone mapping machines",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.5:3001/ZoneMappingMachines",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"ZoneMappingMachines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one zone mapping machine",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "192.168.10.5:3001/ZoneMappingMachine/5ff83e203228aa3a6c3dc8aa",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"ZoneMappingMachine",
+								"5ff83e203228aa3a6c3dc8aa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create one zone mapping machine",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"zone_id\":\"5fe9b90bbcf8642b68e4e47c\",\r\n    \"machine_id\":\"5fe9b964bcf8642b68e4e47f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.5:3001/ZoneMappingMachine",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"ZoneMappingMachine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update zone mapping machine",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5ff83e203228aa3a6c3dc8aa\",\r\n    \"zone_id\":\"5ff83e203228aa3a6c3dc8bb\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.5:3001/ZoneMappingMachine",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"ZoneMappingMachine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete zone mapping machine",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"5ff83e203228aa3a6c3dc8aa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "192.168.10.5:3001/ZoneMappingMachine",
+							"host": [
+								"192",
+								"168",
+								"10",
+								"5"
+							],
+							"port": "3001",
+							"path": [
+								"ZoneMappingMachine"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

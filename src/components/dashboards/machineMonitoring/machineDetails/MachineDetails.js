@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 // Utils
 import keys from "../../../../utils/keys";
 import { isNotEmpty } from "../../../../utils/validation";
-import { parseDataFromSSN } from "../../../../utils/parse";
+import {
+  parseDataFromSSN,
+  parseHistoricalDataFromSSN,
+} from "../../../../utils/parse";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -33,11 +36,9 @@ import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import AlertCard from "../../../common/AlertCard";
 import Loader from "../../../common/Loader";
 
-// Placeholder Data
-import { liveMachineData } from "../../../../data/machineData";
-
 // Web-socket
 import io from "socket.io-client";
+import { StraightenOutlined } from "@material-ui/icons";
 const client = io(keys.server, {
   transports: ["websocket"],
 });
@@ -84,134 +85,137 @@ export default function MachineDetails(props) {
     settimeFilter(timeFilterSelected);
   }, [timeFilterSelected]);
 
-  useEffect(() => {
-    if (!keys.showMockData) {
-      client.emit("send-data-demo-machine", { _id: machineID });
-    }
+  // useEffect(() => {
+  //   if (!keys.showMockData) {
+  //     client.emit("send-data-demo-machine", { _id: machineID });
+  //   }
 
-    if (!keys.showMockData) {
-      client.on(`data-demo-machine-${machineID}`, (msg) => {
-        try {
-          if (isNotEmpty(msg)) {
-            setLiveData(msg);
+  //   if (!keys.showMockData) {
+  //     client.on(`data-demo-machine-${machineID}`, (msg) => {
+  //       try {
+  //         if (isNotEmpty(msg)) {
+  //           setLiveData(msg);
 
-            setLiveDataArr((prevItems) => [...prevItems, msg]);
-          }
-        } catch (error) {
-          setLiveData(null);
-          console.log(error);
-        }
-      });
-    } else {
-      // Mock live data generator
-      setInterval(() => {
-        const msg = liveMachineData();
-        setLiveData(msg);
-        setLiveDataArr((prevItems) => [...prevItems, msg]);
-      }, 5000);
-    }
-  }, [machineID]);
+  //           setLiveDataArr((prevItems) => [...prevItems, msg]);
+  //         }
+  //       } catch (error) {
+  //         setLiveData(null);
+  //         console.log(error);
+  //       }
+  //     });
+  //   } else {
+  //     // Mock live data generator
+  //     setInterval(() => {
+  //       const msg = liveMachineData();
+  //       setLiveData(msg);
+  //       setLiveDataArr((prevItems) => [...prevItems, msg]);
+  //     }, 5000);
+  //   }
+  // }, [machineID]);
 
-  const allData = [...storedData, ...liveDataArr];
+  console.log(parseHistoricalDataFromSSN(storedData));
+
+  // const allData = [...storedData, ...liveDataArr];
   // console.log(allData);
-  const parsedMachineData = parseDataFromSSN(
-    allData,
-    timeFiltersList.indexOf(timeFilter)
-  );
-  const {
-    // Time
-    timestamps,
-    timestampEnd,
-    // timestampStart,
-    // timestampStartFilter,
+  // const parsedMachineData = parseDataFromSSN(
+  //   allData,
+  //   timeFiltersList.indexOf(timeFilter)
+  // );
+  // const {
+  //   // Time
+  //   timestamps,
+  //   timestampEnd,
+  //   // timestampStart,
+  //   // timestampStartFilter,
 
-    // Enviroment
-    temperature,
-    temperatureNow,
-    // temperatureMax,
-    // temperatureMin,
-    humidity,
-    humidityNow,
-    // humidityMax,
-    // humidityMin,
+  //   // Enviroment
+  //   temperature,
+  //   temperatureNow,
+  //   // temperatureMax,
+  //   // temperatureMin,
+  //   humidity,
+  //   humidityNow,
+  //   // humidityMax,
+  //   // humidityMin,
 
-    // Current
-    loadCurrent,
-    currentNow,
+  //   // Current
+  //   loadCurrent,
+  //   currentNow,
 
-    // Power
-    instantPower,
-    unitsConsumed,
+  //   // Power
+  //   instantPower,
+  //   unitsConsumed,
 
-    // State
-    machineState,
-    stateNowDuration,
-    stateNow,
+  //   // State
+  //   machineState,
+  //   stateNowDuration,
+  //   stateNow,
 
-    // Utilization
-    // utilization,
-    // uptime,
-    // downtime,
-    // operationCount,
+  //   // Utilization
+  //   // utilization,
+  //   // uptime,
+  //   // downtime,
+  //   // operationCount,
 
-    dutyCycle,
-  } = parsedMachineData;
-  const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
-    "en-US"
-  );
+  //   dutyCycle,
+  // } = parsedMachineData;
+
+  // const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
+  //   "en-US"
+  // );
 
   // ******** Props ********
-  const lineChartsProps = {
-    machineState: {
-      series: machineState,
-      timestamps: timestamps,
-      name: "State",
-      color: chartColors.machineState,
-      yLabels: ["OFF", "IDLE", "ON"],
-      yMax: 3,
-      type: "line",
-      step: "center",
-    },
-    machinePower: {
-      series: instantPower,
-      timestamps: timestamps,
-      name: "Power",
-      color: chartColors.machinePower,
-    },
-    machineCurrent: {
-      series: loadCurrent,
-      timestamps: timestamps,
-      name: "Current",
-      color: chartColors.machineCurrent,
-    },
-    temperature: {
-      series: temperature,
-      timestamps: timestamps,
-      name: "Temperature",
-      color: chartColors.temperature,
-    },
-    humidity: {
-      series: humidity,
-      timestamps: timestamps,
-      name: "Humidity",
-      color: chartColors.humidity,
-    },
-  };
+  // const lineChartsProps = {
+  //   machineState: {
+  //     series: machineState,
+  //     timestamps: timestamps,
+  //     name: "State",
+  //     color: chartColors.machineState,
+  //     yLabels: ["OFF", "IDLE", "ON"],
+  //     yMax: 3,
+  //     type: "line",
+  //     step: "center",
+  //   },
+  //   machinePower: {
+  //     series: instantPower,
+  //     timestamps: timestamps,
+  //     name: "Power",
+  //     color: chartColors.machinePower,
+  //   },
+  //   machineCurrent: {
+  //     series: loadCurrent,
+  //     timestamps: timestamps,
+  //     name: "Current",
+  //     color: chartColors.machineCurrent,
+  //   },
+  //   temperature: {
+  //     series: temperature,
+  //     timestamps: timestamps,
+  //     name: "Temperature",
+  //     color: chartColors.temperature,
+  //   },
+  //   humidity: {
+  //     series: humidity,
+  //     timestamps: timestamps,
+  //     name: "Humidity",
+  //     color: chartColors.humidity,
+  //   },
+  // };
 
-  const cardsProps = {
-    // liveData,
-    // currentNow,
-    // lastUpdateTimestamp,
-    // stateNow,
-    // stateNowDuration,
-    unitsConsumed,
-    timeFilter,
-    temperatureNow,
-    humidityNow,
-    offLoadHours: dutyCycle.offLoadHours,
-    onLoadHours: dutyCycle.onLoadHours,
-    machineProfile,
-  };
+  // const cardsProps = {
+  //   // liveData,
+  //   // currentNow,
+  //   // lastUpdateTimestamp,
+  //   // stateNow,
+  //   // stateNowDuration,
+  //   unitsConsumed,
+  //   timeFilter,
+  //   temperatureNow,
+  //   humidityNow,
+  //   offLoadHours: dutyCycle.offLoadHours,
+  //   onLoadHours: dutyCycle.onLoadHours,
+  //   machineProfile,
+  // };
 
   const navbar = (
     <Grid container justify="space-between" alignItems="center" spacing={2}>
@@ -258,7 +262,7 @@ export default function MachineDetails(props) {
       <Grid item xs={12}>
         {navbar}
       </Grid>
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <CardsContainerRow1
           data={{
             liveData,
@@ -274,7 +278,7 @@ export default function MachineDetails(props) {
       </Grid>
       <Grid item md={3} xs={12}>
         <PieChartContainer dutyCycle={dutyCycle} />
-      </Grid>
+      </Grid> */}
       {/* <Grid item xs={12}>
         <CardsWithGaugeContainer
           data={{
@@ -292,9 +296,9 @@ export default function MachineDetails(props) {
         />
       </Grid> */}
 
-      <Grid item xs={12}>
+      {/* <Grid item xs={12}>
         <LineChartContainer lineCharts={lineChartsProps} />
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 
