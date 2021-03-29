@@ -3,10 +3,7 @@ import React, { useEffect, useState } from "react";
 // Utils
 import keys from "../../../../utils/keys";
 import { isNotEmpty } from "../../../../utils/validation";
-import {
-  parseDataFromSSN,
-  parseHistoricalDataFromSSN,
-} from "../../../../utils/parse";
+import { parseDataFromSSN } from "../../../../utils/parse";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -38,7 +35,6 @@ import Loader from "../../../common/Loader";
 
 // Web-socket
 import io from "socket.io-client";
-import { StraightenOutlined } from "@material-ui/icons";
 const client = io(keys.server, {
   transports: ["websocket"],
 });
@@ -85,137 +81,192 @@ export default function MachineDetails(props) {
     settimeFilter(timeFilterSelected);
   }, [timeFilterSelected]);
 
-  // useEffect(() => {
-  //   if (!keys.showMockData) {
-  //     client.emit("send-data-demo-machine", { _id: machineID });
-  //   }
+  useEffect(() => {
+    if (!keys.showMockData) {
+      client.emit("send-data-demo-machine", { _id: machineID });
+    }
 
-  //   if (!keys.showMockData) {
-  //     client.on(`data-demo-machine-${machineID}`, (msg) => {
-  //       try {
-  //         if (isNotEmpty(msg)) {
-  //           setLiveData(msg);
+    if (!keys.showMockData) {
+      client.on(`data-demo-machine-${machineID}`, (msg) => {
+        try {
+          if (isNotEmpty(msg)) {
+            setLiveData(msg);
 
-  //           setLiveDataArr((prevItems) => [...prevItems, msg]);
-  //         }
-  //       } catch (error) {
-  //         setLiveData(null);
-  //         console.log(error);
-  //       }
-  //     });
-  //   } else {
-  //     // Mock live data generator
-  //     setInterval(() => {
-  //       const msg = liveMachineData();
-  //       setLiveData(msg);
-  //       setLiveDataArr((prevItems) => [...prevItems, msg]);
-  //     }, 5000);
-  //   }
-  // }, [machineID]);
+            setLiveDataArr((prevItems) => [...prevItems, msg]);
+          }
+        } catch (error) {
+          setLiveData(null);
+          console.log(error);
+        }
+      });
+    } else {
+      // Mock live data generator
+      //   setInterval(() => {
+      //     const msg = liveMachineData();
+      //     setLiveData(msg);
+      //     setLiveDataArr((prevItems) => [...prevItems, msg]);
+      //   }, 5000);
+    }
+    // eslint-disable-next-line
+  }, [machineID]);
 
-  console.log(parseHistoricalDataFromSSN(storedData));
+  const keys = [
+    "humidity",
+    "load_current",
+    "machine_state_duration",
+    "status",
+    "temperature",
+    "timestamp",
+  ];
 
-  // const allData = [...storedData, ...liveDataArr];
-  // console.log(allData);
-  // const parsedMachineData = parseDataFromSSN(
-  //   allData,
-  //   timeFiltersList.indexOf(timeFilter)
-  // );
-  // const {
-  //   // Time
-  //   timestamps,
-  //   timestampEnd,
-  //   // timestampStart,
-  //   // timestampStartFilter,
+  // Merge historical and live data
+  const allData = JSON.parse(JSON.stringify(storedData));
 
-  //   // Enviroment
-  //   temperature,
-  //   temperatureNow,
-  //   // temperatureMax,
-  //   // temperatureMin,
-  //   humidity,
-  //   humidityNow,
-  //   // humidityMax,
-  //   // humidityMin,
+  // eslint-disable-next-line
+  keys.map((key) => {
+    try {
+      // eslint-disable-next-line
+      liveDataArr.map((packet) => {
+        allData[key].push(packet[key]);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
-  //   // Current
-  //   loadCurrent,
-  //   currentNow,
+  const debugDataMerger = (enable) => {
+    if (enable) {
+      try {
+        console.log("live data (should increment by 1):", liveDataArr.length);
 
-  //   // Power
-  //   instantPower,
-  //   unitsConsumed,
+        console.log(
+          "original stored data (should stay the same):",
+          storedData[keys[1]].length
+        );
 
-  //   // State
-  //   machineState,
-  //   stateNowDuration,
-  //   stateNow,
+        console.log(
+          "diff (should be equal to original):",
+          allData[keys[1]].length - liveDataArr.length
+        );
 
-  //   // Utilization
-  //   // utilization,
-  //   // uptime,
-  //   // downtime,
-  //   // operationCount,
+        console.log(
+          "merged data (should increment by 1):",
+          allData[keys[1]].length
+        );
 
-  //   dutyCycle,
-  // } = parsedMachineData;
+        console.log(
+          "sum (should be equal to merged data):",
+          storedData[keys[1]].length + liveDataArr.length
+        );
 
-  // const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
-  //   "en-US"
-  // );
+        console.log("");
+      } catch (e) {}
+    }
+  };
+
+  // set to true to log in console
+  debugDataMerger(false);
+
+  const parsedMachineData = parseDataFromSSN(
+    allData,
+    timeFiltersList.indexOf(timeFilter)
+  );
+
+  const {
+    // Time
+    timestamps,
+    timestampEnd,
+    // timestampStart,
+    // timestampStartFilter,
+
+    // Enviroment
+    temperature,
+    temperatureNow,
+    // temperatureMax,
+    // temperatureMin,
+    humidity,
+    humidityNow,
+    // humidityMax,
+    // humidityMin,
+
+    // Current
+    loadCurrent,
+    currentNow,
+
+    // Power
+    instantPower,
+    unitsConsumed,
+
+    // State
+    machineState,
+    stateNowDuration,
+    stateNow,
+
+    // Utilization
+    // utilization,
+    // uptime,
+    // downtime,
+    // operationCount,
+
+    dutyCycle,
+  } = parsedMachineData;
+
+  const lastUpdateTimestamp = new Date(timestampEnd).toLocaleTimeString(
+    "en-US"
+  );
 
   // ******** Props ********
-  // const lineChartsProps = {
-  //   machineState: {
-  //     series: machineState,
-  //     timestamps: timestamps,
-  //     name: "State",
-  //     color: chartColors.machineState,
-  //     yLabels: ["OFF", "IDLE", "ON"],
-  //     yMax: 3,
-  //     type: "line",
-  //     step: "center",
-  //   },
-  //   machinePower: {
-  //     series: instantPower,
-  //     timestamps: timestamps,
-  //     name: "Power",
-  //     color: chartColors.machinePower,
-  //   },
-  //   machineCurrent: {
-  //     series: loadCurrent,
-  //     timestamps: timestamps,
-  //     name: "Current",
-  //     color: chartColors.machineCurrent,
-  //   },
-  //   temperature: {
-  //     series: temperature,
-  //     timestamps: timestamps,
-  //     name: "Temperature",
-  //     color: chartColors.temperature,
-  //   },
-  //   humidity: {
-  //     series: humidity,
-  //     timestamps: timestamps,
-  //     name: "Humidity",
-  //     color: chartColors.humidity,
-  //   },
-  // };
+  const lineChartsProps = {
+    machineState: {
+      series: machineState,
+      timestamps: timestamps,
+      name: "State",
+      color: chartColors.machineState,
+      yLabels: ["OFF", "IDLE", "ON"],
+      yMax: 3,
+      type: "line",
+      step: "center",
+    },
+    machinePower: {
+      series: instantPower,
+      timestamps: timestamps,
+      name: "Power",
+      color: chartColors.machinePower,
+    },
+    machineCurrent: {
+      series: loadCurrent,
+      timestamps: timestamps,
+      name: "Current",
+      color: chartColors.machineCurrent,
+    },
+    temperature: {
+      series: temperature,
+      timestamps: timestamps,
+      name: "Temperature",
+      color: chartColors.temperature,
+    },
+    humidity: {
+      series: humidity,
+      timestamps: timestamps,
+      name: "Humidity",
+      color: chartColors.humidity,
+    },
+  };
 
-  // const cardsProps = {
-  //   // liveData,
-  //   // currentNow,
-  //   // lastUpdateTimestamp,
-  //   // stateNow,
-  //   // stateNowDuration,
-  //   unitsConsumed,
-  //   timeFilter,
-  //   temperatureNow,
-  //   humidityNow,
-  //   offLoadHours: dutyCycle.offLoadHours,
-  //   onLoadHours: dutyCycle.onLoadHours,
-  //   machineProfile,
-  // };
+  const cardsProps = {
+    // liveData,
+    // currentNow,
+    // lastUpdateTimestamp,
+    // stateNow,
+    // stateNowDuration,
+    unitsConsumed,
+    timeFilter,
+    temperatureNow,
+    humidityNow,
+    offLoadHours: dutyCycle.offLoadHours,
+    onLoadHours: dutyCycle.onLoadHours,
+    machineProfile,
+  };
 
   const navbar = (
     <Grid container justify="space-between" alignItems="center" spacing={2}>
@@ -262,7 +313,7 @@ export default function MachineDetails(props) {
       <Grid item xs={12}>
         {navbar}
       </Grid>
-      {/* <Grid item xs={12}>
+      <Grid item xs={12}>
         <CardsContainerRow1
           data={{
             liveData,
@@ -278,8 +329,12 @@ export default function MachineDetails(props) {
       </Grid>
       <Grid item md={3} xs={12}>
         <PieChartContainer dutyCycle={dutyCycle} />
-      </Grid> */}
-      {/* <Grid item xs={12}>
+      </Grid>
+
+      {/* 
+      ****** Do need uncomment or delete ******  
+
+      <Grid item xs={12}>
         <CardsWithGaugeContainer
           data={{
             operationCount,
@@ -296,9 +351,9 @@ export default function MachineDetails(props) {
         />
       </Grid> */}
 
-      {/* <Grid item xs={12}>
+      <Grid item xs={12}>
         <LineChartContainer lineCharts={lineChartsProps} />
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 

@@ -8,7 +8,7 @@
 - machine details dashboard redesign // done
 
 - integrate APIs
-    1 - new machine data
+    1 - new machine data // done
     2 - new environment data
     3 - new notifications  
     6 - machine maintainance 

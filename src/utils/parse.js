@@ -371,7 +371,7 @@ export const parseEnviromentDataFromSSN = (data) => {
   };
 };
 
-export const parseDataFromSSN = (data, timeFilterIndex) => {
+export const parseDataFromSSN_OLD = (data, timeFilterIndex) => {
   const numOfHours =
     timeFilterIndex === 0
       ? 1
@@ -575,7 +575,7 @@ export const parseDataFromSSN = (data, timeFilterIndex) => {
   };
 };
 
-export const parseHistoricalDataFromSSN = (data, timeFilterIndex) => {
+export const parseDataFromSSN = (data, timeFilterIndex) => {
   const numOfHours =
     timeFilterIndex === 0
       ? 1
