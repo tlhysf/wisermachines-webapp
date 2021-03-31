@@ -41,7 +41,7 @@ import AlertCard from "../../../common/AlertCard";
 import Loader from "../../../common/Loader";
 
 // Placeholder Data
-import { liveEnvData } from "../../../../data/environmentData";
+// import { liveEnvData } from "../../../../data/environmentData";
 
 // Web-socket
 import io from "socket.io-client";
@@ -115,30 +115,64 @@ export default function ContainerDetails(props) {
       //   setLiveDataArr((prevItems) => [...prevItems, msg]);
       // }, 3000);
     }
+    // eslint-disable-next-line
   }, [containerID]);
 
-  // console.log(liveDataArr);
+  const keys = [
+    "humidity",
+    "humidity_alert",
+    "temperature",
+    "temperature_alert",
+    "timestamp",
+  ];
 
-  // const allData = !isNotEmpty(storedData)
-  //   ? []
-  //   : !isNotEmpty(liveData)
-  //   ? storedData
-  //   : [...storedData, liveData];
+  // Merge historical and live data
+  const allData = JSON.parse(JSON.stringify(storedData));
 
-  // const allData = [...storedData, ...liveDataArr];
-  const allData = [...liveDataArr];
+  // eslint-disable-next-line
+  keys.map((key) => {
+    try {
+      // eslint-disable-next-line
+      liveDataArr.map((packet) => {
+        allData[key].push(packet[key]);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
-  ///////////////////////////////////////////////////////////////////////
-  // filter node
-  // const ignoreID = "603c9bb20f2dc628d8e1a8d4";
-  // const ignoreMAC = "70:B3:D5:FE:4C:E1";
-  // let allDataFiltered = allData.map((item) => {
-  //   if (item.node_id === ignoreID) {
-  //     return null;
-  //   } else return item;
-  // });
-  // allDataFiltered = allDataFiltered.filter((item) => item);
-  // console.log(allDataFiltered);
+  const debugDataMerger = (enable) => {
+    if (enable) {
+      try {
+        console.log("live data (should increment by 1):", liveDataArr.length);
+
+        console.log(
+          "original stored data (should stay the same):",
+          storedData[keys[1]].length
+        );
+
+        console.log(
+          "diff (should be equal to original):",
+          allData[keys[1]].length - liveDataArr.length
+        );
+
+        console.log(
+          "merged data (should increment by 1):",
+          allData[keys[1]].length
+        );
+
+        console.log(
+          "sum (should be equal to merged data):",
+          storedData[keys[1]].length + liveDataArr.length
+        );
+
+        console.log("");
+      } catch (e) {}
+    }
+  };
+
+  // set to true to log in console
+  debugDataMerger(false);
 
   const parsedData = parseEnviromentDataFromSSN(allData);
 

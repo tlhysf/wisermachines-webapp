@@ -5,14 +5,12 @@ const client = io("http://115.186.183.129:27000", {
   transports: ["websocket"], // or [ 'websocket', 'polling' ], which is the same thing
 });
 
-client.emit("send-data-environment", { _id: "60547e1997960c1c34daa889" });
+client.emit("send-data-alert", { _id: "60547e1997960c1c34daa889" });
 // client.on('data',(msg)=>{
 //     console.log(msg)
 // })
-client.on("data-environment-60547e1997960c1c34daa889", (parseJSON) => {
+client.on("data-alert-60547e1997960c1c34daa889", (parseJSON) => {
   try {
     console.log(parseJSON);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 });

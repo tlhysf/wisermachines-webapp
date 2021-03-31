@@ -42,6 +42,8 @@ export default function Cards(props) {
     liveData,
   } = props.data;
 
+  // console.log(props.data);
+
   const lastUpdatedCard = {
     lastUpdateTimestamp,
     liveData,

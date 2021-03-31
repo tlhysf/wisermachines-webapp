@@ -282,7 +282,7 @@ export const parseZoneDetailsData = (data) => {
   };
 };
 
-export const parseEnviromentDataFromSSN = (data) => {
+export const parseEnviromentDataFromSSN_OLD = (data) => {
   const packets = data instanceof Array && data.length > 0 ? data : null;
 
   // Time
@@ -342,6 +342,83 @@ export const parseEnviromentDataFromSSN = (data) => {
       humidityAlertNow = latest.humidity_alert;
       humidityMax = Math.max(...humidity);
       humidityMin = Math.min(...humidity);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return {
+    // Time
+    timestamps,
+    timestampEnd,
+    timestampStart,
+
+    // Temperature
+    temperature,
+    temperatureAlerts,
+    temperatureNow,
+    temperatureMax,
+    temperatureMin,
+    temperatureAlertNow,
+
+    // Humidity
+    humidity,
+    humidityAlerts,
+    humidityNow,
+    humidityMax,
+    humidityMin,
+    humidityAlertNow,
+  };
+};
+
+export const parseEnviromentDataFromSSN = (data) => {
+  // Time
+  let timestamps = [];
+  let timestampEnd = 0;
+  let timestampStart = 0;
+
+  // Temperature
+  let temperature = [];
+  let temperatureNow = 0;
+  let temperatureMax = 0;
+  let temperatureMin = 0;
+  let temperatureAlerts = [];
+  let temperatureAlertNow = 0;
+
+  // Humidity
+  let humidity = [];
+  let humidityNow = 0;
+  let humidityMax = 0;
+  let humidityMin = 0;
+  let humidityAlerts = [];
+  let humidityAlertNow = 0;
+
+  if (data) {
+    try {
+      // Time
+      timestamps = data.timestamp.map((timestampStr) =>
+        Date.parse(timestampStr)
+      );
+      timestampStart = timestamps[0];
+      timestampEnd = timestamps.slice(-1)[0];
+
+      // Temperature
+      temperature = data.temperature;
+      temperatureMax = Math.max(...temperature);
+      temperatureMin = Math.min(...temperature);
+
+      temperatureAlerts = data.temperature_alert;
+      temperatureNow = temperature.slice(-1)[0];
+      temperatureAlertNow = temperatureAlerts.slice(-1)[0];
+
+      // Humidity
+      humidity = data.humidity;
+      humidityMax = Math.max(...humidity);
+      humidityMin = Math.min(...humidity);
+
+      humidityAlerts = data.humidity_alert;
+      humidityNow = humidity.slice(-1)[0];
+      humidityAlertNow = humidityAlerts.slice(-1)[0];
     } catch (error) {
       console.log(error);
     }

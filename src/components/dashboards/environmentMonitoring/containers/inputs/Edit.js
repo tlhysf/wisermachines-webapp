@@ -208,7 +208,7 @@ const Edit = (props) => {
               focused={true}
               defaultValue={thisZone.max_temperature}
               type="number"
-              inputProps={{ min: 0 }}
+              inputProps={{ min: -10 }}
             />
             {errors.max_temperature ? (
               <Typography
@@ -239,7 +239,7 @@ const Edit = (props) => {
               <Slider
                 // disabled={formData.max_temperature > 0 ? false : true}
                 defaultValue={thisZone.min_temperature}
-                min={0}
+                min={-10}
                 max={parseInt(formData.max_temperature)}
                 step={1}
                 valueLabelDisplay="auto"
@@ -272,7 +272,7 @@ const Edit = (props) => {
               focused={true}
               defaultValue={thisZone.max_humidity}
               type="number"
-              inputProps={{ min: 0 }}
+              inputProps={{ min: -10 }}
             />
             {errors.max_humidity ? (
               <Typography
@@ -303,7 +303,7 @@ const Edit = (props) => {
               <Slider
                 // disabled={formData.max_humidity > 0 ? false : true}
                 defaultValue={thisZone.min_humidity}
-                min={0}
+                min={-10}
                 max={parseInt(formData.max_humidity)}
                 step={1}
                 valueLabelDisplay="auto"
