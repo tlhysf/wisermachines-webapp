@@ -9,6 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Typography from "@material-ui/core/Typography";
+import Badge from "@material-ui/core/Badge";
 
 import NotificationsNoneOutlinedIcon from "@material-ui/icons/NotificationsNoneOutlined";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
@@ -19,6 +20,12 @@ import SpeedIcon from "@material-ui/icons/Speed";
 import { common } from "../../../../utils/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../../utils/colors";
+
+import keys from "../../../../utils/keys";
+import io from "socket.io-client";
+const client = io(keys.server, {
+  transports: ["websocket"],
+});
 
 const useStyles = makeStyles((theme) => common(theme));
 
@@ -72,6 +79,13 @@ const humidityIcon = (
   <OpacityIcon style={{ ...styles.icon, color: colors.BLUEGREY[400] }} />
 );
 
+const lowIcon = (
+  <ArrowDownwardIcon style={{ ...styles.icon, color: lowColor }} />
+);
+const highIcon = (
+  <ArrowUpwardIcon style={{ ...styles.icon, color: highColor }} />
+);
+
 export default function AlertsPopover(props) {
   const classes = useStyles();
 
@@ -88,6 +102,8 @@ export default function AlertsPopover(props) {
     temperature: false,
     humidity: false,
   });
+
+  const [alertsListState, setAlertsList] = React.useState({});
 
   const [openDialog, setOpenDialog] = React.useState(false);
 
@@ -119,19 +135,30 @@ export default function AlertsPopover(props) {
     }
   };
 
+  React.useEffect(() => {
+    client.emit("send-data-alert", { _id: props.ID });
+
+    client.on(`data-alert-${props.ID}`, (msg) => {
+      try {
+        setAlertsList(msg);
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  }, [props.ID]);
+
+  const alertsListTemp = alertsListState.alerts;
+  const alertsList =
+    alertsListTemp && alertsListTemp instanceof Array ? alertsListTemp : [];
+
   // Parsing
-  let alertsList = [];
+  console.log(alertsList);
+
+  let alertsList_OLD = [];
   timestamps.map((timestamp, i) => {
     const dateTime = new Date(timestamp);
     const date = dateTime.toLocaleDateString();
     const time = dateTime.toLocaleTimeString();
-
-    const lowIcon = (
-      <ArrowDownwardIcon style={{ ...styles.icon, color: lowColor }} />
-    );
-    const highIcon = (
-      <ArrowUpwardIcon style={{ ...styles.icon, color: highColor }} />
-    );
 
     const lowHumidityMsg = "Low humidity threshold crossed";
     const highHumidityMsg = "High humidity threshold crossed";
@@ -200,29 +227,29 @@ export default function AlertsPopover(props) {
     if (isAlert) {
       if (isBothAlert) {
         if (lowTemperature) {
-          alertsList.push(lowTemperatureObj);
+          alertsList_OLD.push(lowTemperatureObj);
         }
         if (highTemperature) {
-          alertsList.push(highTemperatureObj);
+          alertsList_OLD.push(highTemperatureObj);
         }
         if (lowHumidity) {
-          alertsList.push(lowHumidityObj);
+          alertsList_OLD.push(lowHumidityObj);
         }
         if (highHumidity) {
-          alertsList.push(highHumidityObj);
+          alertsList_OLD.push(highHumidityObj);
         }
       } else {
         if (lowHumidity) {
-          alertsList.push(lowHumidityObj);
+          alertsList_OLD.push(lowHumidityObj);
         }
         if (highHumidity) {
-          alertsList.push(highHumidityObj);
+          alertsList_OLD.push(highHumidityObj);
         }
         if (lowTemperature) {
-          alertsList.push(lowTemperatureObj);
+          alertsList_OLD.push(lowTemperatureObj);
         }
         if (highTemperature) {
-          alertsList.push(highTemperatureObj);
+          alertsList_OLD.push(highTemperatureObj);
         }
       }
     } else {
@@ -231,7 +258,113 @@ export default function AlertsPopover(props) {
 
     return i;
   });
-  alertsList.reverse(); // sort by newest
+  alertsList_OLD.reverse(); // sort by newest
+
+  let alertsList_OLD = [];
+  timestamps.map((timestamp, i) => {
+    const dateTime = new Date(timestamp);
+    const date = dateTime.toLocaleDateString();
+    const time = dateTime.toLocaleTimeString();
+
+    const lowHumidityMsg = "Low humidity threshold crossed";
+    const highHumidityMsg = "High humidity threshold crossed";
+    const lowTemperatureMsg = "Low temperature threshold crossed";
+    const highTemperatureMsg = "High temperature threshold crossed";
+
+    const lowHumidity = humidityAlerts[i] === -1;
+    const highHumidity = humidityAlerts[i] === 1;
+    const lowTemperature = temperatureAlerts[i] === -1;
+    const highTemperature = temperatureAlerts[i] === 1;
+
+    const isHumidityAlert = lowHumidity || highHumidity;
+    const isTemperatureALert = lowTemperature || highTemperature;
+
+    const isAlert = isHumidityAlert || isTemperatureALert;
+    const isBothAlert = isHumidityAlert && isTemperatureALert;
+
+    const lowTemperatureObj = {
+      alert: lowTemperatureMsg,
+      value: temperature[i],
+      time: time,
+      date: date,
+      icon: lowIcon,
+      color: lowColor,
+      unit: temperatureUnit,
+      type: "temperature",
+      icon2: temperatureIcon,
+    };
+
+    const highTemperatureObj = {
+      alert: highTemperatureMsg,
+      value: temperature[i],
+      time: time,
+      date: date,
+      icon: highIcon,
+      color: highColor,
+      unit: temperatureUnit,
+      type: "temperature",
+      icon2: temperatureIcon,
+    };
+
+    const lowHumidityObj = {
+      alert: lowHumidityMsg,
+      value: humidity[i],
+      time: time,
+      date: date,
+      icon: lowIcon,
+      color: lowColor,
+      unit: humidityUnit,
+      type: "humidity",
+      icon2: humidityIcon,
+    };
+
+    const highHumidityObj = {
+      alert: highHumidityMsg,
+      value: humidity[i],
+      time: time,
+      date: date,
+      icon: highIcon,
+      color: highColor,
+      unit: humidityUnit,
+      type: "humidity",
+      icon2: humidityIcon,
+    };
+
+    if (isAlert) {
+      if (isBothAlert) {
+        if (lowTemperature) {
+          alertsList_OLD.push(lowTemperatureObj);
+        }
+        if (highTemperature) {
+          alertsList_OLD.push(highTemperatureObj);
+        }
+        if (lowHumidity) {
+          alertsList_OLD.push(lowHumidityObj);
+        }
+        if (highHumidity) {
+          alertsList_OLD.push(highHumidityObj);
+        }
+      } else {
+        if (lowHumidity) {
+          alertsList_OLD.push(lowHumidityObj);
+        }
+        if (highHumidity) {
+          alertsList_OLD.push(highHumidityObj);
+        }
+        if (lowTemperature) {
+          alertsList_OLD.push(lowTemperatureObj);
+        }
+        if (highTemperature) {
+          alertsList_OLD.push(highTemperatureObj);
+        }
+      }
+    } else {
+      // no alert, do nothing
+    }
+
+    return i;
+  });
+  alertsList_OLD.reverse(); // sort by newest
 
   const renderButtonGroup = (
     <Grid
@@ -319,14 +452,16 @@ export default function AlertsPopover(props) {
   const renderAllCards = (
     <Grid container direction="column" justify="center" alignItems="stretch">
       {selectedOption.all
-        ? alertsList.map((item, index) => (
+        ? alertsList_OLD.map((item, index) => (
             <Card item={item} index={index} key={index} />
           ))
         : null}
 
-      {selectedOption.humidity ? filterBy(alertsList, "humidity") : null}
+      {selectedOption.humidity ? filterBy(alertsList_OLD, "humidity") : null}
 
-      {selectedOption.temperature ? filterBy(alertsList, "temperature") : null}
+      {selectedOption.temperature
+        ? filterBy(alertsList_OLD, "temperature")
+        : null}
     </Grid>
   );
 
@@ -338,10 +473,12 @@ export default function AlertsPopover(props) {
           variant="contained"
           onClick={(e) => handleDialogButton(e)}
         >
-          <NotificationsNoneOutlinedIcon
-            className={classes.iconInsideButton}
-            style={{ color: colors.TEAL[700] }}
-          />
+          <Badge badgeContent={alertsList.length} color="secondary">
+            <NotificationsNoneOutlinedIcon
+              className={classes.iconInsideButton}
+              style={{ color: colors.TEAL[700] }}
+            />
+          </Badge>
         </Button>
       </Tooltip>
 

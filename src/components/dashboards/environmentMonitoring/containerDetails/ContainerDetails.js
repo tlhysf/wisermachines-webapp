@@ -468,6 +468,7 @@ export default function ContainerDetails(props) {
                 temperatureAlerts,
                 timestamps,
               }}
+              ID={containerID}
             />
           </Grid>
         </Grid>
