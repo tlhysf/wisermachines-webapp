@@ -1,5 +1,8 @@
 import React from "react";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import Grid from "@material-ui/core/Grid";
@@ -17,11 +20,11 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import OpacityIcon from "@material-ui/icons/Opacity";
 import SpeedIcon from "@material-ui/icons/Speed";
 
-import { common } from "../../../../utils/styles";
+import { common } from "../../utils/styles";
 import { makeStyles } from "@material-ui/core/styles";
-import colors from "../../../../utils/colors";
+import colors from "../../utils/colors";
 
-import keys from "../../../../utils/keys";
+import keys from "../../utils/keys";
 import io from "socket.io-client";
 const client = io(keys.server, {
   transports: ["websocket"],
@@ -86,16 +89,21 @@ const highIcon = (
   <ArrowUpwardIcon style={{ ...styles.icon, color: highColor }} />
 );
 
+const lowHumidityMsg = "Low humidity threshold crossed";
+const highHumidityMsg = "High humidity threshold crossed";
+const lowTemperatureMsg = "Low temperature threshold crossed";
+const highTemperatureMsg = "High temperature threshold crossed";
+
 export default function AlertsPopover(props) {
   const classes = useStyles();
 
-  const {
-    humidity,
-    humidityAlerts,
-    temperature,
-    temperatureAlerts,
-    timestamps,
-  } = props.data;
+  // const {
+  //   humidity,
+  //   humidityAlerts,
+  //   temperature,
+  //   temperatureAlerts,
+  //   timestamps,
+  // } = props.data;
 
   const [selectedOption, setSelectedOption] = React.useState({
     all: true,
@@ -148,223 +156,196 @@ export default function AlertsPopover(props) {
   }, [props.ID]);
 
   const alertsListTemp = alertsListState.alerts;
-  const alertsList =
+  const alertsListInit =
     alertsListTemp && alertsListTemp instanceof Array ? alertsListTemp : [];
 
-  // Parsing
-  console.log(alertsList);
+  // console.log(alertsListInit);
 
-  let alertsList_OLD = [];
-  timestamps.map((timestamp, i) => {
+  // eslint-disable-next-line
+  const alertsList = alertsListInit.map((alert) => {
+    const { timestamp, alert_level, alert_type, parameter_value } = alert;
+
     const dateTime = new Date(timestamp);
     const date = dateTime.toLocaleDateString();
     const time = dateTime.toLocaleTimeString();
 
-    const lowHumidityMsg = "Low humidity threshold crossed";
-    const highHumidityMsg = "High humidity threshold crossed";
-    const lowTemperatureMsg = "Low temperature threshold crossed";
-    const highTemperatureMsg = "High temperature threshold crossed";
+    const isHumidityAlert = alert_type === "humidity";
+    const isTemperatureALert = alert_type === "temperature";
 
-    const lowHumidity = humidityAlerts[i] === -1;
-    const highHumidity = humidityAlerts[i] === 1;
-    const lowTemperature = temperatureAlerts[i] === -1;
-    const highTemperature = temperatureAlerts[i] === 1;
+    const lowHumidity = isHumidityAlert && alert_level === -1;
+    const highHumidity = isHumidityAlert && alert_level === 1;
+    const lowTemperature = isTemperatureALert && alert_level === -1;
+    const highTemperature = isTemperatureALert && alert_level === 1;
 
-    const isHumidityAlert = lowHumidity || highHumidity;
-    const isTemperatureALert = lowTemperature || highTemperature;
-
-    const isAlert = isHumidityAlert || isTemperatureALert;
-    const isBothAlert = isHumidityAlert && isTemperatureALert;
+    const alertObjInit = {
+      dateTime,
+      value: parameter_value,
+      time: time,
+      date: date,
+    };
 
     const lowTemperatureObj = {
       alert: lowTemperatureMsg,
-      value: temperature[i],
-      time: time,
-      date: date,
       icon: lowIcon,
       color: lowColor,
       unit: temperatureUnit,
       type: "temperature",
       icon2: temperatureIcon,
+      ...alertObjInit,
     };
 
     const highTemperatureObj = {
       alert: highTemperatureMsg,
-      value: temperature[i],
-      time: time,
-      date: date,
+
       icon: highIcon,
       color: highColor,
       unit: temperatureUnit,
       type: "temperature",
       icon2: temperatureIcon,
+      ...alertObjInit,
     };
 
     const lowHumidityObj = {
       alert: lowHumidityMsg,
-      value: humidity[i],
-      time: time,
-      date: date,
+
       icon: lowIcon,
       color: lowColor,
       unit: humidityUnit,
       type: "humidity",
       icon2: humidityIcon,
+      ...alertObjInit,
     };
 
     const highHumidityObj = {
       alert: highHumidityMsg,
-      value: humidity[i],
-      time: time,
-      date: date,
       icon: highIcon,
       color: highColor,
       unit: humidityUnit,
       type: "humidity",
       icon2: humidityIcon,
+      ...alertObjInit,
     };
 
-    if (isAlert) {
-      if (isBothAlert) {
-        if (lowTemperature) {
-          alertsList_OLD.push(lowTemperatureObj);
-        }
-        if (highTemperature) {
-          alertsList_OLD.push(highTemperatureObj);
-        }
-        if (lowHumidity) {
-          alertsList_OLD.push(lowHumidityObj);
-        }
-        if (highHumidity) {
-          alertsList_OLD.push(highHumidityObj);
-        }
-      } else {
-        if (lowHumidity) {
-          alertsList_OLD.push(lowHumidityObj);
-        }
-        if (highHumidity) {
-          alertsList_OLD.push(highHumidityObj);
-        }
-        if (lowTemperature) {
-          alertsList_OLD.push(lowTemperatureObj);
-        }
-        if (highTemperature) {
-          alertsList_OLD.push(highTemperatureObj);
-        }
-      }
-    } else {
-      // no alert, do nothing
+    if (lowHumidity) {
+      return lowHumidityObj;
     }
-
-    return i;
-  });
-  alertsList_OLD.reverse(); // sort by newest
-
-  let alertsList_OLD = [];
-  timestamps.map((timestamp, i) => {
-    const dateTime = new Date(timestamp);
-    const date = dateTime.toLocaleDateString();
-    const time = dateTime.toLocaleTimeString();
-
-    const lowHumidityMsg = "Low humidity threshold crossed";
-    const highHumidityMsg = "High humidity threshold crossed";
-    const lowTemperatureMsg = "Low temperature threshold crossed";
-    const highTemperatureMsg = "High temperature threshold crossed";
-
-    const lowHumidity = humidityAlerts[i] === -1;
-    const highHumidity = humidityAlerts[i] === 1;
-    const lowTemperature = temperatureAlerts[i] === -1;
-    const highTemperature = temperatureAlerts[i] === 1;
-
-    const isHumidityAlert = lowHumidity || highHumidity;
-    const isTemperatureALert = lowTemperature || highTemperature;
-
-    const isAlert = isHumidityAlert || isTemperatureALert;
-    const isBothAlert = isHumidityAlert && isTemperatureALert;
-
-    const lowTemperatureObj = {
-      alert: lowTemperatureMsg,
-      value: temperature[i],
-      time: time,
-      date: date,
-      icon: lowIcon,
-      color: lowColor,
-      unit: temperatureUnit,
-      type: "temperature",
-      icon2: temperatureIcon,
-    };
-
-    const highTemperatureObj = {
-      alert: highTemperatureMsg,
-      value: temperature[i],
-      time: time,
-      date: date,
-      icon: highIcon,
-      color: highColor,
-      unit: temperatureUnit,
-      type: "temperature",
-      icon2: temperatureIcon,
-    };
-
-    const lowHumidityObj = {
-      alert: lowHumidityMsg,
-      value: humidity[i],
-      time: time,
-      date: date,
-      icon: lowIcon,
-      color: lowColor,
-      unit: humidityUnit,
-      type: "humidity",
-      icon2: humidityIcon,
-    };
-
-    const highHumidityObj = {
-      alert: highHumidityMsg,
-      value: humidity[i],
-      time: time,
-      date: date,
-      icon: highIcon,
-      color: highColor,
-      unit: humidityUnit,
-      type: "humidity",
-      icon2: humidityIcon,
-    };
-
-    if (isAlert) {
-      if (isBothAlert) {
-        if (lowTemperature) {
-          alertsList_OLD.push(lowTemperatureObj);
-        }
-        if (highTemperature) {
-          alertsList_OLD.push(highTemperatureObj);
-        }
-        if (lowHumidity) {
-          alertsList_OLD.push(lowHumidityObj);
-        }
-        if (highHumidity) {
-          alertsList_OLD.push(highHumidityObj);
-        }
-      } else {
-        if (lowHumidity) {
-          alertsList_OLD.push(lowHumidityObj);
-        }
-        if (highHumidity) {
-          alertsList_OLD.push(highHumidityObj);
-        }
-        if (lowTemperature) {
-          alertsList_OLD.push(lowTemperatureObj);
-        }
-        if (highTemperature) {
-          alertsList_OLD.push(highTemperatureObj);
-        }
-      }
-    } else {
-      // no alert, do nothing
+    if (highHumidity) {
+      return highHumidityObj;
     }
-
-    return i;
+    if (lowTemperature) {
+      return lowTemperatureObj;
+    }
+    if (highTemperature) {
+      return highTemperatureObj;
+    }
   });
-  alertsList_OLD.reverse(); // sort by newest
+
+  // alertsList.reverse(); // sort by newest?
+  // let alertsList_OLD = [];
+  // timestamps.map((timestamp, i) => {
+  //   const dateTime = new Date(timestamp);
+  //   const date = dateTime.toLocaleDateString();
+  //   const time = dateTime.toLocaleTimeString();
+
+  //   const lowHumidityMsg = "Low humidity threshold crossed";
+  //   const highHumidityMsg = "High humidity threshold crossed";
+  //   const lowTemperatureMsg = "Low temperature threshold crossed";
+  //   const highTemperatureMsg = "High temperature threshold crossed";
+
+  //   const lowHumidity = humidityAlerts[i] === -1;
+  //   const highHumidity = humidityAlerts[i] === 1;
+  //   const lowTemperature = temperatureAlerts[i] === -1;
+  //   const highTemperature = temperatureAlerts[i] === 1;
+
+  //   const isHumidityAlert = lowHumidity || highHumidity;
+  //   const isTemperatureALert = lowTemperature || highTemperature;
+
+  //   const isAlert = isHumidityAlert || isTemperatureALert;
+  //   const isBothAlert = isHumidityAlert && isTemperatureALert;
+
+  //   const lowTemperatureObj = {
+  //     alert: lowTemperatureMsg,
+  //     value: temperature[i],
+  //     time: time,
+  //     date: date,
+  //     icon: lowIcon,
+  //     color: lowColor,
+  //     unit: temperatureUnit,
+  //     type: "temperature",
+  //     icon2: temperatureIcon,
+  //   };
+
+  //   const highTemperatureObj = {
+  //     alert: highTemperatureMsg,
+  //     value: temperature[i],
+  //     time: time,
+  //     date: date,
+  //     icon: highIcon,
+  //     color: highColor,
+  //     unit: temperatureUnit,
+  //     type: "temperature",
+  //     icon2: temperatureIcon,
+  //   };
+
+  //   const lowHumidityObj = {
+  //     alert: lowHumidityMsg,
+  //     value: humidity[i],
+  //     time: time,
+  //     date: date,
+  //     icon: lowIcon,
+  //     color: lowColor,
+  //     unit: humidityUnit,
+  //     type: "humidity",
+  //     icon2: humidityIcon,
+  //   };
+
+  //   const highHumidityObj = {
+  //     alert: highHumidityMsg,
+  //     value: humidity[i],
+  //     time: time,
+  //     date: date,
+  //     icon: highIcon,
+  //     color: highColor,
+  //     unit: humidityUnit,
+  //     type: "humidity",
+  //     icon2: humidityIcon,
+  //   };
+
+  //   if (isAlert) {
+  //     if (isBothAlert) {
+  //       if (lowTemperature) {
+  //         alertsList_OLD.push(lowTemperatureObj);
+  //       }
+  //       if (highTemperature) {
+  //         alertsList_OLD.push(highTemperatureObj);
+  //       }
+  //       if (lowHumidity) {
+  //         alertsList_OLD.push(lowHumidityObj);
+  //       }
+  //       if (highHumidity) {
+  //         alertsList_OLD.push(highHumidityObj);
+  //       }
+  //     } else {
+  //       if (lowHumidity) {
+  //         alertsList_OLD.push(lowHumidityObj);
+  //       }
+  //       if (highHumidity) {
+  //         alertsList_OLD.push(highHumidityObj);
+  //       }
+  //       if (lowTemperature) {
+  //         alertsList_OLD.push(lowTemperatureObj);
+  //       }
+  //       if (highTemperature) {
+  //         alertsList_OLD.push(highTemperatureObj);
+  //       }
+  //     }
+  //   } else {
+  //     // no alert, do nothing
+  //   }
+
+  //   return i;
+  // });
+  // alertsList_OLD.reverse(); // sort by newest
 
   const renderButtonGroup = (
     <Grid
@@ -452,18 +433,77 @@ export default function AlertsPopover(props) {
   const renderAllCards = (
     <Grid container direction="column" justify="center" alignItems="stretch">
       {selectedOption.all
-        ? alertsList_OLD.map((item, index) => (
-            <Card item={item} index={index} key={index} />
-          ))
+        ? alertsList.length > 0
+          ? alertsList.map((item, index) => (
+              <Card item={item} index={index} key={index} />
+            ))
+          : renderNoAlerts
         : null}
 
-      {selectedOption.humidity ? filterBy(alertsList_OLD, "humidity") : null}
+      {selectedOption.humidity ? filterBy(alertsList, "humidity") : null}
 
-      {selectedOption.temperature
-        ? filterBy(alertsList_OLD, "temperature")
-        : null}
+      {selectedOption.temperature ? filterBy(alertsList, "temperature") : null}
     </Grid>
   );
+
+  const toastsContainer = !openDialog ? (
+    <ToastContainer
+      position="bottom-left"
+      autoClose={false}
+      hideProgressBar={true}
+      newestOnTop={true}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      enableMultiContainer
+      containerId={"ContainerDetails"}
+      limit={1}
+    />
+  ) : null;
+
+  const notifyLow = (msg) =>
+    toast.info(msg, { containerId: "ContainerDetails" });
+
+  const notifyHigh = (msg) =>
+    toast.error(msg, { containerId: "ContainerDetails" });
+
+  const toastContent = (value, unit, time) => {
+    return (
+      <div>
+        <div>
+          <Typography align="left" variant="button">
+            {value}
+            {unit}
+          </Typography>
+        </div>
+
+        <div>
+          <Typography variant="caption" align="left">
+            {time}
+          </Typography>
+        </div>
+      </div>
+    );
+  };
+
+  const now = new Date();
+
+  alertsList.map((item) => {
+    const { dateTime, value, time, color, unit } = item;
+
+    if (dateTime.getHours() === now.getHours()) {
+      if (color === lowColor) {
+        notifyLow(toastContent(value, unit, time));
+      }
+      if (color === highColor) {
+        notifyHigh(toastContent(value, unit, time));
+      }
+    }
+
+    return null;
+  });
 
   return (
     <>
@@ -473,7 +513,7 @@ export default function AlertsPopover(props) {
           variant="contained"
           onClick={(e) => handleDialogButton(e)}
         >
-          <Badge badgeContent={alertsList.length} color="secondary">
+          <Badge badgeContent={alertsListInit.length} color="secondary">
             <NotificationsNoneOutlinedIcon
               className={classes.iconInsideButton}
               style={{ color: colors.TEAL[700] }}
@@ -481,6 +521,8 @@ export default function AlertsPopover(props) {
           </Badge>
         </Button>
       </Tooltip>
+
+      {toastsContainer}
 
       <Dialog
         open={openDialog}

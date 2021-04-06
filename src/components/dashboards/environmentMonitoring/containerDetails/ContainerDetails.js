@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-// Toasts
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-
 // Utils
 import keys from "../../../../utils/keys";
 import { isNotEmpty } from "../../../../utils/validation";
@@ -32,13 +28,13 @@ import Grid from "@material-ui/core/Grid";
 // Custom Components
 import Cards from "./Cards";
 import Charts from "./Charts";
-import Alerts from "./Alerts";
 import Report from "./Report/Index";
 
 // Common Components
 import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import AlertCard from "../../../common/AlertCard";
 import Loader from "../../../common/Loader";
+import AlertsPopover from "../../../common/Alerts";
 
 // Placeholder Data
 // import { liveEnvData } from "../../../../data/environmentData";
@@ -183,141 +179,6 @@ export default function ContainerDetails(props) {
 
   // console.log(liveData);
 
-  // // ******* TOASTS *******
-
-  // const [toastsCount, setToastsCount] = useState(0);
-
-  // let showToasts = useSelector(
-  //   (state) => state.environmentMonitoring.containerDetails.showToasts
-  // );
-
-  // // const dismissAll = () => {
-  // //   toast.dismiss();
-  // //   setToastsCount(0);
-  // // };
-
-  // const toastsContainer = showToasts ? (
-  //   <ToastContainer
-  //     position="bottom-left"
-  //     autoClose={10000}
-  //     hideProgressBar={false}
-  //     newestOnTop={true}
-  //     closeOnClick
-  //     rtl={false}
-  //     pauseOnFocusLoss
-  //     draggable
-  //     pauseOnHover
-  //     enableMultiContainer
-  //     containerId={"ContainerDetails"}
-  //     // limit={keys.showMockData ? 5 : 100}
-  //     // closeButton={
-  //     //   <Tooltip placment="right" title="Dismiss All">
-  //     //     <i onClick={(e) => dismissAll()}>x</i>
-  //     //   </Tooltip>
-  //     // }
-  //   />
-  // ) : null;
-
-  // const notifyLow = (msg) => {
-  //   const notify = (value) =>
-  //     toast.info(value, { containerId: "ContainerDetails" });
-
-  //   notify(msg, {
-  //     position: "bottom-left",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //   });
-
-  //   setToastsCount(toastsCount + 1);
-  // };
-
-  // const notifyHigh = (msg) => {
-  //   const notify = (value) =>
-  //     toast.error(value, { containerId: "ContainerDetails" });
-
-  //   notify(msg, {
-  //     position: "top-right",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //   });
-
-  //   setToastsCount(toastsCount + 1);
-  // };
-
-  // const humidityUnit = " %RH";
-  // const temperatureUnit = " \u00B0C";
-
-  // const toastContent = (data, type, unit) => {
-  //   const lastUpdateTimestamp = new Date(data.timestamp).toLocaleTimeString(
-  //     "en-US"
-  //   );
-
-  //   return (
-  //     <div>
-  //       <div>
-  //         <Typography align="left" variant="button">
-  //           {data[type]}
-  //           {unit}
-  //         </Typography>
-  //       </div>
-
-  //       <div>
-  //         <Typography variant="caption" align="left">
-  //           {lastUpdateTimestamp}
-  //         </Typography>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   if (isNotEmpty(liveData)) {
-  //     if (liveData.humidity_alert === -1) {
-  //       const type = "humidity";
-  //       notifyLow(toastContent(liveData, type, humidityUnit));
-  //     }
-  //     if (liveData.humidity_alert === 1) {
-  //       const type = "humidity";
-  //       notifyHigh(toastContent(liveData, type, humidityUnit));
-  //     }
-  //     if (liveData.temperature_alert === -1) {
-  //       const type = "temperature";
-  //       notifyLow(toastContent(liveData, type, temperatureUnit));
-  //     }
-  //     if (liveData.temperature_alert === 1) {
-  //       const type = "temperature";
-  //       notifyHigh(toastContent(liveData, type, temperatureUnit));
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [liveData]);
-
-  // // const dismissAllButton =
-  // //   toastsCount > 2 ? (
-  // //     <div style={{ padding: 10 }}>
-  // //       <Fab
-  // //         variant="extended"
-  // //         style={{ backgroundColor: colors.BLUEGREY[700] }}
-  // //         size="medium"
-  // //         onClick={(e) => dismissAll()}
-  // //       >
-  // //         <Typography variant="caption" style={{ color: "white" }}>
-  // //           Dismiss All
-  // //         </Typography>
-  // //       </Fab>
-  // //     </div>
-  // //   ) : null;
-
-  // // ******* ******* *******
-
   const {
     // Time
     timestamps,
@@ -460,16 +321,7 @@ export default function ContainerDetails(props) {
             />
           </Grid>
           <Grid item>
-            <Alerts
-              data={{
-                humidity,
-                humidityAlerts,
-                temperature,
-                temperatureAlerts,
-                timestamps,
-              }}
-              ID={containerID}
-            />
+            <AlertsPopover ID={containerID} />
           </Grid>
         </Grid>
       </Grid>

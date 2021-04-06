@@ -32,6 +32,7 @@ import BreadcrumbsNav from "../../../common/Breadcrumbs";
 import FilterAndSortMenu from "../../../common/FilterAndSortMenu";
 import AlertCard from "../../../common/AlertCard";
 import Loader from "../../../common/Loader";
+import AlertsPopover from "../../../common/Alerts";
 
 // Web-socket
 import io from "socket.io-client";
@@ -56,7 +57,7 @@ export default function MachineDetails(props) {
 
   const dispatch = useDispatch();
 
-  const { machineID } = props.match.params;
+  const { machineID, zoneID } = props.match.params;
 
   const [timeFilter, settimeFilter] = useState(timeFiltersList[0]);
   const [liveData, setLiveData] = useState(null);
@@ -288,6 +289,9 @@ export default function MachineDetails(props) {
                 />
               }
             />
+          </Grid>
+          <Grid item>
+            <AlertsPopover ID={zoneID} />
           </Grid>
         </Grid>
       </Grid>
