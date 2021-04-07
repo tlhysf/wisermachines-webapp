@@ -14,5 +14,6 @@
     4 - machine maintenance 
     5 - summary headers and cards, machines and nodes page // Response needs to be finalized
     6 - edit machine mapping, // Incompatible machine mapping patch request  
+    7 - new dashboard
     
 - set min, max thresholds for zone using only sliders, no text inputs 
