@@ -96,8 +96,8 @@ const SignIn = () => {
 
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    name: "",
-    password: "",
+    name: "demo",
+    password: "demo",
   });
 
   const handleFormData = (e) => {
@@ -178,6 +178,8 @@ const SignIn = () => {
             fullWidth
             id="name"
             label="Username"
+            helperText="Username: demo"
+            defaultValue="demo"
             name="name"
             autoComplete="off"
             onChange={(e) => handleFormData(e)}
@@ -194,6 +196,8 @@ const SignIn = () => {
             required
             fullWidth
             name="password"
+            helperText="Password: demo"
+            defaultValue="demo"
             label="Password"
             type="password"
             id="password"
